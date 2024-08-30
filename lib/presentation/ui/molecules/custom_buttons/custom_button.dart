@@ -1,7 +1,7 @@
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/small_button.dart';
 import 'package:flutter/material.dart';
 
-Widget SmallCustomButton({
+Widget CustomButton({
   required String text,
   required Size size,
   required double globalWidth,

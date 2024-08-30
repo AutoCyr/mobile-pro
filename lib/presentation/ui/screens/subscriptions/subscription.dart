@@ -4,7 +4,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
-import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/small_custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -129,7 +129,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
           )),
           const Gap(20),
           if(_selectedSubscription != null)
-            SmallCustomButton(
+            CustomButton(
             text: "Valider",
             size: size,
             globalWidth: size.width * 0.9,

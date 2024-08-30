@@ -5,7 +5,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
-import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/small_custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/starters/back.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/starters/overlay.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
@@ -65,7 +65,7 @@ class _ChooserScreenState extends State<ChooserScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SmallCustomButton(
+                                CustomButton(
                                   text: "Connexion",
                                   size: size,
                                   globalWidth: size.width * 0.45,
@@ -77,7 +77,7 @@ class _ChooserScreenState extends State<ChooserScreen> {
                                   buttonColor: GlobalThemeData.lightColorScheme.primary,
                                   backColor: GlobalThemeData.lightColorScheme.onPrimary
                                 ).animate().fadeIn(),
-                                SmallCustomButton(
+                                CustomButton(
                                   text: "Inscription",
                                   size: size,
                                   globalWidth: size.width * 0.45,

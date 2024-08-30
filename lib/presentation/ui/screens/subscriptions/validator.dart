@@ -4,7 +4,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
-import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/small_custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -119,14 +119,14 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
                   ),
                 ],
               ),
-              SmallCustomButton(
+              CustomButton(
                   text: "Accéder à mon espace",
                   size: size,
                   globalWidth: size.width,
                   widthSize: size.width * 0.87,
                   backSize: size.width * 0.87,
                   context: context,
-                  function: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomeDashScreen()), (route) => false),
+                  function: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeDashScreen()), (route) => false),
                   textColor: GlobalThemeData.lightColorScheme.primary,
                   buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
                   backColor: GlobalThemeData.lightColorScheme.primary

@@ -8,9 +8,9 @@ Widget SmallButton({required String text, required double widthSize, required Bu
       fixedSize: WidgetStateProperty.all(Size(widthSize, 45)),
       backgroundColor: WidgetStateProperty.all(bgColor),
       shape: WidgetStateProperty.all(
-          const RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero,
-          )
+        const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        )
       )
     ),
     onPressed: () => function(),

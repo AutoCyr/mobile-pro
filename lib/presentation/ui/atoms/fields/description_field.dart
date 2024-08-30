@@ -1,16 +1,17 @@
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:flutter/material.dart';
 
-Widget CustomField({
+Widget DescriptionField({
   required TextEditingController controller,
   required TextInputType keyboardType,
   required String label,
   required double fontSize,
-  required IconData icon,
+  required IconData icon
 }) {
   return TextFormField(
     controller: controller,
     keyboardType: keyboardType,
+    maxLines: 10,
     decoration: InputDecoration(
       filled: true,
       fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),

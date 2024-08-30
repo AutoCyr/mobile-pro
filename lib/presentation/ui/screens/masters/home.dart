@@ -1,9 +1,18 @@
+import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/overviews/large_overview.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/overviews/small_overview.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
 
@@ -15,6 +24,33 @@ class HomeDashScreen extends StatefulWidget {
 }
 
 class _HomeDashScreenState extends State<HomeDashScreen> {
+
+  List<Map> options = [
+    {
+      "label": "Pièces",
+      "iconData": Icons.settings_outlined,
+      "widget": const PieceListScreen()
+    },
+    {
+      "label": "Commandes",
+      "iconData": Icons.shopping_cart_checkout_rounded,
+      "widget": null
+    },
+    {
+      "label": "Demandes",
+      "iconData": Icons.content_paste_go_rounded,
+      "widget": null
+    }
+  ];
+
+  bool visible = true;
+
+  updateVisible() {
+    setState(() {
+      visible = !visible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -26,9 +62,17 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.menu_rounded,
-                  color: GlobalThemeData.lightColorScheme.primaryContainer,
+                InkWell(
+                  onTap: () => Selector().showIconMenu(
+                    context: context,
+                    options: options,
+                    title: "Options"
+                  ),
+                  splashColor: Colors.transparent,
+                  child: Icon(
+                    Icons.menu_rounded,
+                    color: GlobalThemeData.lightColorScheme.primaryContainer,
+                  ),
                 ),
                 Image.asset(
                   "assets/logos/auto.png",
@@ -41,7 +85,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                 ),
               ]
             ).animate().fadeIn(),
-            const Gap(20),
+            const Gap(30),
             Label20(
               text: "Tableau de bord",
               color: GlobalThemeData.lightColorScheme.secondaryContainer,
@@ -56,79 +100,94 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
               maxLines: 2
             ).animate().fadeIn(),
             const Gap(20),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              width: size.width,
-              height: 100,
-              decoration: BoxDecoration(
-                color: GlobalThemeData.lightColorScheme.onPrimary,
-                border: Border.all(
-                    color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.5),
-                    width: 1
-                ),
-              ),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Label14(
-                        text: "Total pièces enregistrées",
-                        color: GlobalThemeData.lightColorScheme.primaryContainer,
-                        weight: FontWeight.bold,
-                        maxLines: 1
-                    ),
-                    const Gap(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Label30(
-                            text: "17",
-                            color: GlobalThemeData.lightColorScheme.secondaryContainer,
+            if(visible)
+            Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: GlobalThemeData.lightColorScheme.errorContainer.withOpacity(0.6),
+                    border: Border.all(
+                      color: GlobalThemeData.lightColorScheme.onErrorContainer,
+                    )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Label14(
+                            text: "Abonnement bientôt expiré",
+                            color: GlobalThemeData.lightColorScheme.onErrorContainer,
                             weight: FontWeight.bold,
                             maxLines: 1
-                        ),
-                      ],
-                    ),
-                  ]
-              ),
-            ),
-            const Gap(15),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              width: size.width,
-              height: 100,
-              decoration: BoxDecoration(
-                color: GlobalThemeData.lightColorScheme.onPrimary,
-                border: Border.all(
-                    color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.5),
-                    width: 1
-                ),
-              ),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Label14(
-                        text: "Total commandes",
-                        color: GlobalThemeData.lightColorScheme.primaryContainer,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              updateVisible();
+                            },
+                            child: Icon(
+                              Icons.clear,
+                              color: GlobalThemeData.lightColorScheme.onErrorContainer,
+                              size: 24,
+                            ),
+                          )
+                        ],
+                      ),
+                      const Gap(10),
+                      Label12(
+                        text: "Renouvelez votre abonnement pour continuer à profiter de nos services. \nMerci pour votre fidélité.",
+                        color: GlobalThemeData.lightColorScheme.onErrorContainer,
                         weight: FontWeight.bold,
-                        maxLines: 1
-                    ),
-                    const Gap(20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Label30(
-                            text: "40",
-                            color: GlobalThemeData.lightColorScheme.secondaryContainer,
-                            weight: FontWeight.bold,
-                            maxLines: 1
-                        ),
-                      ],
-                    ),
-                  ]
-              ),
+                        maxLines: 2
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(),
+                const Gap(20),
+              ],
             ),
+            LargeOverview(
+              label: "Total pièces enregistrées",
+              value: "17",
+              icon: Icons.settings_rounded,
+              size: size
+            ).animate().fadeIn(),
+            const Gap(5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SmallOverview(
+                    label: "Total commandes motos",
+                    value: "07",
+                    icon: Icons.motorcycle_rounded,
+                    size: size
+                ).animate().fadeIn(),
+                SmallOverview(
+                    label: "Total commandes auto",
+                    value: "40",
+                    icon: Icons.car_crash_rounded,
+                    size: size
+                ).animate().fadeIn()
+              ],
+            ),
+            const Gap(5),
+            LargeOverview(
+                label: "Total interventions",
+                value: "15",
+                icon: Icons.scuba_diving_rounded,
+                size: size
+            ).animate().fadeIn(),
+            const Gap(5),
+            LargeOverview(
+                label: "Total contacts établis",
+                value: "75",
+                icon: Icons.webhook_rounded,
+                size: size
+            ).animate().fadeIn(),
           ],
         ),
       ),

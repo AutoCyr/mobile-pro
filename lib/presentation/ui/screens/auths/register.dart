@@ -1,9 +1,10 @@
 import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_field.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
-import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/small_custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -17,6 +18,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
+  List<String> types = [
+    "National",
+    "International"
+  ];
 
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _raisonController = TextEditingController();
@@ -41,13 +47,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       Label30(text: "Inscription", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                       const Gap(30),
-                      CustomField(
+                      SelectableField(
                         controller: _typeController,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.none,
                         label: "Type de partenaire",
                         fontSize: 12,
-                        icon: Icons.new_releases_outlined,
-                        readOnly: true
+                        icon: Icons.person_pin_outlined,
+                        context: context,
+                        options: types
                       ).animate().fadeIn(),
                       const Gap(10),
                       CustomField(
@@ -56,7 +63,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: "Raison sociale",
                         fontSize: 12,
                         icon: Icons.business_outlined,
-                        readOnly: false
                       ).animate().fadeIn(),
                       const Gap(10),
                       CustomField(
@@ -65,7 +71,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: "Téléphone",
                         fontSize: 12,
                         icon: Icons.phone_outlined,
-                        readOnly: false
                       ).animate().fadeIn(),
                       const Gap(10),
                       CustomField(
@@ -74,7 +79,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: "Adresse email",
                         fontSize: 12,
                         icon: Icons.alternate_email,
-                        readOnly: false
                       ).animate().fadeIn(),
                       const Gap(10),
                       CustomField(
@@ -83,7 +87,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: "Ville",
                         fontSize: 12,
                         icon: Icons.share_location_outlined,
-                        readOnly: false
                       ).animate().fadeIn(),
                       const Gap(10),
                       CustomField(
@@ -92,12 +95,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: "Quartier",
                         fontSize: 12,
                         icon: Icons.share_location_outlined,
-                        readOnly: false
                       ).animate().fadeIn(),
                       const Gap(20),
                       SizedBox(
                         width: size.width,
-                        child: SmallCustomButton(
+                        child: CustomButton(
                             text: "S'inscrire",
                             size: size,
                             globalWidth: size.width * 0.9,

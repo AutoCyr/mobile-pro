@@ -5,7 +5,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
-import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/small_custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/register.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/subscription.dart';
 import 'package:flutter/material.dart';
@@ -48,10 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
             label: "Email / Numéro de téléphone",
             fontSize: 12,
             icon: Icons.alternate_email,
-            readOnly: false
           ).animate().fadeIn(),
           const Gap(30),
-          SmallCustomButton(
+          CustomButton(
               text: "Se connecter",
               size: size,
               globalWidth: size.width * 0.9,
