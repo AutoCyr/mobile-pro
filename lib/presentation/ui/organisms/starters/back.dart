@@ -6,7 +6,7 @@ Widget BackBackground({required Size size}){
     width: double.infinity,
     decoration: const BoxDecoration(
       image: DecorationImage(
-          image: AssetImage("assets/images/background.webp"),
+          image: AssetImage("assets/images/back-1.webp"),
           colorFilter: ColorFilter.mode(Colors.black54, BlendMode.lighten),
           fit: BoxFit.cover
       ),

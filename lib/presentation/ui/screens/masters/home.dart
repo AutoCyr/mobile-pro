@@ -1,3 +1,4 @@
+import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
@@ -12,9 +13,9 @@ import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class HomeDashScreen extends StatefulWidget {
   const HomeDashScreen({super.key});
@@ -51,6 +52,19 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     });
   }
 
+  updateFCM() async {
+    final auth = Provider.of<AuthNotifier>(context, listen: false);
+    await auth.updateFCM(context: context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      updateFCM();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -63,7 +77,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () => Selector().showIconMenu(
+                  onTap: () => BottomSelector().showIconMenu(
                     context: context,
                     options: options,
                     title: "Options"

@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:flutter/material.dart';
 
-Widget SelectableField({
+Widget SmallObjectSelectableField({
   required TextEditingController controller,
   required TextInputType keyboardType,
   required String label,
   required double fontSize,
   required IconData icon,
-  required List<String> options,
+  required List options,
   required BuildContext context,
+  required Function(Object) onSelected,
 }) {
   return TextFormField(
     controller: controller,
@@ -26,11 +27,11 @@ Widget SelectableField({
         fontSize: fontSize
       )
     ),
-    onTap: () => BottomSelector().showLabelMenu(
+    onTap: () => BottomSelector().showObjectLabelMenu(
       context: context,
       title: label,
       options: options,
-      onSelected: (value) => controller.text = value
+      onSelected: (value) => onSelected(value)
     ),
   );
 }

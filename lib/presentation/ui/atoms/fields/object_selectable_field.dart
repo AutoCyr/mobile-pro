@@ -1,23 +1,24 @@
-import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
-import 'package:flutter/material.dart';
-
+import 'package:autocyr_pro/domain/models/abstractables/selectable.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:flutter/material.dart';
 
-Widget SelectableField({
+Widget ObjectSelectableField({
   required TextEditingController controller,
   required TextInputType keyboardType,
   required String label,
   required double fontSize,
   required IconData icon,
-  required List<String> options,
+  required List<Selectable> options,
   required BuildContext context,
+  required String typeSelection,
 }) {
   return TextFormField(
     controller: controller,
     keyboardType: keyboardType,
     readOnly: true,
     decoration: InputDecoration(
+      focusColor: GlobalThemeData.lightColorScheme.primary,
       filled: true,
       fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
       labelText: label,
@@ -26,11 +27,10 @@ Widget SelectableField({
         fontSize: fontSize
       )
     ),
-    onTap: () => BottomSelector().showLabelMenu(
-      context: context,
-      title: label,
-      options: options,
-      onSelected: (value) => controller.text = value
-    ),
+    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
+        controller: controller,
+        list: options,
+        typeSelection: typeSelection,
+    ))),
   );
 }

@@ -1,10 +1,68 @@
+import 'package:autocyr_pro/data/datasources/auths/auth_datasource_impl.dart';
+import 'package:autocyr_pro/data/datasources/commons/common_datasource_impl.dart';
+import 'package:autocyr_pro/data/datasources/subscriptions/subscription_datasource_impl.dart';
+import 'package:autocyr_pro/data/helpers/notifications.dart';
+import 'package:autocyr_pro/data/network/api_client.dart';
+import 'package:autocyr_pro/data/repositories/auth_repository_impl.dart';
+import 'package:autocyr_pro/data/repositories/common_repository_impl.dart';
+import 'package:autocyr_pro/data/repositories/subscription_repository_impl.dart';
+import 'package:autocyr_pro/domain/usecases/auth_usecase.dart';
+import 'package:autocyr_pro/domain/usecases/common_usecase.dart';
+import 'package:autocyr_pro/domain/usecases/subscription_usecase.dart';
+import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/subscription_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/screens/starters/splash.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+        apiKey: "AIzaSyDii5OlQI6N_8qksKSR0aDiDLIXu7qdY6o",
+        appId: "1:882164644819:android:23a7d44d63e59250784d26",
+        messagingSenderId: "882164644819",
+        projectId: "autocyr-partner"
+    ),
+  );
+  await Notifications().initNotifications();
+
+  ApiClient apiClient = ApiClient();
+
+  AuthDataSourceImpl authDataSourceImpl = AuthDataSourceImpl(apiClient);
+  CommonDataSourceImpl commonDataSourceImpl = CommonDataSourceImpl(apiClient);
+  SubscriptionDataSourceImpl subscriptionDataSourceImpl = SubscriptionDataSourceImpl(apiClient);
+
+  AuthRepositoryImpl authRepositoryImpl = AuthRepositoryImpl(authDataSourceImpl);
+  CommonRepositoryImpl commonRepositoryImpl = CommonRepositoryImpl(commonDataSourceImpl);
+  SubscriptionRepositoryImpl subscriptionRepositoryImpl = SubscriptionRepositoryImpl(subscriptionDataSourceImpl);
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) {
+          return AuthNotifier(
+            authUseCase: AuthUseCase(authRepositoryImpl)
+          );
+        }),
+        ChangeNotifierProvider(create: (_) {
+          return CommonNotifier(
+            commonUseCase: CommonUseCase(commonRepositoryImpl)
+          );
+        }),
+        ChangeNotifierProvider(create: (_) {
+          return SubscriptionNotifier(
+            subscriptionUseCase: SubscriptionUseCase(subscriptionRepositoryImpl)
+          );
+        })
+      ],
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {

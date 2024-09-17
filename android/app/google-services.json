@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882164644819",
+    "project_id": "autocyr-partner",
+    "storage_bucket": "autocyr-partner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882164644819:android:23a7d44d63e59250784d26",
+        "android_client_info": {
+          "package_name": "com.gine.autocyr.pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDii5OlQI6N_8qksKSR0aDiDLIXu7qdY6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

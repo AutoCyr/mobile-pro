@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
 
-class Selector {
+class BottomSelector {
 
   void showIconMenu({
     required BuildContext context,
@@ -161,6 +161,63 @@ class Selector {
                   ),
                 ).animate().fadeIn()),
                 const Gap(10),
+              ],
+            ),
+          );
+        }
+    );
+  }
+
+  void showObjectLabelMenu({
+    required BuildContext context,
+    required String title,
+    required List options,
+    required Function(Object) onSelected
+  }){
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.zero)
+      ),
+      context: context,
+      builder: (BuildContext context){
+          Size size = MediaQuery.of(context).size;
+          return Container(
+            width: size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Label17(
+                      text: title,
+                      color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                      weight: FontWeight.bold,
+                      maxLines: 1
+                    ).animate().fadeIn(),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.close, color: GlobalThemeData.lightColorScheme.secondaryContainer,),
+                    ).animate().fadeIn(),
+                  ],
+                ),
+                Divider(color: GlobalThemeData.lightColorScheme.outline.withOpacity(0.5),).animate().fadeIn(),
+                const Gap(20),
+                ...options.map((e) => InkWell(
+                  splashColor: GlobalThemeData.lightColorScheme.secondaryContainer.withOpacity(0.1),
+                  onTap: () {
+                    onSelected(e);
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    height: 45,
+                    child: Label13(text: e.libelle, color: GlobalThemeData.lightColorScheme.secondaryContainer, weight: FontWeight.normal, maxLines: 2)
+                  ),
+                ).animate().fadeIn()),
               ],
             ),
           );

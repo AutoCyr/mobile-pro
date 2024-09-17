@@ -1,0 +1,126 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:autocyr_pro/data/datasources/subscriptions/subscription_datasource.dart';
+import 'package:autocyr_pro/data/excepts/handler.dart';
+import 'package:autocyr_pro/data/helpers/preferences.dart';
+import 'package:autocyr_pro/data/network/api_client.dart';
+
+class SubscriptionDataSourceImpl implements SubscriptionDataSource {
+
+  final ApiClient _apiClient;
+
+  SubscriptionDataSourceImpl(this._apiClient);
+
+  @override
+  Future addPiece(Map<String, dynamic> body) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.post(path: "partner/add-piece", headers: headers, body: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
+  Future addSubscription(Map<String, dynamic> body) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.post(path: "partner/add-subscription", headers: headers, body: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
+  Future checkSubscription(String id) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.get(path: "partner/check-subscription/$id", headers: headers);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
+  Future getPieces(String id) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.get(path: "partner/get-pieces/$id", headers: headers);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+}
