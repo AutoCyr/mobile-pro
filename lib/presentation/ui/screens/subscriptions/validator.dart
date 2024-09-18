@@ -36,11 +36,17 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
     await subscription.checkSubscription(id: auth.getUser.id.toString(), plans: common.plans, context: context);
   }
 
+  updateFCM() async {
+    final auth = Provider.of<AuthNotifier>(context, listen: false);
+    await auth.updateFCM(context: context);
+  }
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkSubscription(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _checkSubscription(context);
+      await updateFCM();
     });
   }
 

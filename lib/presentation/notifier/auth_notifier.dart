@@ -154,20 +154,7 @@ class AuthNotifier extends ChangeNotifier {
         "token": token
       };
       var data = await authUseCase.updateFCMToken(body);
-      if(data['error'] == false) {
-        Success success = Success.fromJson(data);
-
-        setLoading(false);
-        if (context.mounted) {
-          Snacks.successBar(success.message, context);
-        }
-      }else{
-        Failure failure = Failure.fromJson(data);
-        if(context.mounted) {
-          Snacks.failureBar(failure.message, context);
-        }
-        setLoading(false);
-      }
+      setLoading(false);
     } catch (e) {
       setLoading(false);
     }
