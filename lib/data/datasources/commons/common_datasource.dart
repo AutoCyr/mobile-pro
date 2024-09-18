@@ -6,4 +6,6 @@ abstract class CommonDataSource {
   Future getBikeMakes();
 
   Future getPartnerTypes();
+
+  Future getPlans();
 }

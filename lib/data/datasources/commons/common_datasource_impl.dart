@@ -113,4 +113,30 @@ class CommonDataSourceImpl implements CommonDataSource {
     }
   }
 
+  @override
+  Future getPlans() async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    try {
+      final response = await _apiClient.get(path: "commons/plans", headers: headers);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
 }

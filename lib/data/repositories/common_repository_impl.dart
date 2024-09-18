@@ -27,5 +27,10 @@ class CommonRepositoryImpl extends CommonRepository {
     return await _commonDataSourceImpl.getPartnerTypes();
   }
 
+  @override
+  Future getPlans() async {
+    return await _commonDataSourceImpl.getPlans();
+  }
+
 
 }

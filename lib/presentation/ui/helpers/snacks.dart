@@ -38,13 +38,13 @@ class Snacks {
 
   static void infoBar(String msg, BuildContext context) {
     var bar = SnackBar(
-      backgroundColor: GlobalThemeData.lightColorScheme.surface,
+      backgroundColor: GlobalThemeData.lightColorScheme.primaryFixed,
       content: Text(
         msg,
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
-          color: GlobalThemeData.lightColorScheme.onSurface,
+          color: GlobalThemeData.lightColorScheme.onPrimaryFixed,
           fontFamily: "Lufga",
         )
       ),

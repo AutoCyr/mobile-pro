@@ -21,4 +21,8 @@ class CommonUseCase {
   Future getPartnerTypes() async {
     return await _commonRepositoryImpl.getPartnerTypes();
   }
+
+  Future getPlans() async {
+    return await _commonRepositoryImpl.getPlans();
+  }
 }

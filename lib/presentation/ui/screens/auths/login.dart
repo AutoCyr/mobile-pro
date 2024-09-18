@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _login(BuildContext context) async {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
-    final common = Provider.of<CommonNotifier>(context, listen: false);
 
     if(UiTools().checkFields([_usernameController])) {
       Map<String, dynamic> body = {

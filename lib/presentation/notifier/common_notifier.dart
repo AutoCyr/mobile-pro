@@ -1,5 +1,6 @@
 import 'package:autocyr_pro/domain/models/commons/country.dart';
 import 'package:autocyr_pro/domain/models/commons/partner_type.dart';
+import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/domain/models/response/failure.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
 import 'package:autocyr_pro/domain/usecases/common_usecase.dart';
@@ -17,6 +18,8 @@ class CommonNotifier extends ChangeNotifier {
   List<Country> _countries = [];
   PartnerType? partnerType;
   List<PartnerType> _partnerTypes = [];
+  Plan? plan;
+  List<Plan> _plans = [];
 
   bool get filling => _filling;
   bool get loading => _loading;
@@ -24,6 +27,8 @@ class CommonNotifier extends ChangeNotifier {
   List<Country> get countries => _countries;
   PartnerType get getPartnerType => partnerType!;
   List<PartnerType> get partnerTypes => _partnerTypes;
+  Plan? get getPlan => plan;
+  List<Plan> get plans => _plans;
 
   setFilling(bool value) {
     _filling = value;
@@ -52,6 +57,16 @@ class CommonNotifier extends ChangeNotifier {
 
   setPartnerTypes(List<PartnerType> value) {
     _partnerTypes = value;
+    notifyListeners();
+  }
+
+  setPlan(Plan value) {
+    plan = value;
+    notifyListeners();
+  }
+
+  setPlans(List<Plan> value) {
+    _plans = value;
     notifyListeners();
   }
 
@@ -119,6 +134,33 @@ class CommonNotifier extends ChangeNotifier {
           partnerTypes.add(PartnerType.fromJson(partnerType));
         }
         setPartnerTypes(partnerTypes);
+        setFilling(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+        setFilling(false);
+      }
+    } catch (e) {
+      setFilling(false);
+      debugPrint(e.toString());
+    }
+  }
+
+  Future retrievePlans({required BuildContext context}) async {
+    setFilling(true);
+    try {
+      var data = await commonUseCase.getPlans();
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        List<Plan> plans = [];
+        for(var plan in success.data) {
+          plans.add(Plan.fromJson(plan));
+        }
+        setPlans(plans);
         setFilling(false);
       }else{
         Failure failure = Failure.fromJson(data);

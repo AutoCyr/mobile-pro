@@ -6,12 +6,16 @@ import 'package:autocyr_pro/domain/models/profile/user.dart';
 import 'package:autocyr_pro/domain/models/response/failure.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
 import 'package:autocyr_pro/domain/usecases/auth_usecase.dart';
+import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/subscription_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
 import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
 import 'package:autocyr_pro/presentation/ui/screens/starters/chooser.dart';
+import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 
 class AuthNotifier extends ChangeNotifier {
 
@@ -188,8 +192,10 @@ class AuthNotifier extends ChangeNotifier {
       );
 
       if(isAuthenticated){
-        Snacks.successBar("Connexion réussie", context);
-        // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeDashScreen()), (route) => false);
+        if(context.mounted) {
+          Snacks.successBar("Connexion réussie", context);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ValidatorScreen()), (route) => false);
+        }
       }else{
         Snacks.failureBar("Veuillez vérifier votre identité", context);
       }
@@ -198,4 +204,6 @@ class AuthNotifier extends ChangeNotifier {
     }
 
   }
+
+
 }

@@ -6,4 +6,6 @@ abstract class CommonRepository {
   Future getBikeMakes();
 
   Future getPartnerTypes();
+
+  Future getPlans();
 }
