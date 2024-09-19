@@ -74,6 +74,7 @@ class SubscriptionNotifier extends ChangeNotifier {
         }
       }
     } catch (e) {
+      print(e);
       setLoading(false);
       Snacks.failureBar("Une erreur est survenue", context);
     }
@@ -105,6 +106,7 @@ class SubscriptionNotifier extends ChangeNotifier {
         }
       }
     } catch (e) {
+      print(e);
       setLoading(false);
       Snacks.failureBar("Une erreur est survenue", context);
     }
