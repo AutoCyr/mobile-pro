@@ -1,3 +1,5 @@
+import 'package:autocyr_pro/domain/models/commons/bike_make.dart';
+import 'package:autocyr_pro/domain/models/commons/car_make.dart';
 import 'package:autocyr_pro/domain/models/commons/country.dart';
 import 'package:autocyr_pro/domain/models/commons/partner_type.dart';
 import 'package:autocyr_pro/domain/models/core/plan.dart';
@@ -20,6 +22,10 @@ class CommonNotifier extends ChangeNotifier {
   List<PartnerType> _partnerTypes = [];
   Plan? plan;
   List<Plan> _plans = [];
+  BikeMake? bikeMake;
+  List<BikeMake> _bikeMakes = [];
+  CarMake? carMake;
+  List<CarMake> _carMakes = [];
 
   bool get filling => _filling;
   bool get loading => _loading;
@@ -29,6 +35,10 @@ class CommonNotifier extends ChangeNotifier {
   List<PartnerType> get partnerTypes => _partnerTypes;
   Plan? get getPlan => plan;
   List<Plan> get plans => _plans;
+  BikeMake? get getBikeMake => bikeMake;
+  List<BikeMake> get bikeMakes => _bikeMakes;
+  CarMake? get getCarMake => carMake;
+  List<CarMake> get carMakes => _carMakes;
 
   setFilling(bool value) {
     _filling = value;
@@ -70,26 +80,76 @@ class CommonNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  setBikeMake(BikeMake value) {
+    bikeMake = value;
+    notifyListeners();
+  }
+
+  setBikeMakes(List<BikeMake> value) {
+    _bikeMakes = value;
+    notifyListeners();
+  }
+
+  setCarMake(CarMake value) {
+    carMake = value;
+    notifyListeners();
+  }
+
+  setCarMakes(List<CarMake> value) {
+    _carMakes = value;
+    notifyListeners();
+  }
+
   Future retrieveAutoMakes({required BuildContext context}) async {
-    setLoading(true);
+    setFilling(true);
     try {
       var data = await commonUseCase.getAutoMakes();
-      debugPrint(data.toString());
-      setLoading(false);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        List<CarMake> carMakes = [];
+        for(var carMake in success.data) {
+          carMakes.add(CarMake.fromJson(carMake));
+        }
+        setCarMakes(carMakes);
+        setFilling(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+        setFilling(false);
+      }
     } catch (e) {
-      setLoading(false);
+      setFilling(false);
       debugPrint(e.toString());
     }
   }
 
   Future retrieveBikeMakes({required BuildContext context}) async {
-    setLoading(true);
+    setFilling(true);
     try {
       var data = await commonUseCase.getBikeMakes();
-      debugPrint(data.toString());
-      setLoading(false);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        List<BikeMake> bikeMakes = [];
+        for(var bikeMake in success.data) {
+          bikeMakes.add(BikeMake.fromJson(bikeMake));
+        }
+        setBikeMakes(bikeMakes);
+        setFilling(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+        setFilling(false);
+      }
     } catch (e) {
-      setLoading(false);
+      setFilling(false);
       debugPrint(e.toString());
     }
   }

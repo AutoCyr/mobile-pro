@@ -61,7 +61,6 @@ class Notifications {
               _androidChannel.id,
               _androidChannel.name,
               channelDescription: _androidChannel.description,
-              // icon: '@drawable/launcher',
               icon: 'auto',
               importance: Importance.high,
             ),

@@ -1,12 +1,15 @@
+import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
+import 'package:autocyr_pro/presentation/ui/helpers/ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class BottomSelector {
 
@@ -16,11 +19,11 @@ class BottomSelector {
     required List<Map> options,
   }){
     showModalBottomSheet(
-      shape: const RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.zero)
         ),
-      context: context,
-      builder: (BuildContext context){
+        context: context,
+        builder: (BuildContext context){
           Size size = MediaQuery.of(context).size;
           return Container(
             width: size.width,
@@ -51,9 +54,10 @@ class BottomSelector {
                 GridView.count(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 0.9,
+                  mainAxisSpacing: 32,
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 0.7,
                   children: [
                     ...options.map((e) => GestureDetector(
                       onTap: () {
@@ -63,10 +67,11 @@ class BottomSelector {
                         }
                       },
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                              height: 55,
-                              width: 55,
+                              height: 45,
+                              width: 45,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(color: GlobalThemeData.lightColorScheme.secondaryContainer, width: 0.7)
@@ -75,8 +80,8 @@ class BottomSelector {
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    height: 55,
-                                    width: 55,
+                                    height: 45,
+                                    width: 45,
                                     decoration: BoxDecoration(
                                         color: Colors.transparent,
                                         shape: BoxShape.circle,
@@ -87,7 +92,7 @@ class BottomSelector {
                                       child: Icon(
                                         e["iconData"],
                                         color: GlobalThemeData.lightColorScheme.secondaryContainer,
-                                        size: 20,
+                                        size: 15,
                                       ),
                                     ),
                                   )
@@ -95,10 +100,59 @@ class BottomSelector {
                               )
                           ),
                           const Gap(10),
-                          Label10(text: e["label"], color: GlobalThemeData.lightColorScheme.secondaryContainer, weight: FontWeight.normal, maxLines: 2)
+                          Label10(text: e["label"], color: GlobalThemeData.lightColorScheme.secondaryContainer, weight: FontWeight.bold, maxLines: 2)
                         ],
                       ),
                     ).animate().fadeIn()),
+                    Consumer<AuthNotifier>(
+                        builder: (context, auth, child) {
+                          return GestureDetector(
+                            onTap: () {
+                              UiTools().confirmLogoutBox(
+                                  context: context,
+                                  function: () => auth.logout(context: context)
+                              );
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                    height: 45,
+                                    width: 45,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      // border: Border.all(color: GlobalThemeData.lightColorScheme.secondaryContainer, width: 0.7)
+                                    ),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          height: 45,
+                                          width: 45,
+                                          decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: GlobalThemeData.lightColorScheme.errorContainer, width: 0.7)
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(300),
+                                            child: Icon(
+                                              Icons.power_settings_new,
+                                              color: GlobalThemeData.lightColorScheme.errorContainer,
+                                              size: 15,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                ),
+                                const Gap(10),
+                                Label10(text: "Déconnexion", color: GlobalThemeData.lightColorScheme.errorContainer, weight: FontWeight.bold, maxLines: 2)
+                              ],
+                            ),
+                          ).animate().fadeIn();
+                        }
+                    )
                   ],
                 ),
                 const Gap(10),

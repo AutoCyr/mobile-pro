@@ -9,9 +9,8 @@ Widget ObjectSelectableField({
   required String label,
   required double fontSize,
   required IconData icon,
-  required List<Selectable> options,
   required BuildContext context,
-  required String typeSelection,
+  required Function() onSelected,
 }) {
   return TextFormField(
     controller: controller,
@@ -27,10 +26,6 @@ Widget ObjectSelectableField({
         fontSize: fontSize
       )
     ),
-    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
-        controller: controller,
-        list: options,
-        typeSelection: typeSelection,
-    ))),
+    onTap: () => onSelected(),
   );
 }

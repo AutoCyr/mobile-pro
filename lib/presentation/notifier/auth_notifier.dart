@@ -14,6 +14,7 @@ import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
 import 'package:autocyr_pro/presentation/ui/screens/starters/chooser.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -166,30 +167,38 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   Future myAuthentication({required BuildContext context, required LocalAuthentication local}) async {
-
     try {
-      bool isAuthenticated = await local.authenticate(
-        localizedReason: "Pour plus de sécurité, procéder à la vérification",
-        options: const AuthenticationOptions(
-          useErrorDialogs: true,
-          stickyAuth: true,
-          biometricOnly: true,
-          sensitiveTransaction: true
-        ),
-      );
+      bool canAuthenticate = await local.isDeviceSupported();
 
-      if(isAuthenticated){
-        if(context.mounted) {
-          Snacks.successBar("Connexion réussie", context);
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ValidatorScreen()), (route) => false);
+      if(canAuthenticate){
+        bool isAuthenticated = await local.authenticate(
+          localizedReason: "Pour plus de sécurité, procéder à la vérification",
+          options: const AuthenticationOptions(
+            stickyAuth: false,
+            biometricOnly: false
+          ),
+        );
+
+        if(isAuthenticated){
+          if(context.mounted) {
+            Snacks.successBar("Connexion réussie", context);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ValidatorScreen()), (route) => false);
+          }
+        }else{
+          if(context.mounted) {
+            Snacks.failureBar("Veuillez vérifier votre identité", context);
+          }
         }
       }else{
-        Snacks.failureBar("Veuillez vérifier votre identité", context);
+        if(context.mounted) {
+          Snacks.failureBar("Votre appareil ne supporte pas l'authentification à deux facteurs", context);
+        }
       }
-    } catch (e) {
-      Snacks.failureBar("Une erreur est survenue", context);
+    } on PlatformException catch (e) {
+      if(context.mounted) {
+        Snacks.failureBar("Une erreur est survenue", context);
+      }
     }
-
   }
 
 

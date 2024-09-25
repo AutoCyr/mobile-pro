@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomField(
                 controller: _usernameController,
                 keyboardType: TextInputType.emailAddress,
-                label: "Email",
+                label: "Email/Numéro de téléphone",
                 fontSize: 12,
                 icon: Icons.alternate_email,
               ).animate().fadeIn(),

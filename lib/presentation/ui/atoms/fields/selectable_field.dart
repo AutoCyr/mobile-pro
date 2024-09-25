@@ -26,11 +26,14 @@ Widget SelectableField({
         fontSize: fontSize
       )
     ),
+    style: TextStyle(
+      fontSize: fontSize
+    ),
     onTap: () => BottomSelector().showLabelMenu(
-      context: context,
-      title: label,
-      options: options,
-      onSelected: (value) => controller.text = value
+        context: context,
+        title: label,
+        options: options,
+        onSelected: (value) => controller.text = value
     ),
   );
 }

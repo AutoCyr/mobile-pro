@@ -1,13 +1,24 @@
+import 'dart:io';
+
+import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/description_field.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/object_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/selectable_field.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
+import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class PieceAddScreen extends StatefulWidget {
   const PieceAddScreen({super.key});
@@ -18,18 +29,33 @@ class PieceAddScreen extends StatefulWidget {
 
 class _PieceAddScreenState extends State<PieceAddScreen> {
 
+  File? media;
+  late XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+
+  Future getImageFromGallery() async {
+    _image = await _picker.pickImage(source: ImageSource.gallery, maxHeight: 1080, maxWidth: 1080);
+    setState(() {
+      media = File(_image!.path);
+    });
+  }
+
   List<String> options = [
     "Deux roues",
     "Quatre roues",
   ];
 
-  List<String> marques = [
-    "Citroën",
-    "Peugeot",
-    "Honda",
-    "Toyota",
-    "Fiat",
-  ];
+  retrieveCommons() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    if(!common.filling) {
+      if(common.carMakes.isEmpty) {
+        await common.retrieveAutoMakes(context: context);
+      }
+      if(common.bikeMakes.isEmpty) {
+        await common.retrieveBikeMakes(context: context);
+      }
+    }
+  }
 
   final TextEditingController _nomPieceController = TextEditingController();
   final TextEditingController _marqueController = TextEditingController();
@@ -40,6 +66,14 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
   final TextEditingController _autreController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      retrieveCommons();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -48,94 +82,227 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
         title: Label14(text: "Nouvelle pièce", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
       ),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /*Label30(text: "Nouvelle pièce", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
-                  const Gap(30),*/
-                  CustomField(
-                      controller: _nomPieceController,
-                      keyboardType: TextInputType.text,
-                      label: "Nom de la pièce",
-                      fontSize: 12,
-                      icon: Icons.text_fields_outlined,
-                  ).animate().fadeIn(),
-                  const Gap(10),
-                  SelectableField(
-                    controller: _categorieController,
-                    keyboardType: TextInputType.none,
-                    label: "Catégorie de pièce",
-                    fontSize: 12,
-                    icon: Icons.car_rental_outlined,
-                    options: options,
-                    context: context
-                  ).animate().fadeIn(),
-                  const Gap(10),
-                  SelectableField(
-                      controller: _marqueController,
-                      keyboardType: TextInputType.none,
-                      label: "Marque",
-                      fontSize: 12,
-                      icon: Icons.loyalty_outlined,
-                      options: marques,
-                      context: context
-                  ).animate().fadeIn(),
-                  const Gap(10),
-                  CustomField(
-                      controller: _modeleController,
-                      keyboardType: TextInputType.text,
-                      label: "Modèle",
-                      fontSize: 12,
-                      icon: Icons.style_outlined,
-                  ).animate().fadeIn(),
-                  const Gap(10),
-                  CustomField(
-                      controller: _numeroController,
-                      keyboardType: TextInputType.text,
-                      label: "Numéro",
-                      fontSize: 12,
-                      icon: Icons.onetwothree_sharp,
-                  ).animate().fadeIn(),
-                  const Gap(10),
-                  CustomField(
-                      controller: _anneeController,
-                      keyboardType: TextInputType.number,
-                      label: "Année",
-                      fontSize: 12,
-                      icon: Icons.calendar_today_outlined,
-                  ).animate().fadeIn(),
-                  const Gap(10),
-                  DescriptionField(
-                      controller: _autreController,
-                      keyboardType: TextInputType.text,
-                      label: "Autres informations",
-                      fontSize: 12,
-                      icon: Icons.more_horiz_outlined
-                  ).animate().fadeIn(),
-                  const Gap(20),
-                  SizedBox(
-                    width: size.width,
-                    child: CustomButton(
-                        text: "Enregistrer",
-                        size: size,
-                        globalWidth: size.width * 0.9,
-                        widthSize: size.width * 0.87,
-                        backSize: size.width * 0.87,
+      body: Consumer<CommonNotifier>(
+        builder: (context, common, child) {
+          return SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(media == null)
+                        GestureDetector(
+                          onTap: () => getImageFromGallery(),
+                          child: Container(
+                            width: size.width,
+                            height: size.width * 0.3,
+                            decoration: BoxDecoration(
+                                color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(5)
+                            ),
+                            child: Center(
+                              child: Label12(text: "Sélectionner une image", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                            ),
+                          ).animate().fadeIn(),
+                        )
+                      else if(media != null)
+                        Container(
+                            width: size.width,
+                            height: size.width * 0.3,
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
+                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        width: size.width * 0.27,
+                                        height: size.width * 0.27,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: GlobalThemeData.lightColorScheme.primary, width: 1),
+                                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                                          image: DecorationImage(
+                                              image: FileImage(media!),
+                                              fit: BoxFit.cover
+                                          ),
+                                        )
+                                    ),
+                                    const Gap(10),
+                                    SizedBox(
+                                      width: size.width * 0.55,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    media = null;
+                                                  });
+                                                },
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  color: Colors.black,
+                                                  size: 20,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Label12(text: "Média sélectionné", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                              const Gap(5),
+                                              Label12(text: _image!.name, color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )
+
+                                  ],
+                                )
+                              ],
+                            )
+                        ).animate().fadeIn(),
+                      const Gap(10),
+                      CustomField(
+                        controller: _nomPieceController,
+                        keyboardType: TextInputType.text,
+                        label: "Nom de la pièce",
+                        fontSize: 12,
+                        icon: Icons.text_fields_outlined,
+                      ).animate().fadeIn(),
+                      const Gap(10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.45,
+                            child: SelectableField(
+                              controller: _categorieController,
+                              keyboardType: TextInputType.none,
+                              label: "Catégorie de pièce",
+                              fontSize: 12,
+                              icon: Icons.car_rental_outlined,
+                              options: options,
+                              context: context,
+                            ).animate().fadeIn(),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.45,
+                            child: CustomField(
+                              controller: _anneeController,
+                              keyboardType: TextInputType.number,
+                              label: "Année",
+                              fontSize: 12,
+                              icon: Icons.calendar_today_outlined,
+                            ).animate().fadeIn(),
+                          ),
+                        ],
+                      ),
+                      const Gap(10),
+                      common.filling ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Label10(text: "Chargement des marques...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                            const Gap(10),
+                            ProgressButton(
+                              widthSize: size.width * 0.9,
+                              context: context,
+                              bgColor: GlobalThemeData.lightColorScheme.onPrimary,
+                              shimmerColor: GlobalThemeData.lightColorScheme.primary
+                            )
+                          ]
+                        ).animate().fadeIn()
+                          :
+                        ObjectSelectableField(
+                        controller: _marqueController,
+                        keyboardType: TextInputType.none,
+                        label: "Marque",
+                        fontSize: 12,
+                        icon: Icons.loyalty_outlined,
                         context: context,
-                        function: () => Navigator.pop(context),
-                        textColor: GlobalThemeData.lightColorScheme.primary,
-                        buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                        backColor: GlobalThemeData.lightColorScheme.primary
-                    ).animate().fadeIn(),
-                  ),
-                ]
+                        onSelected: () {
+                          if(_categorieController.text.isNotEmpty) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
+                              controller: _marqueController,
+                              list: _categorieController.text.toLowerCase() == "deux roues" ? common.bikeMakes : common.carMakes,
+                              typeSelection: _categorieController.text.toLowerCase() == "deux roues" ? "bike" : "car",
+                            )));
+                          } else {
+                            Snacks.failureBar("Veuillez sélectionner une catégorie de pièce", context);
+                          }
+                        }
+                      ).animate().fadeIn(),
+                      const Gap(10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.45,
+                            child: CustomField(
+                              controller: _modeleController,
+                              keyboardType: TextInputType.text,
+                              label: "Modèle",
+                              fontSize: 12,
+                              icon: Icons.style_outlined,
+                            ).animate().fadeIn(),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.45,
+                            child: CustomField(
+                              controller: _numeroController,
+                              keyboardType: TextInputType.text,
+                              label: "Numéro",
+                              fontSize: 12,
+                              icon: Icons.onetwothree_sharp,
+                            ).animate().fadeIn(),
+                          ),
+                        ],
+                      ),
+                      const Gap(10),
+                      DescriptionField(
+                        controller: _autreController,
+                        keyboardType: TextInputType.text,
+                        label: "Autres informations",
+                        fontSize: 12,
+                        icon: Icons.more_horiz_outlined
+                      ).animate().fadeIn(),
+                      const Gap(20),
+                      SizedBox(
+                        width: size.width,
+                        child: CustomButton(
+                          text: "Enregistrer",
+                          size: size,
+                          globalWidth: size.width * 0.9,
+                          widthSize: size.width * 0.87,
+                          backSize: size.width * 0.87,
+                          context: context,
+                          function: () => Navigator.pop(context),
+                          textColor: GlobalThemeData.lightColorScheme.primary,
+                          buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                          backColor: GlobalThemeData.lightColorScheme.primary
+                        ).animate().fadeIn(),
+                      ),
+                    ]
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        }
       ),
     );
   }

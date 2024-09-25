@@ -19,6 +19,9 @@ Widget CustomField({
       labelStyle: TextStyle(
         fontSize: fontSize
       )
+    ),
+    style: TextStyle(
+      fontSize: fontSize
     )
   );
 }

@@ -14,6 +14,7 @@ import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/ui.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -148,8 +149,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 12,
                               icon: Icons.flag_outlined,
                               context: context,
-                              options: common.countries,
-                              typeSelection: "country",
+                              /*options: common.countries,
+                              typeSelection: "country",*/
+                              onSelected: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
+                                controller: _countryController,
+                                list: common.countries,
+                                typeSelection: "country",
+                              ))),
                             ).animate().fadeIn(),
                           const Gap(10),
                           CustomField(

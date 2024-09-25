@@ -11,7 +11,7 @@ Widget DescriptionField({
   return TextFormField(
     controller: controller,
     keyboardType: keyboardType,
-    maxLines: 10,
+    maxLines: 7,
     decoration: InputDecoration(
       filled: true,
       fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
@@ -20,6 +20,9 @@ Widget DescriptionField({
       labelStyle: TextStyle(
         fontSize: fontSize
       )
+    ),
+    style: TextStyle(
+      fontSize: fontSize
     )
   );
 }
