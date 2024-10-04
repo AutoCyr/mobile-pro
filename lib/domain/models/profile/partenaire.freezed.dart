@@ -39,8 +39,7 @@ mixin _$Partenaire {
   @JsonKey(name: 'quartier_partenaire')
   String get quartierPartenaire => throw _privateConstructorUsedError;
   @JsonKey(name: 'adresses_partenaire')
-  Map<String, dynamic>? get adressesPartenaire =>
-      throw _privateConstructorUsedError;
+  List<Address>? get adressesPartenaire => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,8 +63,7 @@ abstract class $PartenaireCopyWith<$Res> {
       @JsonKey(name: 'email_partenaire') String emailPartenaire,
       @JsonKey(name: 'ville_partenaire') String villePartenaire,
       @JsonKey(name: 'quartier_partenaire') String quartierPartenaire,
-      @JsonKey(name: 'adresses_partenaire')
-      Map<String, dynamic>? adressesPartenaire});
+      @JsonKey(name: 'adresses_partenaire') List<Address>? adressesPartenaire});
 }
 
 /// @nodoc
@@ -132,7 +130,7 @@ class _$PartenaireCopyWithImpl<$Res, $Val extends Partenaire>
       adressesPartenaire: freezed == adressesPartenaire
           ? _value.adressesPartenaire
           : adressesPartenaire // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
+              as List<Address>?,
     ) as $Val);
   }
 }
@@ -155,8 +153,7 @@ abstract class _$$PartenaireImplCopyWith<$Res>
       @JsonKey(name: 'email_partenaire') String emailPartenaire,
       @JsonKey(name: 'ville_partenaire') String villePartenaire,
       @JsonKey(name: 'quartier_partenaire') String quartierPartenaire,
-      @JsonKey(name: 'adresses_partenaire')
-      Map<String, dynamic>? adressesPartenaire});
+      @JsonKey(name: 'adresses_partenaire') List<Address>? adressesPartenaire});
 }
 
 /// @nodoc
@@ -221,7 +218,7 @@ class __$$PartenaireImplCopyWithImpl<$Res>
       adressesPartenaire: freezed == adressesPartenaire
           ? _value._adressesPartenaire
           : adressesPartenaire // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
+              as List<Address>?,
     ));
   }
 }
@@ -240,7 +237,7 @@ class _$PartenaireImpl implements _Partenaire {
       @JsonKey(name: 'ville_partenaire') required this.villePartenaire,
       @JsonKey(name: 'quartier_partenaire') required this.quartierPartenaire,
       @JsonKey(name: 'adresses_partenaire')
-      required final Map<String, dynamic>? adressesPartenaire})
+      required final List<Address>? adressesPartenaire})
       : _adressesPartenaire = adressesPartenaire;
 
   factory _$PartenaireImpl.fromJson(Map<String, dynamic> json) =>
@@ -273,16 +270,16 @@ class _$PartenaireImpl implements _Partenaire {
   @override
   @JsonKey(name: 'quartier_partenaire')
   final String quartierPartenaire;
-  final Map<String, dynamic>? _adressesPartenaire;
+  final List<Address>? _adressesPartenaire;
   @override
   @JsonKey(name: 'adresses_partenaire')
-  Map<String, dynamic>? get adressesPartenaire {
+  List<Address>? get adressesPartenaire {
     final value = _adressesPartenaire;
     if (value == null) return null;
-    if (_adressesPartenaire is EqualUnmodifiableMapView)
+    if (_adressesPartenaire is EqualUnmodifiableListView)
       return _adressesPartenaire;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -357,8 +354,7 @@ abstract class _Partenaire implements Partenaire {
       @JsonKey(name: 'quartier_partenaire')
       required final String quartierPartenaire,
       @JsonKey(name: 'adresses_partenaire')
-      required final Map<String, dynamic>?
-          adressesPartenaire}) = _$PartenaireImpl;
+      required final List<Address>? adressesPartenaire}) = _$PartenaireImpl;
 
   factory _Partenaire.fromJson(Map<String, dynamic> json) =
       _$PartenaireImpl.fromJson;
@@ -392,7 +388,7 @@ abstract class _Partenaire implements Partenaire {
   String get quartierPartenaire;
   @override
   @JsonKey(name: 'adresses_partenaire')
-  Map<String, dynamic>? get adressesPartenaire;
+  List<Address>? get adressesPartenaire;
   @override
   @JsonKey(ignore: true)
   _$$PartenaireImplCopyWith<_$PartenaireImpl> get copyWith =>

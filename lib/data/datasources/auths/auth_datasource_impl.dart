@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:autocyr_pro/data/datasources/auths/auth_datasource.dart';
 import 'package:autocyr_pro/data/excepts/handler.dart';
 import 'package:autocyr_pro/data/helpers/preferences.dart';
@@ -76,6 +77,34 @@ class AuthDataSourceImpl implements AuthDataSource {
 
     try {
       final response = await _apiClient.post(path: "auth/update-fcm", headers: headers, body: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
+  Future getProfile() async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.get(path: "auth/get-profile", headers: headers);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);

@@ -25,4 +25,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future updateFCMToken(Map<String, dynamic> body) async {
     return await _authDataSourceImpl.updateFCMToken(body);
   }
+
+  @override
+  Future getProfile() async {
+    return await _authDataSourceImpl.getProfile();
+  }
 }

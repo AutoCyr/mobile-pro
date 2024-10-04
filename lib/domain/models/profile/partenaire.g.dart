@@ -17,7 +17,9 @@ _$PartenaireImpl _$$PartenaireImplFromJson(Map<String, dynamic> json) =>
       emailPartenaire: json['email_partenaire'] as String,
       villePartenaire: json['ville_partenaire'] as String,
       quartierPartenaire: json['quartier_partenaire'] as String,
-      adressesPartenaire: json['adresses_partenaire'] as Map<String, dynamic>?,
+      adressesPartenaire: (json['adresses_partenaire'] as List<dynamic>?)
+          ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$PartenaireImplToJson(_$PartenaireImpl instance) =>

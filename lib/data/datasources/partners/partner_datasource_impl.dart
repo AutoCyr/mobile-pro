@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:autocyr_pro/data/datasources/subscriptions/subscription_datasource.dart';
+import 'package:autocyr_pro/data/datasources/partners/partner_datasource.dart';
 import 'package:autocyr_pro/data/excepts/handler.dart';
 import 'package:autocyr_pro/data/helpers/preferences.dart';
 import 'package:autocyr_pro/data/network/api_client.dart';
 
-class SubscriptionDataSourceImpl implements SubscriptionDataSource {
+class PartnerDataSourceImpl implements PartnerDataSource {
 
   final ApiClient _apiClient;
 
-  SubscriptionDataSourceImpl(this._apiClient);
+  PartnerDataSourceImpl(this._apiClient);
 
   @override
-  Future addPiece(Map<String, dynamic> body) async {
+  Future addPiece(Map<String, String> body, String filepath, String name) async {
     String token = await Preferences().getString("token");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ class SubscriptionDataSourceImpl implements SubscriptionDataSource {
     };
 
     try {
-      final response = await _apiClient.post(path: "partner/add-piece", headers: headers, body: body);
+      final response = await _apiClient.postMultipart(path: "partner/add-piece", headers: headers, body: body, filepath: filepath, name: name);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);
@@ -106,6 +106,34 @@ class SubscriptionDataSourceImpl implements SubscriptionDataSource {
 
     try {
       final response = await _apiClient.get(path: "partner/get-pieces/$id", headers: headers);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
+  Future updateAdresses(Map<String, dynamic> body) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.post(path: "partner/update-addresses", headers: headers, body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);

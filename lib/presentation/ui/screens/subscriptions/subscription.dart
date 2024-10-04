@@ -1,7 +1,7 @@
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
-import 'package:autocyr_pro/presentation/notifier/subscription_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
@@ -29,13 +29,13 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
   Plan? _selectedPlan;
 
   _save(BuildContext context) async {
-    final subscription = Provider.of<SubscriptionNotifier>(context, listen: false);
+    final partner = Provider.of<PartnerNotifier>(context, listen: false);
     final auth = Provider.of<AuthNotifier>(context, listen: false);
     Map<String, dynamic> body = {
       "abonnement_id": _selectedPlan!.id,
       "partenaire_id": auth.getPartenaire.partenaireId,
     };
-    await subscription.addSubscription(body: body, plan: _selectedPlan!, context: context);
+    await partner.addSubscription(body: body, plan: _selectedPlan!, context: context);
   }
 
   _retrievePlans(BuildContext context) async {
@@ -55,8 +55,8 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Consumer3<AuthNotifier, CommonNotifier, SubscriptionNotifier>(
-        builder: (context, auth, common, subscription, child) {
+      body: Consumer3<AuthNotifier, CommonNotifier, PartnerNotifier>(
+        builder: (context, auth, common, partner, child) {
           if(common.filling) {
             return SizedBox(
               width: size.width,
@@ -205,7 +205,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
               )),
               const Gap(20),
               if(_selectedPlan != null)
-                subscription.loading ?
+                partner.loading ?
                   ProgressButton(
                     widthSize: size.width * 0.9,
                     context: context,

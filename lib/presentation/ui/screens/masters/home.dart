@@ -7,9 +7,12 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/overviews/large_overview.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/overviews/small_overview.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/addresses/list.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +117,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
               maxLines: 2
             ).animate().fadeIn(),
             const Gap(20),
-            if(visible)
+            /*if(visible)
             Column(
               children: [
                 Container(
@@ -157,6 +160,76 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                         color: GlobalThemeData.lightColorScheme.onErrorContainer,
                         weight: FontWeight.bold,
                         maxLines: 2
+                      ),
+                    ],
+                  ),
+                ).animate().fadeIn(),
+                const Gap(20),
+              ],
+            ),*/
+            Column(
+              children: [
+                Container(
+                  width: size.width,
+                  height: 150,
+                  decoration: BoxDecoration(
+                      color: GlobalThemeData.lightColorScheme.surfaceTint.withOpacity(0.7),
+                      border: Border.all(
+                        color: GlobalThemeData.lightColorScheme.surfaceTint,
+                      )
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: -120,
+                        top: -40,
+                        child: Image.asset(
+                          "assets/pngs/map.png",
+                          width: size.width * 0.8,
+                          height: size.width * 0.8,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.7,
+                              child: Label13(
+                                  text: "Faites connaitre la position de vos boutiques",
+                                  color: GlobalThemeData.lightColorScheme.onErrorContainer,
+                                  weight: FontWeight.bold,
+                                  maxLines: 2
+                              ),
+                            ),
+                            const Gap(10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: size.width * 0.6,
+                                  child: Label12(
+                                      text: "Augmentez votre visibilité en permettant aux clients de facilement vous retrouver pour booster votre chiffre d'affaire.",
+                                      color: GlobalThemeData.lightColorScheme.onErrorContainer,
+                                      weight: FontWeight.normal,
+                                      maxLines: 3
+                                  ),
+                                ),
+                                CustomIconButton(
+                                    icon: Icons.arrow_forward_ios_rounded,
+                                    size: size,
+                                    context: context,
+                                    function: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddressListScreen())),
+                                    iconColor: GlobalThemeData.lightColorScheme.primary,
+                                    buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                    backColor: GlobalThemeData.lightColorScheme.primary
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

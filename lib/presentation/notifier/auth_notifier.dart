@@ -7,7 +7,7 @@ import 'package:autocyr_pro/domain/models/response/failure.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
 import 'package:autocyr_pro/domain/usecases/auth_usecase.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
-import 'package:autocyr_pro/presentation/notifier/subscription_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
 import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
@@ -86,7 +86,8 @@ class AuthNotifier extends ChangeNotifier {
 
           setLoading(false);
           if(context.mounted) {
-            await myAuthentication(context: context, local: localAuth);
+            Snacks.successBar("Connexion réussie", context);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ValidatorScreen()), (route) => false);
           }
         } else {
           if(context.mounted) {
@@ -162,6 +163,18 @@ class AuthNotifier extends ChangeNotifier {
 
   }
 
+  Future getProfile({required BuildContext context}) async {
+    var data = await authUseCase.getProfile();
+
+    if(data["error"] == false){
+      Success success = Success.fromJson(data);
+      saveToPreferences("partenaire", success.data);
+      await setPartenaire(Partenaire.fromJson(success.data));
+    }
+
+    return data["error"];
+  }
+
   Future<void> saveToPreferences(String key, dynamic value) async {
     await Preferences().saveString(key, jsonEncode(value));
   }
@@ -200,6 +213,5 @@ class AuthNotifier extends ChangeNotifier {
       }
     }
   }
-
 
 }

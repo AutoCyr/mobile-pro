@@ -26,6 +26,9 @@ Widget ObjectSelectableField({
         fontSize: fontSize
       )
     ),
+    style: TextStyle(
+        fontSize: fontSize
+    ),
     onTap: () => onSelected(),
   );
 }

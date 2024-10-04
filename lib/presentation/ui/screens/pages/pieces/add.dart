@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/description_field.dart';
@@ -12,6 +14,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
+import 'package:autocyr_pro/presentation/ui/helpers/ui.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +36,14 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
   late XFile? _image;
   final ImagePicker _picker = ImagePicker();
 
+  final TextEditingController _nomPieceController = TextEditingController();
+  final TextEditingController _marqueController = TextEditingController();
+  final TextEditingController _categorieController = TextEditingController();
+  final TextEditingController _modeleController = TextEditingController();
+  final TextEditingController _numeroController = TextEditingController();
+  final TextEditingController _anneeController = TextEditingController();
+  final TextEditingController _autreController = TextEditingController();
+
   Future getImageFromGallery() async {
     _image = await _picker.pickImage(source: ImageSource.gallery, maxHeight: 1080, maxWidth: 1080);
     setState(() {
@@ -45,6 +56,33 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
     "Quatre roues",
   ];
 
+  _save(BuildContext context) async {
+    final partner = Provider.of<PartnerNotifier>(context, listen: false);
+    final auth = Provider.of<AuthNotifier>(context, listen: false);
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+
+    if(media == null) {
+      Snacks.failureBar("Veuillez sélectionner une image pour votre pièce", context);
+    } else {
+      if(UiTools().checkFields([_nomPieceController, _marqueController, _categorieController, _modeleController, _numeroController, _anneeController])) {
+        Map<String, String> body = {
+          "partenaire_id" : auth.getPartenaire.partenaireId.toString(),
+          "nom_piece" : _nomPieceController.text,
+          "marque_id" : _categorieController.text.toLowerCase() == "deux roues" ? common.bikeMake!.id.toString() : common.carMake!.id.toString(),
+          "modele_piece" : _modeleController.text,
+          "numero_piece" : _numeroController.text,
+          "annee_piece" : _anneeController.text,
+          "autres" : _autreController.text,
+          "image_piece" : media.toString()
+        };
+        await partner.addPiece(body: body, filepath: media!.path, name: "image_piece", context: context);
+      } else {
+        Snacks.failureBar("Veuillez remplir tous les champs avant de continuer", context);
+      }
+    }
+
+  }
+
   retrieveCommons() async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
     if(!common.filling) {
@@ -56,14 +94,6 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
       }
     }
   }
-
-  final TextEditingController _nomPieceController = TextEditingController();
-  final TextEditingController _marqueController = TextEditingController();
-  final TextEditingController _categorieController = TextEditingController();
-  final TextEditingController _modeleController = TextEditingController();
-  final TextEditingController _numeroController = TextEditingController();
-  final TextEditingController _anneeController = TextEditingController();
-  final TextEditingController _autreController = TextEditingController();
 
   @override
   void initState() {
@@ -82,8 +112,8 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
         title: Label14(text: "Nouvelle pièce", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
       ),
-      body: Consumer<CommonNotifier>(
-        builder: (context, common, child) {
+      body: Consumer2<CommonNotifier, PartnerNotifier>(
+        builder: (context, common, partner, child) {
           return SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -229,24 +259,24 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                         ).animate().fadeIn()
                           :
                         ObjectSelectableField(
-                        controller: _marqueController,
-                        keyboardType: TextInputType.none,
-                        label: "Marque",
-                        fontSize: 12,
-                        icon: Icons.loyalty_outlined,
-                        context: context,
-                        onSelected: () {
-                          if(_categorieController.text.isNotEmpty) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
-                              controller: _marqueController,
-                              list: _categorieController.text.toLowerCase() == "deux roues" ? common.bikeMakes : common.carMakes,
-                              typeSelection: _categorieController.text.toLowerCase() == "deux roues" ? "bike" : "car",
-                            )));
-                          } else {
-                            Snacks.failureBar("Veuillez sélectionner une catégorie de pièce", context);
+                          controller: _marqueController,
+                          keyboardType: TextInputType.none,
+                          label: "Marque",
+                          fontSize: 12,
+                          icon: Icons.loyalty_outlined,
+                          context: context,
+                          onSelected: () {
+                            if(_categorieController.text.isNotEmpty) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
+                                controller: _marqueController,
+                                list: _categorieController.text.toLowerCase() == "deux roues" ? common.bikeMakes : common.carMakes,
+                                typeSelection: _categorieController.text.toLowerCase() == "deux roues" ? "bike" : "car",
+                              )));
+                            } else {
+                              Snacks.failureBar("Veuillez sélectionner une catégorie de pièce", context);
+                            }
                           }
-                        }
-                      ).animate().fadeIn(),
+                        ).animate().fadeIn(),
                       const Gap(10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,21 +312,29 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                         icon: Icons.more_horiz_outlined
                       ).animate().fadeIn(),
                       const Gap(20),
-                      SizedBox(
-                        width: size.width,
-                        child: CustomButton(
-                          text: "Enregistrer",
-                          size: size,
-                          globalWidth: size.width * 0.9,
-                          widthSize: size.width * 0.87,
-                          backSize: size.width * 0.87,
+                      partner.loading ?
+                        ProgressButton(
+                          widthSize: size.width * 0.9,
                           context: context,
-                          function: () => Navigator.pop(context),
-                          textColor: GlobalThemeData.lightColorScheme.primary,
-                          buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                          backColor: GlobalThemeData.lightColorScheme.primary
-                        ).animate().fadeIn(),
-                      ),
+                          bgColor: GlobalThemeData.lightColorScheme.onPrimary,
+                          shimmerColor: GlobalThemeData.lightColorScheme.primary
+                        ).animate().fadeIn()
+                          :
+                        SizedBox(
+                          width: size.width,
+                          child: CustomButton(
+                            text: "Enregistrer",
+                            size: size,
+                            globalWidth: size.width * 0.9,
+                            widthSize: size.width * 0.87,
+                            backSize: size.width * 0.87,
+                            context: context,
+                            function: () => _save(context),
+                            textColor: GlobalThemeData.lightColorScheme.primary,
+                            buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                            backColor: GlobalThemeData.lightColorScheme.primary
+                          ).animate().fadeIn(),
+                        ),
                     ]
                 ),
               ),

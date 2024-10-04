@@ -14,7 +14,7 @@ Widget CustomIconButton({
   return GestureDetector(
     onTap: () => function(),
     child: SizedBox(
-      width: 70,
+      width: 50,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -23,8 +23,8 @@ Widget CustomIconButton({
             child: Padding(
               padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
               child: Container(
-                width: 50,
-                height: 50,
+                width: 35,
+                height: 35,
                 decoration: BoxDecoration(
                   color: backColor,
                 ),
@@ -32,13 +32,13 @@ Widget CustomIconButton({
             ),
           ),
           Positioned(
-            bottom: 7,
+            bottom: 5,
             left: 3,
             child: InkWell(
               onTap: () => function(),
               child: Container(
-                width: 50,
-                height: 50,
+                width: 35,
+                height: 35,
                 decoration: BoxDecoration(
                   color: buttonColor,
                   boxShadow: [
@@ -53,7 +53,7 @@ Widget CustomIconButton({
                 child: Icon(
                   icon,
                   color: iconColor,
-                  size: 20,
+                  size: 14,
                 ),
               ),
             ),

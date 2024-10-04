@@ -21,4 +21,8 @@ class AuthUseCase {
   Future updateFCMToken(Map<String, dynamic> body) async {
     return await _authRepositoryImpl.updateFCMToken(body);
   }
+
+  Future getProfile() async {
+    return await _authRepositoryImpl.getProfile();
+  }
 }

@@ -1,17 +1,18 @@
 import 'package:autocyr_pro/data/datasources/auths/auth_datasource_impl.dart';
 import 'package:autocyr_pro/data/datasources/commons/common_datasource_impl.dart';
-import 'package:autocyr_pro/data/datasources/subscriptions/subscription_datasource_impl.dart';
+import 'package:autocyr_pro/data/datasources/partners/partner_datasource_impl.dart';
 import 'package:autocyr_pro/data/helpers/notifications.dart';
 import 'package:autocyr_pro/data/network/api_client.dart';
 import 'package:autocyr_pro/data/repositories/auth_repository_impl.dart';
 import 'package:autocyr_pro/data/repositories/common_repository_impl.dart';
-import 'package:autocyr_pro/data/repositories/subscription_repository_impl.dart';
+import 'package:autocyr_pro/data/repositories/partner_repository_impl.dart';
 import 'package:autocyr_pro/domain/usecases/auth_usecase.dart';
 import 'package:autocyr_pro/domain/usecases/common_usecase.dart';
-import 'package:autocyr_pro/domain/usecases/subscription_usecase.dart';
+import 'package:autocyr_pro/domain/usecases/partner_usecase.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
-import 'package:autocyr_pro/presentation/notifier/subscription_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/map_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/screens/starters/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,11 +36,11 @@ void main() async {
 
   AuthDataSourceImpl authDataSourceImpl = AuthDataSourceImpl(apiClient);
   CommonDataSourceImpl commonDataSourceImpl = CommonDataSourceImpl(apiClient);
-  SubscriptionDataSourceImpl subscriptionDataSourceImpl = SubscriptionDataSourceImpl(apiClient);
+  PartnerDataSourceImpl partnerDataSourceImpl = PartnerDataSourceImpl(apiClient);
 
   AuthRepositoryImpl authRepositoryImpl = AuthRepositoryImpl(authDataSourceImpl);
   CommonRepositoryImpl commonRepositoryImpl = CommonRepositoryImpl(commonDataSourceImpl);
-  SubscriptionRepositoryImpl subscriptionRepositoryImpl = SubscriptionRepositoryImpl(subscriptionDataSourceImpl);
+  PartnerRepositoryImpl partnerRepositoryImpl = PartnerRepositoryImpl(partnerDataSourceImpl);
 
   runApp(
     MultiProvider(
@@ -55,10 +56,11 @@ void main() async {
           );
         }),
         ChangeNotifierProvider(create: (_) {
-          return SubscriptionNotifier(
-            subscriptionUseCase: SubscriptionUseCase(subscriptionRepositoryImpl)
+          return PartnerNotifier(
+            partnerUseCase: PartnerUseCase(partnerRepositoryImpl)
           );
-        })
+        }),
+        ChangeNotifierProvider(create: (_) => MapNotifier()),
       ],
       child: const MyApp()
     )

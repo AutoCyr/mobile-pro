@@ -1,7 +1,7 @@
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
-import 'package:autocyr_pro/presentation/notifier/subscription_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
@@ -32,8 +32,8 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
     final common = Provider.of<CommonNotifier>(context, listen: false);
     await common.retrievePlans(context: context);
-    final subscription = Provider.of<SubscriptionNotifier>(context, listen: false);
-    await subscription.checkSubscription(id: auth.getUser.id.toString(), plans: common.plans, context: context);
+    final partner = Provider.of<PartnerNotifier>(context, listen: false);
+    await partner.checkSubscription(id: auth.getUser.id.toString(), plans: common.plans, context: context);
   }
 
   updateFCM() async {
@@ -59,8 +59,8 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
         title: Label14(text: "Validation de la souscription", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
       ),
-      body: Consumer3<AuthNotifier, CommonNotifier, SubscriptionNotifier>(
-        builder: (context, auth, common, subscription, child) {
+      body: Consumer3<AuthNotifier, CommonNotifier, PartnerNotifier>(
+        builder: (context, auth, common, partner, child) {
           plan = common.getPlan;
 
           if(common.filling) {
@@ -87,7 +87,7 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
             );
           }
 
-          if(subscription.loading) {
+          if(partner.loading) {
             return SizedBox(
               width: size.width,
               child: Column(

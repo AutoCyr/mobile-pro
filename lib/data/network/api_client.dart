@@ -1,16 +1,15 @@
 import 'dart:convert';
 
+import 'package:autocyr_pro/data/network/urls.dart';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-
-  static const String baseUrl = "https://services.autocyr.com/api/";
 
   Future<http.Response> get({
     required String path,
     Map<String, String>? headers,
   }) async {
-    return await http.get(Uri.parse(baseUrl+path), headers: headers);
+    return await http.get(Uri.parse(Urls.baseUrl+path), headers: headers);
   }
 
   Future<http.Response> post({
@@ -18,17 +17,18 @@ class ApiClient {
     Map<String, String>? headers,
     required Map<String, dynamic> body
   }) async {
-    return await http.post(Uri.parse(baseUrl+path), headers: headers, body: json.encode(body));
+    return await http.post(Uri.parse(Urls.baseUrl+path), headers: headers, body: json.encode(body));
   }
 
   Future<http.Response> postMultipart({
     required String path,
     Map<String, String>? headers,
     required Map<String, String> body,
-    required String filepath
+    required String filepath,
+    required String name
   }) async {
-    var request = http.MultipartRequest('POST', Uri.parse(baseUrl+path))..fields.addAll(body)..headers.addAll(headers!)..files.add(
-        await http.MultipartFile.fromPath('photo', filepath)
+    var request = http.MultipartRequest('POST', Uri.parse(Urls.baseUrl+path))..fields.addAll(body)..headers.addAll(headers!)..files.add(
+        await http.MultipartFile.fromPath(name, filepath)
     );
     return await http.Response.fromStream(await request.send());
   }
@@ -38,7 +38,7 @@ class ApiClient {
     Map<String, String>? headers,
     required Map<String, dynamic> body
   }) async {
-    return await http.put(Uri.parse(baseUrl+path), headers: headers, body: json.encode(body));
+    return await http.put(Uri.parse(Urls.baseUrl+path), headers: headers, body: json.encode(body));
   }
 
   Future<http.Response> delete({
@@ -46,7 +46,7 @@ class ApiClient {
     Map<String, String>? headers,
     required Map<String, dynamic> body
   }) async {
-    return await http.delete(Uri.parse(baseUrl+path), headers: headers, body: json.encode(body));
+    return await http.delete(Uri.parse(Urls.baseUrl+path), headers: headers, body: json.encode(body));
   }
 
 }

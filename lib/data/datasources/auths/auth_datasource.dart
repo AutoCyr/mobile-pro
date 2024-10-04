@@ -5,5 +5,7 @@ abstract class AuthDataSource {
 
   Future updateFCMToken(Map<String, dynamic> body);
 
+  Future getProfile();
+
   Future logout();
 }
