@@ -28,6 +28,10 @@ mixin _$Plan {
   int get montant => throw _privateConstructorUsedError;
   @JsonKey(name: 'duree_abonnement')
   int get duree => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_promo')
+  int get isPromo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'montant_promotion')
+  int get montantPromotion => throw _privateConstructorUsedError;
   @JsonKey(name: 'statut')
   int get statut => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
@@ -50,6 +54,8 @@ abstract class $PlanCopyWith<$Res> {
       @JsonKey(name: 'libelle_abonnement') String libelle,
       @JsonKey(name: 'montant_abonnement') int montant,
       @JsonKey(name: 'duree_abonnement') int duree,
+      @JsonKey(name: 'is_promo') int isPromo,
+      @JsonKey(name: 'montant_promotion') int montantPromotion,
       @JsonKey(name: 'statut') int statut,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt});
@@ -72,6 +78,8 @@ class _$PlanCopyWithImpl<$Res, $Val extends Plan>
     Object? libelle = null,
     Object? montant = null,
     Object? duree = null,
+    Object? isPromo = null,
+    Object? montantPromotion = null,
     Object? statut = null,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -92,6 +100,14 @@ class _$PlanCopyWithImpl<$Res, $Val extends Plan>
       duree: null == duree
           ? _value.duree
           : duree // ignore: cast_nullable_to_non_nullable
+              as int,
+      isPromo: null == isPromo
+          ? _value.isPromo
+          : isPromo // ignore: cast_nullable_to_non_nullable
+              as int,
+      montantPromotion: null == montantPromotion
+          ? _value.montantPromotion
+          : montantPromotion // ignore: cast_nullable_to_non_nullable
               as int,
       statut: null == statut
           ? _value.statut
@@ -121,6 +137,8 @@ abstract class _$$PlanImplCopyWith<$Res> implements $PlanCopyWith<$Res> {
       @JsonKey(name: 'libelle_abonnement') String libelle,
       @JsonKey(name: 'montant_abonnement') int montant,
       @JsonKey(name: 'duree_abonnement') int duree,
+      @JsonKey(name: 'is_promo') int isPromo,
+      @JsonKey(name: 'montant_promotion') int montantPromotion,
       @JsonKey(name: 'statut') int statut,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt});
@@ -140,6 +158,8 @@ class __$$PlanImplCopyWithImpl<$Res>
     Object? libelle = null,
     Object? montant = null,
     Object? duree = null,
+    Object? isPromo = null,
+    Object? montantPromotion = null,
     Object? statut = null,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -160,6 +180,14 @@ class __$$PlanImplCopyWithImpl<$Res>
       duree: null == duree
           ? _value.duree
           : duree // ignore: cast_nullable_to_non_nullable
+              as int,
+      isPromo: null == isPromo
+          ? _value.isPromo
+          : isPromo // ignore: cast_nullable_to_non_nullable
+              as int,
+      montantPromotion: null == montantPromotion
+          ? _value.montantPromotion
+          : montantPromotion // ignore: cast_nullable_to_non_nullable
               as int,
       statut: null == statut
           ? _value.statut
@@ -185,6 +213,8 @@ class _$PlanImpl implements _Plan {
       @JsonKey(name: 'libelle_abonnement') required this.libelle,
       @JsonKey(name: 'montant_abonnement') required this.montant,
       @JsonKey(name: 'duree_abonnement') required this.duree,
+      @JsonKey(name: 'is_promo') required this.isPromo,
+      @JsonKey(name: 'montant_promotion') required this.montantPromotion,
       @JsonKey(name: 'statut') required this.statut,
       @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'updated_at') required this.updatedAt});
@@ -205,6 +235,12 @@ class _$PlanImpl implements _Plan {
   @JsonKey(name: 'duree_abonnement')
   final int duree;
   @override
+  @JsonKey(name: 'is_promo')
+  final int isPromo;
+  @override
+  @JsonKey(name: 'montant_promotion')
+  final int montantPromotion;
+  @override
   @JsonKey(name: 'statut')
   final int statut;
   @override
@@ -216,7 +252,7 @@ class _$PlanImpl implements _Plan {
 
   @override
   String toString() {
-    return 'Plan(id: $id, libelle: $libelle, montant: $montant, duree: $duree, statut: $statut, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Plan(id: $id, libelle: $libelle, montant: $montant, duree: $duree, isPromo: $isPromo, montantPromotion: $montantPromotion, statut: $statut, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -228,6 +264,9 @@ class _$PlanImpl implements _Plan {
             (identical(other.libelle, libelle) || other.libelle == libelle) &&
             (identical(other.montant, montant) || other.montant == montant) &&
             (identical(other.duree, duree) || other.duree == duree) &&
+            (identical(other.isPromo, isPromo) || other.isPromo == isPromo) &&
+            (identical(other.montantPromotion, montantPromotion) ||
+                other.montantPromotion == montantPromotion) &&
             (identical(other.statut, statut) || other.statut == statut) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -237,8 +276,8 @@ class _$PlanImpl implements _Plan {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, libelle, montant, duree, statut, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, libelle, montant, duree,
+      isPromo, montantPromotion, statut, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -256,14 +295,16 @@ class _$PlanImpl implements _Plan {
 
 abstract class _Plan implements Plan {
   const factory _Plan(
-          {@JsonKey(name: 'abonnement_id') required final int id,
-          @JsonKey(name: 'libelle_abonnement') required final String libelle,
-          @JsonKey(name: 'montant_abonnement') required final int montant,
-          @JsonKey(name: 'duree_abonnement') required final int duree,
-          @JsonKey(name: 'statut') required final int statut,
-          @JsonKey(name: 'created_at') required final DateTime createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
-      _$PlanImpl;
+      {@JsonKey(name: 'abonnement_id') required final int id,
+      @JsonKey(name: 'libelle_abonnement') required final String libelle,
+      @JsonKey(name: 'montant_abonnement') required final int montant,
+      @JsonKey(name: 'duree_abonnement') required final int duree,
+      @JsonKey(name: 'is_promo') required final int isPromo,
+      @JsonKey(name: 'montant_promotion') required final int montantPromotion,
+      @JsonKey(name: 'statut') required final int statut,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at')
+      required final DateTime updatedAt}) = _$PlanImpl;
 
   factory _Plan.fromJson(Map<String, dynamic> json) = _$PlanImpl.fromJson;
 
@@ -279,6 +320,12 @@ abstract class _Plan implements Plan {
   @override
   @JsonKey(name: 'duree_abonnement')
   int get duree;
+  @override
+  @JsonKey(name: 'is_promo')
+  int get isPromo;
+  @override
+  @JsonKey(name: 'montant_promotion')
+  int get montantPromotion;
   @override
   @JsonKey(name: 'statut')
   int get statut;

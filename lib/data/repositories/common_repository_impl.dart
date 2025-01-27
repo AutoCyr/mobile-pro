@@ -32,5 +32,29 @@ class CommonRepositoryImpl extends CommonRepository {
     return await _commonDataSourceImpl.getPlans();
   }
 
+  @override
+  Future getFreePlans() async {
+    return await _commonDataSourceImpl.getFreePlans();
+  }
+
+  @override
+  Future getAutoTypes() async {
+    return await _commonDataSourceImpl.getAutoTypes();
+  }
+
+  @override
+  Future getEnginCategories() async {
+    return await _commonDataSourceImpl.getEnginCategories();
+  }
+
+  @override
+  Future getEnginTypes() async {
+    return await _commonDataSourceImpl.getEnginTypes();
+  }
+
+  @override
+  Future getMoteurTypes() async {
+    return await _commonDataSourceImpl.getMoteurTypes();
+  }
 
 }

@@ -8,4 +8,14 @@ abstract class CommonRepository {
   Future getPartnerTypes();
 
   Future getPlans();
+
+  Future getFreePlans();
+
+  Future getEnginCategories();
+
+  Future getAutoTypes();
+
+  Future getEnginTypes();
+
+  Future getMoteurTypes();
 }

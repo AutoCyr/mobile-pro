@@ -18,7 +18,8 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionChoiceScreen extends StatefulWidget {
-  const SubscriptionChoiceScreen({super.key});
+  final bool isFree;
+  const SubscriptionChoiceScreen({super.key, required this.isFree});
 
   @override
   State<SubscriptionChoiceScreen> createState() => _SubscriptionChoiceScreenState();
@@ -34,13 +35,15 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
     Map<String, dynamic> body = {
       "abonnement_id": _selectedPlan!.id,
       "partenaire_id": auth.getPartenaire.partenaireId,
+      "statut": widget.isFree ? 1 : 0
     };
-    await partner.addSubscription(body: body, plan: _selectedPlan!, context: context);
+    print(body);
+    // await partner.addSubscription(body: body, plan: _selectedPlan!, context: context);
   }
 
   _retrievePlans(BuildContext context) async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
-    await common.retrievePlans(context: context);
+    widget.isFree ? await common.retrieveFreePlans(context: context) : await common.retrievePlans(context: context);
   }
 
   @override
@@ -148,7 +151,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
               ).animate().fadeIn(),
               const Gap(20),
               Label14(
-                  text: "Choisissez un plan de souscription",
+                  text: widget.isFree ? "Choisissez un plan gratuit" : "Choisissez un plan de souscription",
                   color: GlobalThemeData.lightColorScheme.secondary,
                   weight: FontWeight.bold,
                   maxLines: 2
@@ -162,9 +165,8 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   width: size.width,
-                  height: 70,
                   decoration: BoxDecoration(
                     color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.primaryContainer : GlobalThemeData.lightColorScheme.onPrimary,
                     border: Border.all(
@@ -189,13 +191,18 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                                 weight: FontWeight.normal,
                                 maxLines: 1
                             ),
-                            const Gap(5),
-                            Label20(
-                                text: "${e.montant} FCFA",
-                                color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.secondaryContainer,
-                                weight: FontWeight.bold,
-                                maxLines: 1
-                            ),
+                            if(widget.isFree == false)
+                              Column(
+                                children: [
+                                  const Gap(5),
+                                  Label20(
+                                      text: "${e.montant} FCFA",
+                                      color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.secondaryContainer,
+                                      weight: FontWeight.bold,
+                                      maxLines: 1
+                                  ),
+                                ],
+                              ),
                           ],
                         ),
                       )

@@ -25,4 +25,24 @@ class CommonUseCase {
   Future getPlans() async {
     return await _commonRepositoryImpl.getPlans();
   }
+
+  Future getFreePlans() async {
+    return await _commonRepositoryImpl.getFreePlans();
+  }
+
+  Future getEnginCategories() async {
+    return await _commonRepositoryImpl.getEnginCategories();
+  }
+
+  Future getAutoTypes() async {
+    return await _commonRepositoryImpl.getAutoTypes();
+  }
+
+  Future getEnginTypes() async {
+    return await _commonRepositoryImpl.getEnginTypes();
+  }
+
+  Future getMoteurTypes() async {
+    return await _commonRepositoryImpl.getMoteurTypes();
+  }
 }

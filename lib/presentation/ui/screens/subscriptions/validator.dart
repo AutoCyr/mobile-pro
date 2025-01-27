@@ -140,7 +140,6 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         width: size.width,
-                        height: 150,
                         decoration: BoxDecoration(
                           color: GlobalThemeData.lightColorScheme.onPrimary,
                           border: Border.all(

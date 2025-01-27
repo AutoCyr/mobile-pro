@@ -49,23 +49,31 @@ class PartnerNotifier extends ChangeNotifier {
       if(data['error'] == false) {
         Success success = Success.fromJson(data);
 
-        Subscription subscription = Subscription.fromJson(success.data);
-        setSubscription(subscription);
-
-        Plan plan = plans.firstWhere((element) => element.id == subscription.abonnementId);
-
-        if(subscription.status == 0) {
+        if(success.data == null) {
+          setLoading(false);
           if(context.mounted) {
-            final common = Provider.of<CommonNotifier>(context, listen: false);
-            await common.setPlan(plan);
-            Snacks.infoBar("Votre souscription est en attente de validation", context);
+            Snacks.infoBar("Veuillez souscrire à un plan avant de continuer", context);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SubscriptionChoiceScreen(isFree: true,)), (route) => false);
           }
-        } else if(subscription.status == 1) {
-          if(context.mounted) {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeDashScreen()), (route) => false);
+        } else {
+          Subscription subscription = Subscription.fromJson(success.data);
+          setSubscription(subscription);
+
+          Plan plan = plans.firstWhere((element) => element.id == subscription.abonnementId);
+
+          if(subscription.status == 0) {
+            if(context.mounted) {
+              final common = Provider.of<CommonNotifier>(context, listen: false);
+              await common.setPlan(plan);
+              Snacks.infoBar("Votre souscription est en attente de validation", context);
+            }
+          } else if(subscription.status == 1) {
+            if(context.mounted) {
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeDashScreen()), (route) => false);
+            }
           }
+          setLoading(false);
         }
-        setLoading(false);
       }else{
         Failure failure = Failure.fromJson(data);
 
@@ -73,7 +81,7 @@ class PartnerNotifier extends ChangeNotifier {
           setLoading(false);
           if(context.mounted) {
             Snacks.infoBar("Veuillez souscrire à un plan avant de continuer", context);
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SubscriptionChoiceScreen()), (route) => false);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const SubscriptionChoiceScreen(isFree: false,)), (route) => false);
           }
         }else{
           setLoading(false);

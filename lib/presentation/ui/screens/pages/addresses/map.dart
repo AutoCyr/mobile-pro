@@ -1,3 +1,4 @@
+import 'package:autocyr_pro/domain/models/profile/address.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/map_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
@@ -99,6 +100,8 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
         ),
       body: Consumer3<MapNotifier, AuthNotifier, PartnerNotifier>(
             builder: (context, map, auth, partner, child) {
+              List<Address> addresses = auth.partenaire?.adressesPartenaire ?? [];
+
               if(map.loading){
                 return SizedBox(
                   width: size.width,
@@ -135,10 +138,62 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
                         position: map.center!,
                         draggable: true,
                       ),
+                      if(addresses.isNotEmpty)
+                        ...addresses.map((address) => Marker(
+                          markerId: MarkerId("${address.longitude} ${address.latitude}"),
+                          icon: map.storeIcon == null ? BitmapDescriptor.defaultMarker : map.storeIcon!,
+                          position: LatLng(double.parse(address.latitude), double.parse(address.longitude)),
+                          draggable: true,
+                        ))
                     },
                     zoomControlsEnabled: false,
                     onTap: (LatLng latLng) => retrieveSelectedPosition(latLng),
                   ).animate().fadeIn(),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: GlobalThemeData.lightColorScheme.primaryContainer),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Image.asset(
+                                "assets/markers/location.png",
+                                width: 20,
+                                height: 20,
+                                fit: BoxFit.fill,
+                              ),
+                              const Gap(10),
+                              Label10(text: "Votre position", color: Colors.black87, weight: FontWeight.bold, maxLines: 1)
+                            ],
+                          ),
+                          const Gap(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Image.asset(
+                                "assets/markers/store.png",
+                                width: 20,
+                                height: 20,
+                                fit: BoxFit.fill,
+                              ),
+                              const Gap(10),
+                              Label10(text: "Vos boutiques", color: Colors.black87, weight: FontWeight.bold, maxLines: 1)
+                            ],
+                          ),
+                        ],
+                      ).animate().fadeIn(),
+                    ),
+                  ),
                   PositionedDirectional(
                     width: size.width,
                     bottom: 30,

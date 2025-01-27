@@ -83,6 +83,7 @@ class MapNotifier extends ChangeNotifier {
     setPosition(position);
     setCenter(center);
     setCustomIcons();
+    setStoreIcons();
     setLoading(false);
   }
 
@@ -96,6 +97,7 @@ class MapNotifier extends ChangeNotifier {
     setPosition(position);
     setCenter(center);
     setCustomIcons();
+    setStoreIcons();
   }
 
 }
