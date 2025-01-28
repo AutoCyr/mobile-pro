@@ -95,11 +95,11 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                   "assets/logos/auto.png",
                   width: 50,
                   height: 50,
-                ),
-                Icon(
+                )
+                /*Icon(
                   Icons.notifications_on_rounded,
                   color: GlobalThemeData.lightColorScheme.primaryContainer,
-                ),
+                ),*/
               ]
             ).animate().fadeIn(),
             const Gap(30),

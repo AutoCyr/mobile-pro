@@ -147,9 +147,9 @@ class AuthNotifier extends ChangeNotifier {
   Future updateFCM({required BuildContext context}) async {
     setLoading(true);
     try {
-      if(context.mounted) {
+      /*if(context.mounted) {
         Snacks.infoBar("Mise à jour des données...", context);
-      }
+      }*/
       var token = await Notifications().getFCMToken();
       Map<String, dynamic> body = {
         "id": getUser.id,

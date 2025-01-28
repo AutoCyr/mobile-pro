@@ -55,9 +55,9 @@ class BottomSelector {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   mainAxisSpacing: 32,
-                  crossAxisCount: 5,
+                  crossAxisCount: 4,
                   crossAxisSpacing: 8,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.9,
                   children: [
                     ...options.map((e) => GestureDetector(
                       onTap: () {
@@ -226,7 +226,8 @@ class BottomSelector {
     required BuildContext context,
     required String title,
     required List options,
-    required Function(Object) onSelected
+    required String Function(dynamic) displayField,
+    required Function(dynamic) onSelected
   }){
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -267,9 +268,9 @@ class BottomSelector {
                     onSelected(e);
                     Navigator.pop(context);
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: 45,
-                    child: Label13(text: e.libelle, color: GlobalThemeData.lightColorScheme.secondaryContainer, weight: FontWeight.normal, maxLines: 2)
+                    child: Label13(text: displayField(e), color: GlobalThemeData.lightColorScheme.secondaryContainer, weight: FontWeight.normal, maxLines: 2)
                   ),
                 ).animate().fadeIn()),
               ],

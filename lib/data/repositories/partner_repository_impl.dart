@@ -12,8 +12,18 @@ class PartnerRepositoryImpl extends PartnerRepository {
   }
 
   @override
+  Future addDisponibilities(Map<String, dynamic> body) async {
+    return await _partnerDataSourceImpl.addDisponibilities(body);
+  }
+
+  @override
   Future addSubscription(Map<String, dynamic> body) async {
     return await _partnerDataSourceImpl.addSubscription(body);
+  }
+
+  @override
+  Future addFreeSubscription(Map<String, dynamic> body) async {
+    return await _partnerDataSourceImpl.addFreeSubscription(body);
   }
 
   @override
@@ -24,6 +34,11 @@ class PartnerRepositoryImpl extends PartnerRepository {
   @override
   Future getPieces(String id) async {
     return await _partnerDataSourceImpl.getPieces(id);
+  }
+
+  @override
+  Future getPiece(String id) async {
+    return await _partnerDataSourceImpl.getPiece(id);
   }
 
   @override

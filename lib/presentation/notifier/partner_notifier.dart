@@ -1,6 +1,7 @@
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/domain/models/core/subscription.dart';
 import 'package:autocyr_pro/domain/models/pieces/detail_piece.dart';
+import 'package:autocyr_pro/domain/models/pieces/piece_info.dart';
 import 'package:autocyr_pro/domain/models/response/failure.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
 import 'package:autocyr_pro/domain/usecases/partner_usecase.dart';
@@ -8,6 +9,7 @@ import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/config.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/subscription.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +22,12 @@ class PartnerNotifier extends ChangeNotifier {
 
   bool _loading = false;
   Subscription? _subscription;
+  PieceInfo? _piece;
   List<DetailPiece> _pieces = [];
 
   bool get loading => _loading;
   Subscription? get subscription => _subscription;
+  PieceInfo? get piece => _piece;
   List<DetailPiece> get pieces => _pieces;
 
   setLoading(bool value) {
@@ -33,6 +37,11 @@ class PartnerNotifier extends ChangeNotifier {
 
   setSubscription(Subscription value) {
     _subscription = value;
+    notifyListeners();
+  }
+
+  setPiece(PieceInfo value) {
+    _piece = value;
     notifyListeners();
   }
 
@@ -129,12 +138,39 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  addPiece({
-    required Map<String, String> body,
-    required String filepath,
-    required String name,
-    required BuildContext context
-  }) async {
+  addFreeSubscription({required Map<String, dynamic> body, required Plan plan, required BuildContext context}) async {
+    setLoading(true);
+    try {
+      var data = await partnerUseCase.addFreeSubscription(body);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        Subscription subscription = Subscription.fromJson(success.data);
+        setSubscription(subscription);
+
+        if(context.mounted) {
+          Snacks.successBar("Votre souscription a bien été prise en compte", context);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ValidatorScreen()));
+        }
+
+        setLoading(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+      }
+    } catch (e) {
+      print(e);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  addPiece({required Map<String, String> body, required String filepath, required String name, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.addPiece(body, filepath, name);
@@ -147,6 +183,34 @@ class PartnerNotifier extends ChangeNotifier {
         setPieces(_pieces);
         if(context.mounted) {
           Snacks.successBar("Votre pièce a bien été enregistrée", context);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PieceConfigScreen(detail: detailPiece)));
+        }
+        setLoading(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+      }
+    } catch (e) {
+      print(e);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  addDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
+    setLoading(true);
+    try {
+      var data = await partnerUseCase.addDisponibilities(body);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        if(context.mounted) {
+          Snacks.successBar("Vos configurations ont bien été enregistrées", context);
           Navigator.pop(context);
         }
         setLoading(false);
@@ -180,9 +244,35 @@ class PartnerNotifier extends ChangeNotifier {
         }
         setPieces(pieces);
 
-        if(context.mounted) {
+        /*if(context.mounted) {
           Snacks.successBar("Vos pieces ont bien été récupérées", context);
+        }*/
+        setLoading(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
         }
+      }
+    } catch (e) {
+      print(e);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  getPiece({required String id, required BuildContext context}) async {
+    setLoading(true);
+    try {
+      var data = await partnerUseCase.getPiece(id);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        PieceInfo info = PieceInfo.fromJson(success.data);
+        setPiece(info);
         setLoading(false);
       }else{
         Failure failure = Failure.fromJson(data);

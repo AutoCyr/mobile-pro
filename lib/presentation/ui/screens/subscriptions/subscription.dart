@@ -34,11 +34,13 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
     Map<String, dynamic> body = {
       "abonnement_id": _selectedPlan!.id,
-      "partenaire_id": auth.getPartenaire.partenaireId,
-      "statut": widget.isFree ? 1 : 0
+      "partenaire_id": auth.getPartenaire.partenaireId
     };
-    print(body);
-    // await partner.addSubscription(body: body, plan: _selectedPlan!, context: context);
+    if(widget.isFree) {
+      await partner.addFreeSubscription(body: body, plan: _selectedPlan!, context: context);
+    } else {
+      await partner.addSubscription(body: body, plan: _selectedPlan!, context: context);
+    }
   }
 
   _retrievePlans(BuildContext context) async {

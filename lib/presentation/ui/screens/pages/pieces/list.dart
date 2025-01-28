@@ -12,6 +12,7 @@ import 'package:autocyr_pro/presentation/ui/helpers/state.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/add.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -195,7 +196,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                                   ),
                                   child: Center(
                                     child: Label12(
-                                        text: piece.marque.typeMarque == 1 ? "Quatre roues" : "Deux roues",
+                                        text: piece.typeEngin.libelle,
                                         color: GlobalThemeData.lightColorScheme.onPrimary,
                                         weight: FontWeight.bold,
                                         maxLines: 1
@@ -240,7 +241,9 @@ class _PieceListScreenState extends State<PieceListScreen> {
                             icon: Icons.arrow_forward_ios_rounded,
                             size: size,
                             context: context,
-                            function: () {},
+                            function: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPieceScreen(detail: piece)));
+                            },
                             iconColor: GlobalThemeData.lightColorScheme.primary,
                             buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
                             backColor: GlobalThemeData.lightColorScheme.primary

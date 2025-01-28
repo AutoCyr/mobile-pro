@@ -10,8 +10,16 @@ class PartnerUseCase {
     return await _partnerRepositoryImpl.addPiece(body, filepath, name);
   }
 
+  Future addDisponibilities(Map<String, dynamic> body) async {
+    return await _partnerRepositoryImpl.addDisponibilities(body);
+  }
+
   Future addSubscription(Map<String, dynamic> body) async {
     return await _partnerRepositoryImpl.addSubscription(body);
+  }
+
+  Future addFreeSubscription(Map<String, dynamic> body) async {
+    return await _partnerRepositoryImpl.addFreeSubscription(body);
   }
 
   Future checkSubscription(String id) async {
@@ -20,6 +28,10 @@ class PartnerUseCase {
 
   Future getPieces(String id) async {
     return await _partnerRepositoryImpl.getPieces(id);
+  }
+
+  Future getPiece(String id) async {
+    return await _partnerRepositoryImpl.getPiece(id);
   }
 
   Future updateAdresses(Map<String, dynamic> body) async {

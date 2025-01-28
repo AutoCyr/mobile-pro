@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:autocyr_pro/domain/models/commons/engin_type.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_field.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/description_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/object_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/selectable_field.dart';
@@ -17,6 +19,7 @@ import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/ui.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -32,16 +35,21 @@ class PieceAddScreen extends StatefulWidget {
 
 class _PieceAddScreenState extends State<PieceAddScreen> {
 
+  late int step = 1;
+  late bool _isGarantie = false;
+  late String typeKey = "";
+
   File? media;
   late XFile? _image;
   final ImagePicker _picker = ImagePicker();
 
   final TextEditingController _nomPieceController = TextEditingController();
   final TextEditingController _marqueController = TextEditingController();
-  final TextEditingController _categorieController = TextEditingController();
+  final TextEditingController _typeController = TextEditingController();
   final TextEditingController _modeleController = TextEditingController();
   final TextEditingController _numeroController = TextEditingController();
   final TextEditingController _anneeController = TextEditingController();
+  final TextEditingController _prixController = TextEditingController();
   final TextEditingController _autreController = TextEditingController();
 
   Future getImageFromGallery() async {
@@ -51,11 +59,6 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
     });
   }
 
-  List<String> options = [
-    "Deux roues",
-    "Quatre roues",
-  ];
-
   _save(BuildContext context) async {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
     final auth = Provider.of<AuthNotifier>(context, listen: false);
@@ -64,14 +67,17 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
     if(media == null) {
       Snacks.failureBar("Veuillez sélectionner une image pour votre pièce", context);
     } else {
-      if(UiTools().checkFields([_nomPieceController, _marqueController, _categorieController, _modeleController, _numeroController, _anneeController])) {
+      if(UiTools().checkFields([_nomPieceController, _marqueController, _typeController, _modeleController, _numeroController, _anneeController, _prixController])) {
         Map<String, String> body = {
           "partenaire_id" : auth.getPartenaire.partenaireId.toString(),
           "nom_piece" : _nomPieceController.text,
-          "marque_id" : _categorieController.text.toLowerCase() == "deux roues" ? common.bikeMake!.id.toString() : common.carMake!.id.toString(),
+          "type_engin_id" : typeKey,
+          "marque_id" : _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMake!.id.toString() : common.carMake!.id.toString(),
           "modele_piece" : _modeleController.text,
           "numero_piece" : _numeroController.text,
           "annee_piece" : _anneeController.text,
+          "prix_piece" : _prixController.text,
+          "garantie" : _isGarantie ? "1" : "0",
           "autres" : _autreController.text,
           "image_piece" : media.toString()
         };
@@ -91,6 +97,9 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
       }
       if(common.bikeMakes.isEmpty) {
         await common.retrieveBikeMakes(context: context);
+      }
+      if(common.enginTypes.isEmpty) {
+        await common.retrieveEnginTypes(context: context);
       }
     }
   }
@@ -215,33 +224,38 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                         icon: Icons.text_fields_outlined,
                       ).animate().fadeIn(),
                       const Gap(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.45,
-                            child: SelectableField(
-                              controller: _categorieController,
-                              keyboardType: TextInputType.none,
-                              label: "Catégorie de pièce",
-                              fontSize: 12,
-                              icon: Icons.car_rental_outlined,
-                              options: options,
-                              context: context,
-                            ).animate().fadeIn(),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.45,
-                            child: CustomField(
-                              controller: _anneeController,
-                              keyboardType: TextInputType.number,
-                              label: "Année",
-                              fontSize: 12,
-                              icon: Icons.calendar_today_outlined,
-                            ).animate().fadeIn(),
-                          ),
-                        ],
-                      ),
+                      common.filling ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Label10(text: "Chargement des types d'engin...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                            const Gap(10),
+                            ProgressButton(
+                                widthSize: size.width * 0.9,
+                                context: context,
+                                bgColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                shimmerColor: GlobalThemeData.lightColorScheme.primary
+                            )
+                          ]
+                        ).animate().fadeIn()
+                          :
+                        CustomSelectableField(
+                          controller: _typeController,
+                          key: typeKey,
+                          keyboardType: TextInputType.none,
+                          label: "Type d'engin",
+                          fontSize: 12,
+                          icon: Icons.car_rental_outlined,
+                          context: context,
+                          options: common.enginTypes,
+                          displayField: (value) => (value as EnginType).libelle,
+                          onSelected: (value) {
+                            setState(() {
+                              _typeController.text = value.libelle;
+                              typeKey = value.id.toString();
+                            });
+                          }
+                        ).animate().fadeIn(),
                       const Gap(10),
                       common.filling ?
                         Column(
@@ -266,14 +280,16 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                           icon: Icons.loyalty_outlined,
                           context: context,
                           onSelected: () {
-                            if(_categorieController.text.isNotEmpty) {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
-                                controller: _marqueController,
-                                list: _categorieController.text.toLowerCase() == "deux roues" ? common.bikeMakes : common.carMakes,
-                                typeSelection: _categorieController.text.toLowerCase() == "deux roues" ? "bike" : "car",
-                              )));
+                            if(_typeController.text.isNotEmpty) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return CustomSearchable(
+                                  controller: _marqueController,
+                                  list: _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMakes : common.carMakes,
+                                  typeSelection: _typeController.text.toLowerCase() != "quatre roues" ? "bike" : "car",
+                                );
+                              }));
                             } else {
-                              Snacks.failureBar("Veuillez sélectionner une catégorie de pièce", context);
+                              Snacks.failureBar("Veuillez sélectionner un type d'engin", context);
                             }
                           }
                         ).animate().fadeIn(),
@@ -301,6 +317,47 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                               icon: Icons.onetwothree_sharp,
                             ).animate().fadeIn(),
                           ),
+                        ],
+                      ),
+                      const Gap(10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: size.width * 0.45,
+                            child: CustomField(
+                              controller: _anneeController,
+                              keyboardType: TextInputType.number,
+                              label: "Année",
+                              fontSize: 12,
+                              icon: Icons.calendar_today_outlined,
+                            ).animate().fadeIn(),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.45,
+                            child: CustomField(
+                              controller: _prixController,
+                              keyboardType: TextInputType.number,
+                              label: "Prix",
+                              fontSize: 12,
+                              icon: Icons.onetwothree_sharp,
+                            ).animate().fadeIn(),
+                          ),
+                        ],
+                      ),
+                      const Gap(10),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _isGarantie,
+                            onChanged: (value) {
+                              setState(() {
+                                _isGarantie = value!;
+                              });
+                            },
+                          ).animate().fadeIn(),
+                          const Gap(10),
+                          const Text("Est garantie").animate().fadeIn(),
                         ],
                       ),
                       const Gap(10),

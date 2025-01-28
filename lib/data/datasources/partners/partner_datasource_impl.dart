@@ -68,6 +68,34 @@ class PartnerDataSourceImpl implements PartnerDataSource {
   }
 
   @override
+  Future addFreeSubscription(Map<String, dynamic> body) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.post(path: "partner/add-free-subscription", headers: headers, body: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
   Future checkSubscription(String id) async {
     String token = await Preferences().getString("token");
     Map<String, String> headers = {
@@ -124,6 +152,34 @@ class PartnerDataSourceImpl implements PartnerDataSource {
   }
 
   @override
+  Future getPiece(String id) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.get(path: "partner/get-piece/$id", headers: headers);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
   Future updateAdresses(Map<String, dynamic> body) async {
     String token = await Preferences().getString("token");
     Map<String, String> headers = {
@@ -134,6 +190,34 @@ class PartnerDataSourceImpl implements PartnerDataSource {
 
     try {
       final response = await _apiClient.post(path: "partner/update-addresses", headers: headers, body: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body);
+        return data;
+      } else {
+        return Handling().handleErrorResponse(response);
+      }
+    } catch(e) {
+      var error = {
+        "error": true,
+        "message": "Une erreur serveur est survenue",
+        "except": e.toString()
+      };
+      return error;
+    }
+  }
+
+  @override
+  Future addDisponibilities(Map<String, dynamic> body) async {
+    String token = await Preferences().getString("token");
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    };
+
+    try {
+      final response = await _apiClient.post(path: "partner/add-disponibilities", headers: headers, body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);

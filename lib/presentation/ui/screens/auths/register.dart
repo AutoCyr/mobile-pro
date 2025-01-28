@@ -3,8 +3,8 @@ import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_field.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/object_selectable_field.dart';
-import 'package:autocyr_pro/presentation/ui/atoms/fields/small_object_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
@@ -30,6 +30,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  String typeKey = "";
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
   final TextEditingController _raisonController = TextEditingController();
@@ -111,18 +112,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ]
                             ).animate().fadeIn()
                               :
-                            SmallObjectSelectableField(
+                            CustomSelectableField(
                               controller: _typeController,
+                              key: typeKey,
                               keyboardType: TextInputType.none,
                               label: "Type de partenaire",
                               fontSize: 12,
                               icon: Icons.person_pin_outlined,
                               context: context,
                               options: common.partnerTypes,
+                              displayField: (value) => (value as PartnerType).libelle,
                               onSelected: (value) {
                                 common.setPartnerType(value as PartnerType);
                                 setState(() {
                                   _typeController.text = value.libelle;
+                                  typeKey = value.id.toString();
                                 });
                               }
                             ).animate().fadeIn(),

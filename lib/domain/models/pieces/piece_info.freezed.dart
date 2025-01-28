@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'detail_piece.dart';
+part of 'piece_info.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-DetailPiece _$DetailPieceFromJson(Map<String, dynamic> json) {
-  return _DetailPiece.fromJson(json);
+PieceInfo _$PieceInfoFromJson(Map<String, dynamic> json) {
+  return _PieceInfo.fromJson(json);
 }
 
 /// @nodoc
-mixin _$DetailPiece {
+mixin _$PieceInfo {
   @JsonKey(name: 'detail_piece_id')
   int get detailPieceId => throw _privateConstructorUsedError;
   @JsonKey(name: 'partenaire_id')
@@ -54,18 +54,24 @@ mixin _$DetailPiece {
   Make get marque => throw _privateConstructorUsedError;
   @JsonKey(name: 'type_engin')
   EnginType get typeEngin => throw _privateConstructorUsedError;
+  @JsonKey(name: 'autos')
+  List<AutoDisponibility>? get autos => throw _privateConstructorUsedError;
+  @JsonKey(name: 'moteurs')
+  List<MotorDisponibility>? get moteurs => throw _privateConstructorUsedError;
+  @JsonKey(name: 'categories')
+  List<CategoryDisponibility>? get categories =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DetailPieceCopyWith<DetailPiece> get copyWith =>
+  $PieceInfoCopyWith<PieceInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DetailPieceCopyWith<$Res> {
-  factory $DetailPieceCopyWith(
-          DetailPiece value, $Res Function(DetailPiece) then) =
-      _$DetailPieceCopyWithImpl<$Res, DetailPiece>;
+abstract class $PieceInfoCopyWith<$Res> {
+  factory $PieceInfoCopyWith(PieceInfo value, $Res Function(PieceInfo) then) =
+      _$PieceInfoCopyWithImpl<$Res, PieceInfo>;
   @useResult
   $Res call(
       {@JsonKey(name: 'detail_piece_id') int detailPieceId,
@@ -84,7 +90,10 @@ abstract class $DetailPieceCopyWith<$Res> {
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'piece') Piece piece,
       @JsonKey(name: 'marque') Make marque,
-      @JsonKey(name: 'type_engin') EnginType typeEngin});
+      @JsonKey(name: 'type_engin') EnginType typeEngin,
+      @JsonKey(name: 'autos') List<AutoDisponibility>? autos,
+      @JsonKey(name: 'moteurs') List<MotorDisponibility>? moteurs,
+      @JsonKey(name: 'categories') List<CategoryDisponibility>? categories});
 
   $PieceCopyWith<$Res> get piece;
   $MakeCopyWith<$Res> get marque;
@@ -92,9 +101,9 @@ abstract class $DetailPieceCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
-    implements $DetailPieceCopyWith<$Res> {
-  _$DetailPieceCopyWithImpl(this._value, this._then);
+class _$PieceInfoCopyWithImpl<$Res, $Val extends PieceInfo>
+    implements $PieceInfoCopyWith<$Res> {
+  _$PieceInfoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -121,6 +130,9 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
     Object? piece = null,
     Object? marque = null,
     Object? typeEngin = null,
+    Object? autos = freezed,
+    Object? moteurs = freezed,
+    Object? categories = freezed,
   }) {
     return _then(_value.copyWith(
       detailPieceId: null == detailPieceId
@@ -191,6 +203,18 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
           ? _value.typeEngin
           : typeEngin // ignore: cast_nullable_to_non_nullable
               as EnginType,
+      autos: freezed == autos
+          ? _value.autos
+          : autos // ignore: cast_nullable_to_non_nullable
+              as List<AutoDisponibility>?,
+      moteurs: freezed == moteurs
+          ? _value.moteurs
+          : moteurs // ignore: cast_nullable_to_non_nullable
+              as List<MotorDisponibility>?,
+      categories: freezed == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<CategoryDisponibility>?,
     ) as $Val);
   }
 
@@ -220,11 +244,11 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
 }
 
 /// @nodoc
-abstract class _$$DetailPieceImplCopyWith<$Res>
-    implements $DetailPieceCopyWith<$Res> {
-  factory _$$DetailPieceImplCopyWith(
-          _$DetailPieceImpl value, $Res Function(_$DetailPieceImpl) then) =
-      __$$DetailPieceImplCopyWithImpl<$Res>;
+abstract class _$$PieceInfoImplCopyWith<$Res>
+    implements $PieceInfoCopyWith<$Res> {
+  factory _$$PieceInfoImplCopyWith(
+          _$PieceInfoImpl value, $Res Function(_$PieceInfoImpl) then) =
+      __$$PieceInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -244,7 +268,10 @@ abstract class _$$DetailPieceImplCopyWith<$Res>
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'piece') Piece piece,
       @JsonKey(name: 'marque') Make marque,
-      @JsonKey(name: 'type_engin') EnginType typeEngin});
+      @JsonKey(name: 'type_engin') EnginType typeEngin,
+      @JsonKey(name: 'autos') List<AutoDisponibility>? autos,
+      @JsonKey(name: 'moteurs') List<MotorDisponibility>? moteurs,
+      @JsonKey(name: 'categories') List<CategoryDisponibility>? categories});
 
   @override
   $PieceCopyWith<$Res> get piece;
@@ -255,11 +282,11 @@ abstract class _$$DetailPieceImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$DetailPieceImplCopyWithImpl<$Res>
-    extends _$DetailPieceCopyWithImpl<$Res, _$DetailPieceImpl>
-    implements _$$DetailPieceImplCopyWith<$Res> {
-  __$$DetailPieceImplCopyWithImpl(
-      _$DetailPieceImpl _value, $Res Function(_$DetailPieceImpl) _then)
+class __$$PieceInfoImplCopyWithImpl<$Res>
+    extends _$PieceInfoCopyWithImpl<$Res, _$PieceInfoImpl>
+    implements _$$PieceInfoImplCopyWith<$Res> {
+  __$$PieceInfoImplCopyWithImpl(
+      _$PieceInfoImpl _value, $Res Function(_$PieceInfoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -282,8 +309,11 @@ class __$$DetailPieceImplCopyWithImpl<$Res>
     Object? piece = null,
     Object? marque = null,
     Object? typeEngin = null,
+    Object? autos = freezed,
+    Object? moteurs = freezed,
+    Object? categories = freezed,
   }) {
-    return _then(_$DetailPieceImpl(
+    return _then(_$PieceInfoImpl(
       detailPieceId: null == detailPieceId
           ? _value.detailPieceId
           : detailPieceId // ignore: cast_nullable_to_non_nullable
@@ -352,14 +382,26 @@ class __$$DetailPieceImplCopyWithImpl<$Res>
           ? _value.typeEngin
           : typeEngin // ignore: cast_nullable_to_non_nullable
               as EnginType,
+      autos: freezed == autos
+          ? _value._autos
+          : autos // ignore: cast_nullable_to_non_nullable
+              as List<AutoDisponibility>?,
+      moteurs: freezed == moteurs
+          ? _value._moteurs
+          : moteurs // ignore: cast_nullable_to_non_nullable
+              as List<MotorDisponibility>?,
+      categories: freezed == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<CategoryDisponibility>?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$DetailPieceImpl implements _DetailPiece {
-  const _$DetailPieceImpl(
+class _$PieceInfoImpl implements _PieceInfo {
+  const _$PieceInfoImpl(
       {@JsonKey(name: 'detail_piece_id') required this.detailPieceId,
       @JsonKey(name: 'partenaire_id') required this.partenaireId,
       @JsonKey(name: 'piece_id') required this.pieceId,
@@ -376,10 +418,17 @@ class _$DetailPieceImpl implements _DetailPiece {
       @JsonKey(name: 'updated_at') required this.updatedAt,
       @JsonKey(name: 'piece') required this.piece,
       @JsonKey(name: 'marque') required this.marque,
-      @JsonKey(name: 'type_engin') required this.typeEngin});
+      @JsonKey(name: 'type_engin') required this.typeEngin,
+      @JsonKey(name: 'autos') final List<AutoDisponibility>? autos,
+      @JsonKey(name: 'moteurs') final List<MotorDisponibility>? moteurs,
+      @JsonKey(name: 'categories')
+      final List<CategoryDisponibility>? categories})
+      : _autos = autos,
+        _moteurs = moteurs,
+        _categories = categories;
 
-  factory _$DetailPieceImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DetailPieceImplFromJson(json);
+  factory _$PieceInfoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PieceInfoImplFromJson(json);
 
   @override
   @JsonKey(name: 'detail_piece_id')
@@ -432,17 +481,49 @@ class _$DetailPieceImpl implements _DetailPiece {
   @override
   @JsonKey(name: 'type_engin')
   final EnginType typeEngin;
+  final List<AutoDisponibility>? _autos;
+  @override
+  @JsonKey(name: 'autos')
+  List<AutoDisponibility>? get autos {
+    final value = _autos;
+    if (value == null) return null;
+    if (_autos is EqualUnmodifiableListView) return _autos;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<MotorDisponibility>? _moteurs;
+  @override
+  @JsonKey(name: 'moteurs')
+  List<MotorDisponibility>? get moteurs {
+    final value = _moteurs;
+    if (value == null) return null;
+    if (_moteurs is EqualUnmodifiableListView) return _moteurs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<CategoryDisponibility>? _categories;
+  @override
+  @JsonKey(name: 'categories')
+  List<CategoryDisponibility>? get categories {
+    final value = _categories;
+    if (value == null) return null;
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'DetailPiece(detailPieceId: $detailPieceId, partenaireId: $partenaireId, pieceId: $pieceId, marqueId: $marqueId, typeEnginId: $typeEnginId, modelePiece: $modelePiece, numeroPiece: $numeroPiece, anneePiece: $anneePiece, prixPiece: $prixPiece, garantie: $garantie, autres: $autres, imagePiece: $imagePiece, createdAt: $createdAt, updatedAt: $updatedAt, piece: $piece, marque: $marque, typeEngin: $typeEngin)';
+    return 'PieceInfo(detailPieceId: $detailPieceId, partenaireId: $partenaireId, pieceId: $pieceId, marqueId: $marqueId, typeEnginId: $typeEnginId, modelePiece: $modelePiece, numeroPiece: $numeroPiece, anneePiece: $anneePiece, prixPiece: $prixPiece, garantie: $garantie, autres: $autres, imagePiece: $imagePiece, createdAt: $createdAt, updatedAt: $updatedAt, piece: $piece, marque: $marque, typeEngin: $typeEngin, autos: $autos, moteurs: $moteurs, categories: $categories)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DetailPieceImpl &&
+            other is _$PieceInfoImpl &&
             (identical(other.detailPieceId, detailPieceId) ||
                 other.detailPieceId == detailPieceId) &&
             (identical(other.partenaireId, partenaireId) ||
@@ -472,68 +553,79 @@ class _$DetailPieceImpl implements _DetailPiece {
             (identical(other.piece, piece) || other.piece == piece) &&
             (identical(other.marque, marque) || other.marque == marque) &&
             (identical(other.typeEngin, typeEngin) ||
-                other.typeEngin == typeEngin));
+                other.typeEngin == typeEngin) &&
+            const DeepCollectionEquality().equals(other._autos, _autos) &&
+            const DeepCollectionEquality().equals(other._moteurs, _moteurs) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      detailPieceId,
-      partenaireId,
-      pieceId,
-      marqueId,
-      typeEnginId,
-      modelePiece,
-      numeroPiece,
-      anneePiece,
-      prixPiece,
-      garantie,
-      autres,
-      imagePiece,
-      createdAt,
-      updatedAt,
-      piece,
-      marque,
-      typeEngin);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        detailPieceId,
+        partenaireId,
+        pieceId,
+        marqueId,
+        typeEnginId,
+        modelePiece,
+        numeroPiece,
+        anneePiece,
+        prixPiece,
+        garantie,
+        autres,
+        imagePiece,
+        createdAt,
+        updatedAt,
+        piece,
+        marque,
+        typeEngin,
+        const DeepCollectionEquality().hash(_autos),
+        const DeepCollectionEquality().hash(_moteurs),
+        const DeepCollectionEquality().hash(_categories)
+      ]);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DetailPieceImplCopyWith<_$DetailPieceImpl> get copyWith =>
-      __$$DetailPieceImplCopyWithImpl<_$DetailPieceImpl>(this, _$identity);
+  _$$PieceInfoImplCopyWith<_$PieceInfoImpl> get copyWith =>
+      __$$PieceInfoImplCopyWithImpl<_$PieceInfoImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DetailPieceImplToJson(
+    return _$$PieceInfoImplToJson(
       this,
     );
   }
 }
 
-abstract class _DetailPiece implements DetailPiece {
-  const factory _DetailPiece(
-          {@JsonKey(name: 'detail_piece_id') required final int detailPieceId,
-          @JsonKey(name: 'partenaire_id') required final int partenaireId,
-          @JsonKey(name: 'piece_id') required final int pieceId,
-          @JsonKey(name: 'marque_id') required final int marqueId,
-          @JsonKey(name: 'type_engin_id') required final int typeEnginId,
-          @JsonKey(name: 'modele_piece') required final String modelePiece,
-          @JsonKey(name: 'numero_piece') required final String numeroPiece,
-          @JsonKey(name: 'annee_piece') required final String anneePiece,
-          @JsonKey(name: 'prix_piece') required final int prixPiece,
-          @JsonKey(name: 'garantie') required final int garantie,
-          @JsonKey(name: 'autres') final String? autres,
-          @JsonKey(name: 'image_piece') required final String imagePiece,
-          @JsonKey(name: 'created_at') required final DateTime createdAt,
-          @JsonKey(name: 'updated_at') required final DateTime updatedAt,
-          @JsonKey(name: 'piece') required final Piece piece,
-          @JsonKey(name: 'marque') required final Make marque,
-          @JsonKey(name: 'type_engin') required final EnginType typeEngin}) =
-      _$DetailPieceImpl;
+abstract class _PieceInfo implements PieceInfo {
+  const factory _PieceInfo(
+      {@JsonKey(name: 'detail_piece_id') required final int detailPieceId,
+      @JsonKey(name: 'partenaire_id') required final int partenaireId,
+      @JsonKey(name: 'piece_id') required final int pieceId,
+      @JsonKey(name: 'marque_id') required final int marqueId,
+      @JsonKey(name: 'type_engin_id') required final int typeEnginId,
+      @JsonKey(name: 'modele_piece') required final String modelePiece,
+      @JsonKey(name: 'numero_piece') required final String numeroPiece,
+      @JsonKey(name: 'annee_piece') required final String anneePiece,
+      @JsonKey(name: 'prix_piece') required final int prixPiece,
+      @JsonKey(name: 'garantie') required final int garantie,
+      @JsonKey(name: 'autres') final String? autres,
+      @JsonKey(name: 'image_piece') required final String imagePiece,
+      @JsonKey(name: 'created_at') required final DateTime createdAt,
+      @JsonKey(name: 'updated_at') required final DateTime updatedAt,
+      @JsonKey(name: 'piece') required final Piece piece,
+      @JsonKey(name: 'marque') required final Make marque,
+      @JsonKey(name: 'type_engin') required final EnginType typeEngin,
+      @JsonKey(name: 'autos') final List<AutoDisponibility>? autos,
+      @JsonKey(name: 'moteurs') final List<MotorDisponibility>? moteurs,
+      @JsonKey(name: 'categories')
+      final List<CategoryDisponibility>? categories}) = _$PieceInfoImpl;
 
-  factory _DetailPiece.fromJson(Map<String, dynamic> json) =
-      _$DetailPieceImpl.fromJson;
+  factory _PieceInfo.fromJson(Map<String, dynamic> json) =
+      _$PieceInfoImpl.fromJson;
 
   @override
   @JsonKey(name: 'detail_piece_id')
@@ -587,7 +679,16 @@ abstract class _DetailPiece implements DetailPiece {
   @JsonKey(name: 'type_engin')
   EnginType get typeEngin;
   @override
+  @JsonKey(name: 'autos')
+  List<AutoDisponibility>? get autos;
+  @override
+  @JsonKey(name: 'moteurs')
+  List<MotorDisponibility>? get moteurs;
+  @override
+  @JsonKey(name: 'categories')
+  List<CategoryDisponibility>? get categories;
+  @override
   @JsonKey(ignore: true)
-  _$$DetailPieceImplCopyWith<_$DetailPieceImpl> get copyWith =>
+  _$$PieceInfoImplCopyWith<_$PieceInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

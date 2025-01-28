@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'detail_piece.dart';
+part of 'piece_info.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DetailPieceImpl _$$DetailPieceImplFromJson(Map<String, dynamic> json) =>
-    _$DetailPieceImpl(
+_$PieceInfoImpl _$$PieceInfoImplFromJson(Map<String, dynamic> json) =>
+    _$PieceInfoImpl(
       detailPieceId: (json['detail_piece_id'] as num).toInt(),
       partenaireId: (json['partenaire_id'] as num).toInt(),
       pieceId: (json['piece_id'] as num).toInt(),
@@ -25,9 +25,19 @@ _$DetailPieceImpl _$$DetailPieceImplFromJson(Map<String, dynamic> json) =>
       piece: Piece.fromJson(json['piece'] as Map<String, dynamic>),
       marque: Make.fromJson(json['marque'] as Map<String, dynamic>),
       typeEngin: EnginType.fromJson(json['type_engin'] as Map<String, dynamic>),
+      autos: (json['autos'] as List<dynamic>?)
+          ?.map((e) => AutoDisponibility.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      moteurs: (json['moteurs'] as List<dynamic>?)
+          ?.map((e) => MotorDisponibility.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map(
+              (e) => CategoryDisponibility.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$$DetailPieceImplToJson(_$DetailPieceImpl instance) =>
+Map<String, dynamic> _$$PieceInfoImplToJson(_$PieceInfoImpl instance) =>
     <String, dynamic>{
       'detail_piece_id': instance.detailPieceId,
       'partenaire_id': instance.partenaireId,
@@ -46,4 +56,7 @@ Map<String, dynamic> _$$DetailPieceImplToJson(_$DetailPieceImpl instance) =>
       'piece': instance.piece,
       'marque': instance.marque,
       'type_engin': instance.typeEngin,
+      'autos': instance.autos,
+      'moteurs': instance.moteurs,
+      'categories': instance.categories,
     };
