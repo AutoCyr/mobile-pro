@@ -21,6 +21,7 @@ class PartnerNotifier extends ChangeNotifier {
   final PartnerUseCase partnerUseCase;
   PartnerNotifier({required this.partnerUseCase});
 
+  bool _mainLoading = false;
   bool _loading = false;
   bool _update = false;
   Subscription? _subscription;
@@ -28,12 +29,18 @@ class PartnerNotifier extends ChangeNotifier {
   List<DetailPiece> _pieces = [];
   Map<DetailPiece, bool> _actionPieces = {};
 
+  bool get mainLoading => _mainLoading;
   bool get loading => _loading;
   bool get update => _update;
   Subscription? get subscription => _subscription;
   PieceInfo? get piece => _piece;
   List<DetailPiece> get pieces => _pieces;
   Map<DetailPiece, bool> get actionPieces => _actionPieces;
+
+  setMainLoading(bool value) {
+    _mainLoading = value;
+    notifyListeners();
+  }
 
   setLoading(bool value) {
     _loading = value;
@@ -238,6 +245,9 @@ class PartnerNotifier extends ChangeNotifier {
         updatePieces.add(detailPiece);
         setPieces(updatePieces);
 
+        final updateActionPiece = Map.of(_actionPieces)..[detailPiece] = false;
+        setActionPieces(updateActionPiece);
+
         setLoading(false);
         if(context.mounted) {
           Snacks.successBar("Votre pièce a bien été modifiée", context);
@@ -261,7 +271,6 @@ class PartnerNotifier extends ChangeNotifier {
 
   changePieceStatus({required DetailPiece piece, required Future function, required BuildContext context}) async {
     setUpdate(true);
-    updateActionPieces(piece);
     try {
       var data = await partnerUseCase.changePieceStatus(piece.piece.pieceId.toString());
 
@@ -269,8 +278,6 @@ class PartnerNotifier extends ChangeNotifier {
         Success success = Success.fromJson(data);
 
         setUpdate(false);
-        updateActionPieces(piece);
-
         if(context.mounted) {
           await function;
           Snacks.successBar("Le statut de votre pièce a bien été modifié", context);
@@ -279,7 +286,6 @@ class PartnerNotifier extends ChangeNotifier {
         Failure failure = Failure.fromJson(data);
 
         setUpdate(false);
-        updateActionPieces(piece);
         if(context.mounted) {
           Snacks.failureBar(failure.message, context);
         }
@@ -287,7 +293,6 @@ class PartnerNotifier extends ChangeNotifier {
     } catch (e) {
       print(e);
       setUpdate(false);
-      updateActionPieces(piece);
       Snacks.failureBar("Une erreur est survenue", context);
     }
   }
@@ -349,7 +354,7 @@ class PartnerNotifier extends ChangeNotifier {
   }
 
   getPieces({required String id, required BuildContext context}) async {
-    setLoading(true);
+    setMainLoading(true);
     try {
       var data = await partnerUseCase.getPieces(id);
 
@@ -366,18 +371,18 @@ class PartnerNotifier extends ChangeNotifier {
         Map<DetailPiece, bool> actionPieces = { for(var piece in pieces) piece : false };
         setActionPieces(actionPieces);
 
-        setLoading(false);
+        setMainLoading(false);
       }else{
         Failure failure = Failure.fromJson(data);
 
-        setLoading(false);
+        setMainLoading(false);
         if(context.mounted) {
           Snacks.failureBar(failure.message, context);
         }
       }
     } catch (e) {
       print(e);
-      setLoading(false);
+      setMainLoading(false);
       Snacks.failureBar("Une erreur est survenue", context);
     }
   }

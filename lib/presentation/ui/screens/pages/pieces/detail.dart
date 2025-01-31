@@ -97,8 +97,30 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                         fit: BoxFit.cover
                       )
                     ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          width: size.width * 0.6,
+                          decoration: BoxDecoration(
+                            color: partner.piece!.piece.statut == 1 ? Colors.green : GlobalThemeData.lightColorScheme.errorContainer,
+                          ),
+                          child: Center(
+                            child: Label12(
+                                text: partner.piece!.piece.statut == 1 ? "Actif" : "Inactif",
+                                color:GlobalThemeData.lightColorScheme.onPrimary,
+                                weight: FontWeight.bold,
+                                maxLines: 1
+                            ).animate().fadeIn(),
+                          ),
+                        )
+                      ],
+                    ),
                   ).animate().fadeIn(),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(

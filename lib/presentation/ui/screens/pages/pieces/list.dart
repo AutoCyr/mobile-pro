@@ -1,5 +1,6 @@
 import 'package:autocyr_pro/data/network/urls.dart';
 import 'package:autocyr_pro/domain/models/pieces/detail_piece.dart';
+import 'package:autocyr_pro/domain/models/pieces/piece_info.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
@@ -15,6 +16,7 @@ import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/add.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/detail.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/edit.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/edit_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -29,11 +31,7 @@ class PieceListScreen extends StatefulWidget {
 
 class _PieceListScreenState extends State<PieceListScreen> {
 
-  String? selectedChip;
-  late List<String> chips = [
-    "Deux roues",
-    "Quatre roues",
-  ];
+  late PieceInfo info;
   late bool search = false;
   late List<DetailPiece> pieces = [];
   late List<DetailPiece> localPieces = [];
@@ -57,7 +55,15 @@ class _PieceListScreenState extends State<PieceListScreen> {
     localPieces = pieces = partner.pieces;
   }
 
-  _changePieceStatus(DetailPiece detail, Future function, BuildContext context) async {
+  retrievePieceDetails(DetailPiece piece) async {
+    final partner = Provider.of<PartnerNotifier>(context, listen: false);
+    await partner.getPiece(id: piece.detailPieceId.toString(), context: context);
+    setState(() {
+      info = partner.piece!;
+    });
+  }
+
+  _changePieceStatus(DetailPiece detail, Future function) async {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
     await partner.changePieceStatus(piece: detail, function: function, context: context);
   }
@@ -125,9 +131,10 @@ class _PieceListScreenState extends State<PieceListScreen> {
                 const Gap(10),
                 InkWell(
                   splashColor: Colors.transparent,
-                  onTap: () {
+                  onTap: () async {
+                    await retrievePieceDetails(detail);
                     Navigator.pop(context);
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => PlanEditScreen(plan: plan)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ConfigEditScreen(detail: info)));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
@@ -152,7 +159,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                   splashColor: Colors.transparent,
                   onTap: () {
                     Navigator.pop(context);
-                    _changePieceStatus(detail, retrievePieces(), context);
+                    _changePieceStatus(detail, retrievePieces());
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 10),
@@ -238,7 +245,8 @@ class _PieceListScreenState extends State<PieceListScreen> {
       ),
       body: Consumer2<AuthNotifier, PartnerNotifier>(
         builder: (context, auth, partner, child) {
-          if(partner.loading) {
+
+          if(partner.mainLoading) {
             return SizedBox(
               width: size.width,
               height: size.height - kToolbarHeight,
@@ -259,7 +267,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
             );
           }
 
-          if(localPieces.isEmpty && !partner.loading) {
+          if(localPieces.isEmpty && !partner.mainLoading) {
             return const StateScreen(icon: Icons.settings_outlined, message: "Aucune pièce trouvée.", isError: false,);
           }
 
@@ -306,7 +314,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       ),
                       child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -343,7 +351,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                                 ),
                               ],
                             ),
-                            Column(
+                            /*Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
@@ -358,7 +366,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                                 if(partner.isActionPiece(piece))
                                   Icon(Icons.update, color: GlobalThemeData.lightColorScheme.onPrimary, size: 20,)
                               ],
-                            ),
+                            ),*/
                           ]
                       ),
                     ),
