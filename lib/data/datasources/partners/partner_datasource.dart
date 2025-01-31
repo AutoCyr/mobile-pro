@@ -7,7 +7,13 @@ abstract class PartnerDataSource {
 
   Future addPiece(Map<String, String> body, String filepath, String name);
 
+  Future updatePiece(Map<String, String> body, String id, String filepath, String name);
+
+  Future changePieceStatus(String id);
+
   Future addDisponibilities(Map<String, dynamic> body);
+
+  Future updateDisponibilities(Map<String, dynamic> body);
 
   Future getPieces(String id);
 

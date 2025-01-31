@@ -125,7 +125,7 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                         ),
                         child: Center(
                           child: Label12(
-                              text: partner.piece!.marque.libelleMarque.toUpperCase(),
+                              text: partner.piece!.marque.name.toUpperCase(),
                               color: GlobalThemeData.lightColorScheme.onPrimary,
                               weight: FontWeight.bold,
                               maxLines: 1

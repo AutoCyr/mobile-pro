@@ -86,7 +86,6 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
         Snacks.failureBar("Veuillez remplir tous les champs avant de continuer", context);
       }
     }
-
   }
 
   retrieveCommons() async {

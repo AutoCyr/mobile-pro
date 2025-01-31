@@ -21,9 +21,9 @@ Make _$MakeFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Make {
   @JsonKey(name: 'marque_id')
-  int get marqueId => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'libelle_marque')
-  String get libelleMarque => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'type_marque')
   int get typeMarque => throw _privateConstructorUsedError;
   @JsonKey(name: 'statut')
@@ -44,8 +44,8 @@ abstract class $MakeCopyWith<$Res> {
       _$MakeCopyWithImpl<$Res, Make>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'marque_id') int marqueId,
-      @JsonKey(name: 'libelle_marque') String libelleMarque,
+      {@JsonKey(name: 'marque_id') int id,
+      @JsonKey(name: 'libelle_marque') String name,
       @JsonKey(name: 'type_marque') int typeMarque,
       @JsonKey(name: 'statut') int statut,
       @JsonKey(name: 'created_at') DateTime createdAt,
@@ -65,21 +65,21 @@ class _$MakeCopyWithImpl<$Res, $Val extends Make>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? marqueId = null,
-    Object? libelleMarque = null,
+    Object? id = null,
+    Object? name = null,
     Object? typeMarque = null,
     Object? statut = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
     return _then(_value.copyWith(
-      marqueId: null == marqueId
-          ? _value.marqueId
-          : marqueId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
-      libelleMarque: null == libelleMarque
-          ? _value.libelleMarque
-          : libelleMarque // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       typeMarque: null == typeMarque
           ? _value.typeMarque
@@ -109,8 +109,8 @@ abstract class _$$MakeImplCopyWith<$Res> implements $MakeCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'marque_id') int marqueId,
-      @JsonKey(name: 'libelle_marque') String libelleMarque,
+      {@JsonKey(name: 'marque_id') int id,
+      @JsonKey(name: 'libelle_marque') String name,
       @JsonKey(name: 'type_marque') int typeMarque,
       @JsonKey(name: 'statut') int statut,
       @JsonKey(name: 'created_at') DateTime createdAt,
@@ -127,21 +127,21 @@ class __$$MakeImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? marqueId = null,
-    Object? libelleMarque = null,
+    Object? id = null,
+    Object? name = null,
     Object? typeMarque = null,
     Object? statut = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
     return _then(_$MakeImpl(
-      marqueId: null == marqueId
-          ? _value.marqueId
-          : marqueId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
-      libelleMarque: null == libelleMarque
-          ? _value.libelleMarque
-          : libelleMarque // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       typeMarque: null == typeMarque
           ? _value.typeMarque
@@ -167,8 +167,8 @@ class __$$MakeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MakeImpl implements _Make {
   const _$MakeImpl(
-      {@JsonKey(name: 'marque_id') required this.marqueId,
-      @JsonKey(name: 'libelle_marque') required this.libelleMarque,
+      {@JsonKey(name: 'marque_id') required this.id,
+      @JsonKey(name: 'libelle_marque') required this.name,
       @JsonKey(name: 'type_marque') required this.typeMarque,
       @JsonKey(name: 'statut') required this.statut,
       @JsonKey(name: 'created_at') required this.createdAt,
@@ -179,10 +179,10 @@ class _$MakeImpl implements _Make {
 
   @override
   @JsonKey(name: 'marque_id')
-  final int marqueId;
+  final int id;
   @override
   @JsonKey(name: 'libelle_marque')
-  final String libelleMarque;
+  final String name;
   @override
   @JsonKey(name: 'type_marque')
   final int typeMarque;
@@ -198,7 +198,7 @@ class _$MakeImpl implements _Make {
 
   @override
   String toString() {
-    return 'Make(marqueId: $marqueId, libelleMarque: $libelleMarque, typeMarque: $typeMarque, statut: $statut, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Make(id: $id, name: $name, typeMarque: $typeMarque, statut: $statut, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -206,10 +206,8 @@ class _$MakeImpl implements _Make {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MakeImpl &&
-            (identical(other.marqueId, marqueId) ||
-                other.marqueId == marqueId) &&
-            (identical(other.libelleMarque, libelleMarque) ||
-                other.libelleMarque == libelleMarque) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.typeMarque, typeMarque) ||
                 other.typeMarque == typeMarque) &&
             (identical(other.statut, statut) || other.statut == statut) &&
@@ -221,8 +219,8 @@ class _$MakeImpl implements _Make {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, marqueId, libelleMarque,
-      typeMarque, statut, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, typeMarque, statut, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -240,8 +238,8 @@ class _$MakeImpl implements _Make {
 
 abstract class _Make implements Make {
   const factory _Make(
-          {@JsonKey(name: 'marque_id') required final int marqueId,
-          @JsonKey(name: 'libelle_marque') required final String libelleMarque,
+          {@JsonKey(name: 'marque_id') required final int id,
+          @JsonKey(name: 'libelle_marque') required final String name,
           @JsonKey(name: 'type_marque') required final int typeMarque,
           @JsonKey(name: 'statut') required final int statut,
           @JsonKey(name: 'created_at') required final DateTime createdAt,
@@ -252,10 +250,10 @@ abstract class _Make implements Make {
 
   @override
   @JsonKey(name: 'marque_id')
-  int get marqueId;
+  int get id;
   @override
   @JsonKey(name: 'libelle_marque')
-  String get libelleMarque;
+  String get name;
   @override
   @JsonKey(name: 'type_marque')
   int get typeMarque;

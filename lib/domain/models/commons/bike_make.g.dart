@@ -12,8 +12,8 @@ _$BikeMakeImpl _$$BikeMakeImplFromJson(Map<String, dynamic> json) =>
       name: json['libelle_marque'] as String,
       typeMarque: (json['type_marque'] as num).toInt(),
       statut: (json['statut'] as num).toInt(),
-      createdAt: json['created_at'] as String,
-      updatedAt: json['updated_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
 
 Map<String, dynamic> _$$BikeMakeImplToJson(_$BikeMakeImpl instance) =>
@@ -22,6 +22,6 @@ Map<String, dynamic> _$$BikeMakeImplToJson(_$BikeMakeImpl instance) =>
       'libelle_marque': instance.name,
       'type_marque': instance.typeMarque,
       'statut': instance.statut,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

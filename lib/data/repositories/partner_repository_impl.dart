@@ -46,4 +46,19 @@ class PartnerRepositoryImpl extends PartnerRepository {
     return await _partnerDataSourceImpl.updateAdresses(body);
   }
 
+  @override
+  Future updateDisponibilities(Map<String, dynamic> body) async {
+    return await _partnerDataSourceImpl.updateDisponibilities(body);
+  }
+
+  @override
+  Future updatePiece(Map<String, String> body, String id, String filepath, String name) async {
+    return await _partnerDataSourceImpl.updatePiece(body, id, filepath, name);
+  }
+
+  @override
+  Future changePieceStatus(String id) async {
+    return await _partnerDataSourceImpl.changePieceStatus(id);
+  }
+
 }

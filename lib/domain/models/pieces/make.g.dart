@@ -7,8 +7,8 @@ part of 'make.dart';
 // **************************************************************************
 
 _$MakeImpl _$$MakeImplFromJson(Map<String, dynamic> json) => _$MakeImpl(
-      marqueId: (json['marque_id'] as num).toInt(),
-      libelleMarque: json['libelle_marque'] as String,
+      id: (json['marque_id'] as num).toInt(),
+      name: json['libelle_marque'] as String,
       typeMarque: (json['type_marque'] as num).toInt(),
       statut: (json['statut'] as num).toInt(),
       createdAt: DateTime.parse(json['created_at'] as String),
@@ -17,8 +17,8 @@ _$MakeImpl _$$MakeImplFromJson(Map<String, dynamic> json) => _$MakeImpl(
 
 Map<String, dynamic> _$$MakeImplToJson(_$MakeImpl instance) =>
     <String, dynamic>{
-      'marque_id': instance.marqueId,
-      'libelle_marque': instance.libelleMarque,
+      'marque_id': instance.id,
+      'libelle_marque': instance.name,
       'type_marque': instance.typeMarque,
       'statut': instance.statut,
       'created_at': instance.createdAt.toIso8601String(),

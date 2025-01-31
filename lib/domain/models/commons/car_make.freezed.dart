@@ -29,9 +29,9 @@ mixin _$CarMake {
   @JsonKey(name: 'statut')
   int get statut => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
-  String get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
-  String get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,8 +48,8 @@ abstract class $CarMakeCopyWith<$Res> {
       @JsonKey(name: 'libelle_marque') String name,
       @JsonKey(name: 'type_marque') int typeMarque,
       @JsonKey(name: 'statut') int statut,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt});
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
@@ -92,11 +92,11 @@ class _$CarMakeCopyWithImpl<$Res, $Val extends CarMake>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
     ) as $Val);
   }
 }
@@ -113,8 +113,8 @@ abstract class _$$CarMakeImplCopyWith<$Res> implements $CarMakeCopyWith<$Res> {
       @JsonKey(name: 'libelle_marque') String name,
       @JsonKey(name: 'type_marque') int typeMarque,
       @JsonKey(name: 'statut') int statut,
-      @JsonKey(name: 'created_at') String createdAt,
-      @JsonKey(name: 'updated_at') String updatedAt});
+      @JsonKey(name: 'created_at') DateTime createdAt,
+      @JsonKey(name: 'updated_at') DateTime updatedAt});
 }
 
 /// @nodoc
@@ -155,11 +155,11 @@ class __$$CarMakeImplCopyWithImpl<$Res>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
     ));
   }
 }
@@ -192,10 +192,10 @@ class _$CarMakeImpl implements _CarMake {
   final int statut;
   @override
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final DateTime createdAt;
   @override
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final DateTime updatedAt;
 
   @override
   String toString() {
@@ -243,8 +243,8 @@ abstract class _CarMake implements CarMake {
           @JsonKey(name: 'libelle_marque') required final String name,
           @JsonKey(name: 'type_marque') required final int typeMarque,
           @JsonKey(name: 'statut') required final int statut,
-          @JsonKey(name: 'created_at') required final String createdAt,
-          @JsonKey(name: 'updated_at') required final String updatedAt}) =
+          @JsonKey(name: 'created_at') required final DateTime createdAt,
+          @JsonKey(name: 'updated_at') required final DateTime updatedAt}) =
       _$CarMakeImpl;
 
   factory _CarMake.fromJson(Map<String, dynamic> json) = _$CarMakeImpl.fromJson;
@@ -263,10 +263,10 @@ abstract class _CarMake implements CarMake {
   int get statut;
   @override
   @JsonKey(name: 'created_at')
-  String get createdAt;
+  DateTime get createdAt;
   @override
   @JsonKey(name: 'updated_at')
-  String get updatedAt;
+  DateTime get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$CarMakeImplCopyWith<_$CarMakeImpl> get copyWith =>

@@ -6,8 +6,8 @@ part 'make.g.dart';
 @freezed
 class Make with _$Make {
   const factory Make({
-    @JsonKey(name: 'marque_id') required int marqueId,
-    @JsonKey(name: 'libelle_marque') required String libelleMarque,
+    @JsonKey(name: 'marque_id') required int id,
+    @JsonKey(name: 'libelle_marque') required String name,
     @JsonKey(name: 'type_marque') required int typeMarque,
     @JsonKey(name: 'statut') required int statut,
     @JsonKey(name: 'created_at') required DateTime createdAt,

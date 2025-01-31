@@ -10,8 +10,20 @@ class PartnerUseCase {
     return await _partnerRepositoryImpl.addPiece(body, filepath, name);
   }
 
+  Future updatePiece(Map<String, String> body, String id, String filepath, String name) async {
+    return await _partnerRepositoryImpl.updatePiece(body, id, filepath, name);
+  }
+
+  Future changePieceStatus(String id) async {
+    return await _partnerRepositoryImpl.changePieceStatus(id);
+  }
+
   Future addDisponibilities(Map<String, dynamic> body) async {
     return await _partnerRepositoryImpl.addDisponibilities(body);
+  }
+
+  Future updateDisponibilities(Map<String, dynamic> body) async {
+    return await _partnerRepositoryImpl.updateDisponibilities(body);
   }
 
   Future addSubscription(Map<String, dynamic> body) async {

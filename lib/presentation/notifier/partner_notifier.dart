@@ -1,6 +1,7 @@
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/domain/models/core/subscription.dart';
 import 'package:autocyr_pro/domain/models/pieces/detail_piece.dart';
+import 'package:autocyr_pro/domain/models/pieces/piece.dart';
 import 'package:autocyr_pro/domain/models/pieces/piece_info.dart';
 import 'package:autocyr_pro/domain/models/response/failure.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
@@ -21,17 +22,26 @@ class PartnerNotifier extends ChangeNotifier {
   PartnerNotifier({required this.partnerUseCase});
 
   bool _loading = false;
+  bool _update = false;
   Subscription? _subscription;
   PieceInfo? _piece;
   List<DetailPiece> _pieces = [];
+  Map<DetailPiece, bool> _actionPieces = {};
 
   bool get loading => _loading;
+  bool get update => _update;
   Subscription? get subscription => _subscription;
   PieceInfo? get piece => _piece;
   List<DetailPiece> get pieces => _pieces;
+  Map<DetailPiece, bool> get actionPieces => _actionPieces;
 
   setLoading(bool value) {
     _loading = value;
+    notifyListeners();
+  }
+
+  setUpdate(bool value) {
+    _update = value;
     notifyListeners();
   }
 
@@ -48,6 +58,20 @@ class PartnerNotifier extends ChangeNotifier {
   setPieces(List<DetailPiece> value) {
     _pieces = value;
     notifyListeners();
+  }
+
+  setActionPieces(Map<DetailPiece, bool> value) {
+    _actionPieces = value;
+    notifyListeners();
+  }
+
+  updateActionPieces(DetailPiece piece) {
+    _actionPieces[piece] = !_actionPieces[piece]!;
+    notifyListeners();
+  }
+
+  bool isActionPiece(DetailPiece piece) {
+    return _actionPieces[piece] ?? false;
   }
 
   checkSubscription({required String id, required List<Plan> plans, required BuildContext context}) async {
@@ -201,6 +225,73 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
+  updatePiece({required Map<String, String> body, required String id, required String filepath, required String name, required Future function, required BuildContext context}) async {
+    setLoading(true);
+    try {
+      var data = await partnerUseCase.updatePiece(body, id, filepath, name);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        DetailPiece detailPiece = DetailPiece.fromJson(success.data);
+        final updatePieces = List.of(_pieces)..removeWhere((element) => element.detailPieceId == detailPiece.detailPieceId);
+        updatePieces.add(detailPiece);
+        setPieces(updatePieces);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.successBar("Votre pièce a bien été modifiée", context);
+          await function;
+          Navigator.pop(context);
+        }
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+      }
+    } catch (e) {
+      print(e);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  changePieceStatus({required DetailPiece piece, required Future function, required BuildContext context}) async {
+    setUpdate(true);
+    updateActionPieces(piece);
+    try {
+      var data = await partnerUseCase.changePieceStatus(piece.piece.pieceId.toString());
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        setUpdate(false);
+        updateActionPieces(piece);
+
+        if(context.mounted) {
+          await function;
+          Snacks.successBar("Le statut de votre pièce a bien été modifié", context);
+        }
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setUpdate(false);
+        updateActionPieces(piece);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+      }
+    } catch (e) {
+      print(e);
+      setUpdate(false);
+      updateActionPieces(piece);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
   addDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
     setLoading(true);
     try {
@@ -211,6 +302,34 @@ class PartnerNotifier extends ChangeNotifier {
 
         if(context.mounted) {
           Snacks.successBar("Vos configurations ont bien été enregistrées", context);
+          Navigator.pop(context);
+        }
+        setLoading(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+      }
+    } catch (e) {
+      print(e);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  updateDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
+    setLoading(true);
+    try {
+      var data = await partnerUseCase.updateDisponibilities(body);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        if(context.mounted) {
+          Snacks.successBar("Vos configurations ont bien été modifiées", context);
           Navigator.pop(context);
         }
         setLoading(false);
@@ -244,9 +363,9 @@ class PartnerNotifier extends ChangeNotifier {
         }
         setPieces(pieces);
 
-        /*if(context.mounted) {
-          Snacks.successBar("Vos pieces ont bien été récupérées", context);
-        }*/
+        Map<DetailPiece, bool> actionPieces = { for(var piece in pieces) piece : false };
+        setActionPieces(actionPieces);
+
         setLoading(false);
       }else{
         Failure failure = Failure.fromJson(data);

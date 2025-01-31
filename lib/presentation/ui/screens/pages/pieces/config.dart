@@ -100,7 +100,7 @@ class _PieceConfigScreenState extends State<PieceConfigScreen> {
                     const Gap(10),
                     Label10(text: widget.detail.piece.nomPiece, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(5),
-                    Label10(text: widget.detail.marque.libelleMarque, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(5),
                     Label10(text: "${widget.detail.modelePiece} ${widget.detail.numeroPiece} ${widget.detail.anneePiece}", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                   ],
