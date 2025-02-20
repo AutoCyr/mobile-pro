@@ -18,4 +18,10 @@ abstract class CommonRepository {
   Future getEnginTypes();
 
   Future getMoteurTypes();
+
+  Future getCategories();
+
+  Future getSubCategories();
+
+  Future getArticles();
 }
