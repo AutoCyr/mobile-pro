@@ -33,7 +33,7 @@ class _StateScreenState extends State<StateScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: CustomButton(
-                  text: "Enregistrer",
+                  text: "Relancer",
                   size: size,
                   globalWidth: size.width * 0.9,
                   widthSize: size.width * 0.87,

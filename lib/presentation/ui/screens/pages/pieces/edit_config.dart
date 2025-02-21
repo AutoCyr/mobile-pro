@@ -27,6 +27,7 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
   List<int> autos = [];
   List<int> moteurs = [];
   List<Map<String, dynamic>> categories = [];
+  List<int> marques = [];
 
   retrieveCommons() async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
@@ -39,6 +40,12 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
       }
       if(common.motorTypes.isEmpty) {
         await common.retrieveMotorTypes(context: context);
+      }
+      if(common.carMakes.isEmpty) {
+        await common.retrieveAutoMakes(context: context);
+      }
+      if(common.bikeMakes.isEmpty) {
+        await common.retrieveBikeMakes(context: context);
       }
     }
   }

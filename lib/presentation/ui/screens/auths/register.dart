@@ -1,3 +1,4 @@
+import 'package:autocyr_pro/domain/models/commons/country.dart';
 import 'package:autocyr_pro/domain/models/commons/partner_type.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
@@ -47,6 +48,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
       if(common.partnerTypes.isEmpty) {
         await common.retrievePartnerTypes(context: context);
+      }
+    }
+  }
+  
+  getNationalCountry() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    Country country = common.countries.firstWhere((element) => element.initials == "TG");
+    common.setCountry(country);
+    setState(() {
+      _countryController.text = country.name;
+    });
+  }
+
+  checkNationalCountry() {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    if(typeKey == "") {
+      return Snacks.failureBar("Veuillez sélectionner un type de partenaire", context);
+    } else {
+      if(typeKey == "1") {
+        return Snacks.failureBar("Veuillez changer de type de partenaire pour sélectionner un pays", context);
+      } else {
+        return Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(controller: _countryController, list: common.countries, typeSelection: "country", multiple: false, onSave: (){},)));
       }
     }
   }
@@ -122,8 +145,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               context: context,
                               options: common.partnerTypes,
                               displayField: (value) => (value as PartnerType).libelle,
-                              onSelected: (value) {
+                              onSelected: (value) async {
                                 common.setPartnerType(value as PartnerType);
+                                if(value.id == 1) await getNationalCountry();
                                 setState(() {
                                   _typeController.text = value.libelle;
                                   typeKey = value.id.toString();
@@ -135,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Label10(text: "Chargement des pays...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                Label10(text: "Chargement des pays...", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                                 const Gap(10),
                                 ProgressButton(
                                   widthSize: size.width * 0.9,
@@ -153,13 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 12,
                               icon: Icons.flag_outlined,
                               context: context,
-                              /*options: common.countries,
-                              typeSelection: "country",*/
-                              onSelected: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CustomSearchable(
-                                controller: _countryController,
-                                list: common.countries,
-                                typeSelection: "country",
-                              ))),
+                              onSelected: () => checkNationalCountry(),
                             ).animate().fadeIn(),
                           const Gap(10),
                           CustomField(
@@ -176,9 +194,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: size.width * 0.25,
                                 child: common.country != null ?
-                                  Label14(text: "${common.country!.initials} (${common.country!.countryCode})", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+                                  Label14(text: "${common.country!.initials} (${common.country!.countryCode})", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
                                     :
-                                  Label14(text: "Pays (+---)", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                  Label14(text: "Pays (+---)", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                               ),
                               SizedBox(
                                 width: size.width * 0.65,

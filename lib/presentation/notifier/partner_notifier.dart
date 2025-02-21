@@ -272,7 +272,7 @@ class PartnerNotifier extends ChangeNotifier {
   changePieceStatus({required DetailPiece piece, required Future function, required BuildContext context}) async {
     setUpdate(true);
     try {
-      var data = await partnerUseCase.changePieceStatus(piece.piece.pieceId.toString());
+      var data = await partnerUseCase.changePieceStatus(piece.detailPieceId.toString());
 
       if(data['error'] == false) {
         Success success = Success.fromJson(data);

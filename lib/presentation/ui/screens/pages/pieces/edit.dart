@@ -46,11 +46,8 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
   final ImagePicker _picker = ImagePicker();
 
   final TextEditingController _nomPieceController = TextEditingController();
-  final TextEditingController _marqueController = TextEditingController();
+  final TextEditingController _articleController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
-  final TextEditingController _modeleController = TextEditingController();
-  final TextEditingController _numeroController = TextEditingController();
-  final TextEditingController _anneeController = TextEditingController();
   final TextEditingController _prixController = TextEditingController();
   final TextEditingController _autreController = TextEditingController();
 
@@ -79,24 +76,13 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
   loadData() async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
 
-    CarMake? carMake;
-    BikeMake? bikeMake;
     EnginType type = common.enginTypes.firstWhere((element) => element.id == widget.detail.typeEngin.id);
 
-    if(type.libelle.toLowerCase() == "quatre roues") {
-      carMake = common.carMakes.firstWhere((element) => element.id == widget.detail.marque.id);
-    } else {
-      bikeMake = common.bikeMakes.firstWhere((element) => element.id == widget.detail.marque.id);
-    }
-
     setState(() {
-      _nomPieceController.text = widget.detail.piece.nomPiece;
-      _marqueController.text = type.libelle.toLowerCase() == "quatre roues" ? carMake!.name : bikeMake!.name;
+      if(widget.detail.piece != null) _nomPieceController.text = widget.detail.piece!.nomPiece;
+      if(widget.detail.article != null) _articleController.text = widget.detail.article!.name;
       _typeController.text = type.libelle;
       typeKey = type.id.toString();
-      _modeleController.text = widget.detail.modelePiece;
-      _numeroController.text = widget.detail.numeroPiece;
-      _anneeController.text = widget.detail.anneePiece.toString();
       _prixController.text = widget.detail.prixPiece.toString();
       _isGarantie = widget.detail.garantie == 1 ? true : false;
       _autreController.text = widget.detail.autres ?? "";
@@ -108,15 +94,13 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
     final common = Provider.of<CommonNotifier>(context, listen: false);
 
-    if(UiTools().checkFields([_nomPieceController, _marqueController, _typeController, _modeleController, _numeroController, _anneeController, _prixController])) {
+    if(UiTools().checkFields([_nomPieceController, _typeController, _prixController])) {
       Map<String, String> body = {
         "partenaire_id" : auth.getPartenaire.partenaireId.toString(),
+        "key_piece": widget.detail.article != null ? "article" : "piece",
         "nom_piece" : _nomPieceController.text,
         "type_engin_id" : typeKey,
         "marque_id" : _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMake!.id.toString() : common.carMake!.id.toString(),
-        "modele_piece" : _modeleController.text,
-        "numero_piece" : _numeroController.text,
-        "annee_piece" : _anneeController.text,
         "prix_piece" : _prixController.text,
         "garantie" : _isGarantie ? "1" : "0",
         "autres" : _autreController.text,
@@ -124,9 +108,17 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
       };
 
       if(media == null) {
-        await partner.updatePiece(body: body, id: widget.detail.piece.pieceId.toString(), filepath: "", name: "", function: widget.function, context: context);
+        if(widget.detail.piece != null) {
+          await partner.updatePiece(body: body, id: widget.detail.piece!.pieceId.toString(), filepath: "", name: "", function: widget.function, context: context);
+        } else {
+          await partner.updatePiece(body: body, id: widget.detail.article!.id.toString(), filepath: "", name: "", function: widget.function, context: context);
+        }
       } else {
-        await partner.updatePiece(body: body, id: widget.detail.piece.pieceId.toString(), filepath: media!.path, name: "image_piece", function: widget.function, context: context);
+        if(widget.detail.piece != null) {
+          await partner.updatePiece(body: body, id: widget.detail.piece!.pieceId.toString(), filepath: media!.path, name: "image_piece", function: widget.function, context: context);
+        } else {
+          await partner.updatePiece(body: body, id: widget.detail.article!.id.toString(), filepath: media!.path, name: "image_piece", function: widget.function, context: context);
+        }
       }
     } else {
       Snacks.failureBar("Veuillez remplir tous les champs avant de continuer", context);
@@ -319,94 +311,13 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                             }
                         ).animate().fadeIn(),
                         const Gap(10),
-                        common.filling ?
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Label10(text: "Chargement des marques...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
-                              const Gap(10),
-                              ProgressButton(
-                                  widthSize: size.width * 0.9,
-                                  context: context,
-                                  bgColor: GlobalThemeData.lightColorScheme.onPrimary,
-                                  shimmerColor: GlobalThemeData.lightColorScheme.primary
-                              )
-                            ]
-                        ).animate().fadeIn()
-                            :
-                        ObjectSelectableField(
-                            controller: _marqueController,
-                            keyboardType: TextInputType.none,
-                            label: "Marque",
-                            fontSize: 12,
-                            icon: Icons.loyalty_outlined,
-                            context: context,
-                            onSelected: () {
-                              if(_typeController.text.isNotEmpty) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return CustomSearchable(
-                                    controller: _marqueController,
-                                    list: _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMakes : common.carMakes,
-                                    typeSelection: _typeController.text.toLowerCase() != "quatre roues" ? "bike" : "car",
-                                  );
-                                }));
-                              } else {
-                                Snacks.failureBar("Veuillez sélectionner un type d'engin", context);
-                              }
-                            }
+                        CustomField(
+                          controller: _prixController,
+                          keyboardType: TextInputType.number,
+                          label: "Prix",
+                          fontSize: 12,
+                          icon: Icons.onetwothree_sharp,
                         ).animate().fadeIn(),
-                        const Gap(10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.45,
-                              child: CustomField(
-                                controller: _modeleController,
-                                keyboardType: TextInputType.text,
-                                label: "Modèle",
-                                fontSize: 12,
-                                icon: Icons.style_outlined,
-                              ).animate().fadeIn(),
-                            ),
-                            SizedBox(
-                              width: size.width * 0.45,
-                              child: CustomField(
-                                controller: _numeroController,
-                                keyboardType: TextInputType.text,
-                                label: "Numéro",
-                                fontSize: 12,
-                                icon: Icons.onetwothree_sharp,
-                              ).animate().fadeIn(),
-                            ),
-                          ],
-                        ),
-                        const Gap(10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: size.width * 0.45,
-                              child: CustomField(
-                                controller: _anneeController,
-                                keyboardType: TextInputType.number,
-                                label: "Année",
-                                fontSize: 12,
-                                icon: Icons.calendar_today_outlined,
-                              ).animate().fadeIn(),
-                            ),
-                            SizedBox(
-                              width: size.width * 0.45,
-                              child: CustomField(
-                                controller: _prixController,
-                                keyboardType: TextInputType.number,
-                                label: "Prix",
-                                fontSize: 12,
-                                icon: Icons.onetwothree_sharp,
-                              ).animate().fadeIn(),
-                            ),
-                          ],
-                        ),
                         const Gap(10),
                         Row(
                           children: [

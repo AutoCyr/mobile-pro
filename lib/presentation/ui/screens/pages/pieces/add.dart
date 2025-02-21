@@ -44,11 +44,7 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
   final ImagePicker _picker = ImagePicker();
 
   final TextEditingController _nomPieceController = TextEditingController();
-  final TextEditingController _marqueController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
-  final TextEditingController _modeleController = TextEditingController();
-  final TextEditingController _numeroController = TextEditingController();
-  final TextEditingController _anneeController = TextEditingController();
   final TextEditingController _prixController = TextEditingController();
   final TextEditingController _autreController = TextEditingController();
 
@@ -67,15 +63,11 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
     if(media == null) {
       Snacks.failureBar("Veuillez sélectionner une image pour votre pièce", context);
     } else {
-      if(UiTools().checkFields([_nomPieceController, _marqueController, _typeController, _modeleController, _numeroController, _anneeController, _prixController])) {
+      if(UiTools().checkFields([_nomPieceController, _typeController, _prixController])) {
         Map<String, String> body = {
           "partenaire_id" : auth.getPartenaire.partenaireId.toString(),
           "nom_piece" : _nomPieceController.text,
           "type_engin_id" : typeKey,
-          "marque_id" : _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMake!.id.toString() : common.carMake!.id.toString(),
-          "modele_piece" : _modeleController.text,
-          "numero_piece" : _numeroController.text,
-          "annee_piece" : _anneeController.text,
           "prix_piece" : _prixController.text,
           "garantie" : _isGarantie ? "1" : "0",
           "autres" : _autreController.text,
@@ -256,94 +248,13 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                           }
                         ).animate().fadeIn(),
                       const Gap(10),
-                      common.filling ?
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Label10(text: "Chargement des marques...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
-                            const Gap(10),
-                            ProgressButton(
-                              widthSize: size.width * 0.9,
-                              context: context,
-                              bgColor: GlobalThemeData.lightColorScheme.onPrimary,
-                              shimmerColor: GlobalThemeData.lightColorScheme.primary
-                            )
-                          ]
-                        ).animate().fadeIn()
-                          :
-                        ObjectSelectableField(
-                          controller: _marqueController,
-                          keyboardType: TextInputType.none,
-                          label: "Marque",
-                          fontSize: 12,
-                          icon: Icons.loyalty_outlined,
-                          context: context,
-                          onSelected: () {
-                            if(_typeController.text.isNotEmpty) {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return CustomSearchable(
-                                  controller: _marqueController,
-                                  list: _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMakes : common.carMakes,
-                                  typeSelection: _typeController.text.toLowerCase() != "quatre roues" ? "bike" : "car",
-                                );
-                              }));
-                            } else {
-                              Snacks.failureBar("Veuillez sélectionner un type d'engin", context);
-                            }
-                          }
-                        ).animate().fadeIn(),
-                      const Gap(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.45,
-                            child: CustomField(
-                              controller: _modeleController,
-                              keyboardType: TextInputType.text,
-                              label: "Modèle",
-                              fontSize: 12,
-                              icon: Icons.style_outlined,
-                            ).animate().fadeIn(),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.45,
-                            child: CustomField(
-                              controller: _numeroController,
-                              keyboardType: TextInputType.text,
-                              label: "Numéro",
-                              fontSize: 12,
-                              icon: Icons.onetwothree_sharp,
-                            ).animate().fadeIn(),
-                          ),
-                        ],
-                      ),
-                      const Gap(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.45,
-                            child: CustomField(
-                              controller: _anneeController,
-                              keyboardType: TextInputType.number,
-                              label: "Année",
-                              fontSize: 12,
-                              icon: Icons.calendar_today_outlined,
-                            ).animate().fadeIn(),
-                          ),
-                          SizedBox(
-                            width: size.width * 0.45,
-                            child: CustomField(
-                              controller: _prixController,
-                              keyboardType: TextInputType.number,
-                              label: "Prix",
-                              fontSize: 12,
-                              icon: Icons.onetwothree_sharp,
-                            ).animate().fadeIn(),
-                          ),
-                        ],
-                      ),
+                      CustomField(
+                        controller: _prixController,
+                        keyboardType: TextInputType.number,
+                        label: "Prix",
+                        fontSize: 12,
+                        icon: Icons.onetwothree_sharp,
+                      ).animate().fadeIn(),
                       const Gap(10),
                       Row(
                         children: [

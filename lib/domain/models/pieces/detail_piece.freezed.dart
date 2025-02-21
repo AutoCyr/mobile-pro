@@ -25,17 +25,11 @@ mixin _$DetailPiece {
   @JsonKey(name: 'partenaire_id')
   int get partenaireId => throw _privateConstructorUsedError;
   @JsonKey(name: 'piece_id')
-  int get pieceId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'marque_id')
-  int get marqueId => throw _privateConstructorUsedError;
+  int? get pieceId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'article_id')
+  int? get articleId => throw _privateConstructorUsedError;
   @JsonKey(name: 'type_engin_id')
   int get typeEnginId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'modele_piece')
-  String get modelePiece => throw _privateConstructorUsedError;
-  @JsonKey(name: 'numero_piece')
-  String get numeroPiece => throw _privateConstructorUsedError;
-  @JsonKey(name: 'annee_piece')
-  String get anneePiece => throw _privateConstructorUsedError;
   @JsonKey(name: 'prix_piece')
   int get prixPiece => throw _privateConstructorUsedError;
   @JsonKey(name: 'garantie')
@@ -44,14 +38,16 @@ mixin _$DetailPiece {
   String? get autres => throw _privateConstructorUsedError;
   @JsonKey(name: 'image_piece')
   String get imagePiece => throw _privateConstructorUsedError;
+  @JsonKey(name: 'statut')
+  int get statut => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'piece')
-  Piece get piece => throw _privateConstructorUsedError;
-  @JsonKey(name: 'marque')
-  Make get marque => throw _privateConstructorUsedError;
+  Piece? get piece => throw _privateConstructorUsedError;
+  @JsonKey(name: 'article')
+  Article? get article => throw _privateConstructorUsedError;
   @JsonKey(name: 'type_engin')
   EnginType get typeEngin => throw _privateConstructorUsedError;
 
@@ -70,24 +66,22 @@ abstract class $DetailPieceCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'detail_piece_id') int detailPieceId,
       @JsonKey(name: 'partenaire_id') int partenaireId,
-      @JsonKey(name: 'piece_id') int pieceId,
-      @JsonKey(name: 'marque_id') int marqueId,
+      @JsonKey(name: 'piece_id') int? pieceId,
+      @JsonKey(name: 'article_id') int? articleId,
       @JsonKey(name: 'type_engin_id') int typeEnginId,
-      @JsonKey(name: 'modele_piece') String modelePiece,
-      @JsonKey(name: 'numero_piece') String numeroPiece,
-      @JsonKey(name: 'annee_piece') String anneePiece,
       @JsonKey(name: 'prix_piece') int prixPiece,
       @JsonKey(name: 'garantie') int garantie,
       @JsonKey(name: 'autres') String? autres,
       @JsonKey(name: 'image_piece') String imagePiece,
+      @JsonKey(name: 'statut') int statut,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'piece') Piece piece,
-      @JsonKey(name: 'marque') Make marque,
+      @JsonKey(name: 'piece') Piece? piece,
+      @JsonKey(name: 'article') Article? article,
       @JsonKey(name: 'type_engin') EnginType typeEngin});
 
-  $PieceCopyWith<$Res> get piece;
-  $MakeCopyWith<$Res> get marque;
+  $PieceCopyWith<$Res>? get piece;
+  $ArticleCopyWith<$Res>? get article;
   $EnginTypeCopyWith<$Res> get typeEngin;
 }
 
@@ -106,20 +100,18 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
   $Res call({
     Object? detailPieceId = null,
     Object? partenaireId = null,
-    Object? pieceId = null,
-    Object? marqueId = null,
+    Object? pieceId = freezed,
+    Object? articleId = freezed,
     Object? typeEnginId = null,
-    Object? modelePiece = null,
-    Object? numeroPiece = null,
-    Object? anneePiece = null,
     Object? prixPiece = null,
     Object? garantie = null,
     Object? autres = freezed,
     Object? imagePiece = null,
+    Object? statut = null,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? piece = null,
-    Object? marque = null,
+    Object? piece = freezed,
+    Object? article = freezed,
     Object? typeEngin = null,
   }) {
     return _then(_value.copyWith(
@@ -131,30 +123,18 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
           ? _value.partenaireId
           : partenaireId // ignore: cast_nullable_to_non_nullable
               as int,
-      pieceId: null == pieceId
+      pieceId: freezed == pieceId
           ? _value.pieceId
           : pieceId // ignore: cast_nullable_to_non_nullable
-              as int,
-      marqueId: null == marqueId
-          ? _value.marqueId
-          : marqueId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      articleId: freezed == articleId
+          ? _value.articleId
+          : articleId // ignore: cast_nullable_to_non_nullable
+              as int?,
       typeEnginId: null == typeEnginId
           ? _value.typeEnginId
           : typeEnginId // ignore: cast_nullable_to_non_nullable
               as int,
-      modelePiece: null == modelePiece
-          ? _value.modelePiece
-          : modelePiece // ignore: cast_nullable_to_non_nullable
-              as String,
-      numeroPiece: null == numeroPiece
-          ? _value.numeroPiece
-          : numeroPiece // ignore: cast_nullable_to_non_nullable
-              as String,
-      anneePiece: null == anneePiece
-          ? _value.anneePiece
-          : anneePiece // ignore: cast_nullable_to_non_nullable
-              as String,
       prixPiece: null == prixPiece
           ? _value.prixPiece
           : prixPiece // ignore: cast_nullable_to_non_nullable
@@ -171,6 +151,10 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
           ? _value.imagePiece
           : imagePiece // ignore: cast_nullable_to_non_nullable
               as String,
+      statut: null == statut
+          ? _value.statut
+          : statut // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -179,14 +163,14 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      piece: null == piece
+      piece: freezed == piece
           ? _value.piece
           : piece // ignore: cast_nullable_to_non_nullable
-              as Piece,
-      marque: null == marque
-          ? _value.marque
-          : marque // ignore: cast_nullable_to_non_nullable
-              as Make,
+              as Piece?,
+      article: freezed == article
+          ? _value.article
+          : article // ignore: cast_nullable_to_non_nullable
+              as Article?,
       typeEngin: null == typeEngin
           ? _value.typeEngin
           : typeEngin // ignore: cast_nullable_to_non_nullable
@@ -196,17 +180,25 @@ class _$DetailPieceCopyWithImpl<$Res, $Val extends DetailPiece>
 
   @override
   @pragma('vm:prefer-inline')
-  $PieceCopyWith<$Res> get piece {
-    return $PieceCopyWith<$Res>(_value.piece, (value) {
+  $PieceCopyWith<$Res>? get piece {
+    if (_value.piece == null) {
+      return null;
+    }
+
+    return $PieceCopyWith<$Res>(_value.piece!, (value) {
       return _then(_value.copyWith(piece: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MakeCopyWith<$Res> get marque {
-    return $MakeCopyWith<$Res>(_value.marque, (value) {
-      return _then(_value.copyWith(marque: value) as $Val);
+  $ArticleCopyWith<$Res>? get article {
+    if (_value.article == null) {
+      return null;
+    }
+
+    return $ArticleCopyWith<$Res>(_value.article!, (value) {
+      return _then(_value.copyWith(article: value) as $Val);
     });
   }
 
@@ -230,26 +222,24 @@ abstract class _$$DetailPieceImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'detail_piece_id') int detailPieceId,
       @JsonKey(name: 'partenaire_id') int partenaireId,
-      @JsonKey(name: 'piece_id') int pieceId,
-      @JsonKey(name: 'marque_id') int marqueId,
+      @JsonKey(name: 'piece_id') int? pieceId,
+      @JsonKey(name: 'article_id') int? articleId,
       @JsonKey(name: 'type_engin_id') int typeEnginId,
-      @JsonKey(name: 'modele_piece') String modelePiece,
-      @JsonKey(name: 'numero_piece') String numeroPiece,
-      @JsonKey(name: 'annee_piece') String anneePiece,
       @JsonKey(name: 'prix_piece') int prixPiece,
       @JsonKey(name: 'garantie') int garantie,
       @JsonKey(name: 'autres') String? autres,
       @JsonKey(name: 'image_piece') String imagePiece,
+      @JsonKey(name: 'statut') int statut,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'piece') Piece piece,
-      @JsonKey(name: 'marque') Make marque,
+      @JsonKey(name: 'piece') Piece? piece,
+      @JsonKey(name: 'article') Article? article,
       @JsonKey(name: 'type_engin') EnginType typeEngin});
 
   @override
-  $PieceCopyWith<$Res> get piece;
+  $PieceCopyWith<$Res>? get piece;
   @override
-  $MakeCopyWith<$Res> get marque;
+  $ArticleCopyWith<$Res>? get article;
   @override
   $EnginTypeCopyWith<$Res> get typeEngin;
 }
@@ -267,20 +257,18 @@ class __$$DetailPieceImplCopyWithImpl<$Res>
   $Res call({
     Object? detailPieceId = null,
     Object? partenaireId = null,
-    Object? pieceId = null,
-    Object? marqueId = null,
+    Object? pieceId = freezed,
+    Object? articleId = freezed,
     Object? typeEnginId = null,
-    Object? modelePiece = null,
-    Object? numeroPiece = null,
-    Object? anneePiece = null,
     Object? prixPiece = null,
     Object? garantie = null,
     Object? autres = freezed,
     Object? imagePiece = null,
+    Object? statut = null,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? piece = null,
-    Object? marque = null,
+    Object? piece = freezed,
+    Object? article = freezed,
     Object? typeEngin = null,
   }) {
     return _then(_$DetailPieceImpl(
@@ -292,30 +280,18 @@ class __$$DetailPieceImplCopyWithImpl<$Res>
           ? _value.partenaireId
           : partenaireId // ignore: cast_nullable_to_non_nullable
               as int,
-      pieceId: null == pieceId
+      pieceId: freezed == pieceId
           ? _value.pieceId
           : pieceId // ignore: cast_nullable_to_non_nullable
-              as int,
-      marqueId: null == marqueId
-          ? _value.marqueId
-          : marqueId // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      articleId: freezed == articleId
+          ? _value.articleId
+          : articleId // ignore: cast_nullable_to_non_nullable
+              as int?,
       typeEnginId: null == typeEnginId
           ? _value.typeEnginId
           : typeEnginId // ignore: cast_nullable_to_non_nullable
               as int,
-      modelePiece: null == modelePiece
-          ? _value.modelePiece
-          : modelePiece // ignore: cast_nullable_to_non_nullable
-              as String,
-      numeroPiece: null == numeroPiece
-          ? _value.numeroPiece
-          : numeroPiece // ignore: cast_nullable_to_non_nullable
-              as String,
-      anneePiece: null == anneePiece
-          ? _value.anneePiece
-          : anneePiece // ignore: cast_nullable_to_non_nullable
-              as String,
       prixPiece: null == prixPiece
           ? _value.prixPiece
           : prixPiece // ignore: cast_nullable_to_non_nullable
@@ -332,6 +308,10 @@ class __$$DetailPieceImplCopyWithImpl<$Res>
           ? _value.imagePiece
           : imagePiece // ignore: cast_nullable_to_non_nullable
               as String,
+      statut: null == statut
+          ? _value.statut
+          : statut // ignore: cast_nullable_to_non_nullable
+              as int,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -340,14 +320,14 @@ class __$$DetailPieceImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      piece: null == piece
+      piece: freezed == piece
           ? _value.piece
           : piece // ignore: cast_nullable_to_non_nullable
-              as Piece,
-      marque: null == marque
-          ? _value.marque
-          : marque // ignore: cast_nullable_to_non_nullable
-              as Make,
+              as Piece?,
+      article: freezed == article
+          ? _value.article
+          : article // ignore: cast_nullable_to_non_nullable
+              as Article?,
       typeEngin: null == typeEngin
           ? _value.typeEngin
           : typeEngin // ignore: cast_nullable_to_non_nullable
@@ -362,20 +342,18 @@ class _$DetailPieceImpl implements _DetailPiece {
   const _$DetailPieceImpl(
       {@JsonKey(name: 'detail_piece_id') required this.detailPieceId,
       @JsonKey(name: 'partenaire_id') required this.partenaireId,
-      @JsonKey(name: 'piece_id') required this.pieceId,
-      @JsonKey(name: 'marque_id') required this.marqueId,
+      @JsonKey(name: 'piece_id') this.pieceId,
+      @JsonKey(name: 'article_id') this.articleId,
       @JsonKey(name: 'type_engin_id') required this.typeEnginId,
-      @JsonKey(name: 'modele_piece') required this.modelePiece,
-      @JsonKey(name: 'numero_piece') required this.numeroPiece,
-      @JsonKey(name: 'annee_piece') required this.anneePiece,
       @JsonKey(name: 'prix_piece') required this.prixPiece,
       @JsonKey(name: 'garantie') required this.garantie,
       @JsonKey(name: 'autres') this.autres,
       @JsonKey(name: 'image_piece') required this.imagePiece,
+      @JsonKey(name: 'statut') required this.statut,
       @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'updated_at') required this.updatedAt,
-      @JsonKey(name: 'piece') required this.piece,
-      @JsonKey(name: 'marque') required this.marque,
+      @JsonKey(name: 'piece') this.piece,
+      @JsonKey(name: 'article') this.article,
       @JsonKey(name: 'type_engin') required this.typeEngin});
 
   factory _$DetailPieceImpl.fromJson(Map<String, dynamic> json) =>
@@ -389,22 +367,13 @@ class _$DetailPieceImpl implements _DetailPiece {
   final int partenaireId;
   @override
   @JsonKey(name: 'piece_id')
-  final int pieceId;
+  final int? pieceId;
   @override
-  @JsonKey(name: 'marque_id')
-  final int marqueId;
+  @JsonKey(name: 'article_id')
+  final int? articleId;
   @override
   @JsonKey(name: 'type_engin_id')
   final int typeEnginId;
-  @override
-  @JsonKey(name: 'modele_piece')
-  final String modelePiece;
-  @override
-  @JsonKey(name: 'numero_piece')
-  final String numeroPiece;
-  @override
-  @JsonKey(name: 'annee_piece')
-  final String anneePiece;
   @override
   @JsonKey(name: 'prix_piece')
   final int prixPiece;
@@ -418,6 +387,9 @@ class _$DetailPieceImpl implements _DetailPiece {
   @JsonKey(name: 'image_piece')
   final String imagePiece;
   @override
+  @JsonKey(name: 'statut')
+  final int statut;
+  @override
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @override
@@ -425,17 +397,17 @@ class _$DetailPieceImpl implements _DetailPiece {
   final DateTime updatedAt;
   @override
   @JsonKey(name: 'piece')
-  final Piece piece;
+  final Piece? piece;
   @override
-  @JsonKey(name: 'marque')
-  final Make marque;
+  @JsonKey(name: 'article')
+  final Article? article;
   @override
   @JsonKey(name: 'type_engin')
   final EnginType typeEngin;
 
   @override
   String toString() {
-    return 'DetailPiece(detailPieceId: $detailPieceId, partenaireId: $partenaireId, pieceId: $pieceId, marqueId: $marqueId, typeEnginId: $typeEnginId, modelePiece: $modelePiece, numeroPiece: $numeroPiece, anneePiece: $anneePiece, prixPiece: $prixPiece, garantie: $garantie, autres: $autres, imagePiece: $imagePiece, createdAt: $createdAt, updatedAt: $updatedAt, piece: $piece, marque: $marque, typeEngin: $typeEngin)';
+    return 'DetailPiece(detailPieceId: $detailPieceId, partenaireId: $partenaireId, pieceId: $pieceId, articleId: $articleId, typeEnginId: $typeEnginId, prixPiece: $prixPiece, garantie: $garantie, autres: $autres, imagePiece: $imagePiece, statut: $statut, createdAt: $createdAt, updatedAt: $updatedAt, piece: $piece, article: $article, typeEngin: $typeEngin)';
   }
 
   @override
@@ -448,16 +420,10 @@ class _$DetailPieceImpl implements _DetailPiece {
             (identical(other.partenaireId, partenaireId) ||
                 other.partenaireId == partenaireId) &&
             (identical(other.pieceId, pieceId) || other.pieceId == pieceId) &&
-            (identical(other.marqueId, marqueId) ||
-                other.marqueId == marqueId) &&
+            (identical(other.articleId, articleId) ||
+                other.articleId == articleId) &&
             (identical(other.typeEnginId, typeEnginId) ||
                 other.typeEnginId == typeEnginId) &&
-            (identical(other.modelePiece, modelePiece) ||
-                other.modelePiece == modelePiece) &&
-            (identical(other.numeroPiece, numeroPiece) ||
-                other.numeroPiece == numeroPiece) &&
-            (identical(other.anneePiece, anneePiece) ||
-                other.anneePiece == anneePiece) &&
             (identical(other.prixPiece, prixPiece) ||
                 other.prixPiece == prixPiece) &&
             (identical(other.garantie, garantie) ||
@@ -465,12 +431,13 @@ class _$DetailPieceImpl implements _DetailPiece {
             (identical(other.autres, autres) || other.autres == autres) &&
             (identical(other.imagePiece, imagePiece) ||
                 other.imagePiece == imagePiece) &&
+            (identical(other.statut, statut) || other.statut == statut) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.piece, piece) || other.piece == piece) &&
-            (identical(other.marque, marque) || other.marque == marque) &&
+            (identical(other.article, article) || other.article == article) &&
             (identical(other.typeEngin, typeEngin) ||
                 other.typeEngin == typeEngin));
   }
@@ -482,19 +449,17 @@ class _$DetailPieceImpl implements _DetailPiece {
       detailPieceId,
       partenaireId,
       pieceId,
-      marqueId,
+      articleId,
       typeEnginId,
-      modelePiece,
-      numeroPiece,
-      anneePiece,
       prixPiece,
       garantie,
       autres,
       imagePiece,
+      statut,
       createdAt,
       updatedAt,
       piece,
-      marque,
+      article,
       typeEngin);
 
   @JsonKey(ignore: true)
@@ -515,20 +480,18 @@ abstract class _DetailPiece implements DetailPiece {
   const factory _DetailPiece(
           {@JsonKey(name: 'detail_piece_id') required final int detailPieceId,
           @JsonKey(name: 'partenaire_id') required final int partenaireId,
-          @JsonKey(name: 'piece_id') required final int pieceId,
-          @JsonKey(name: 'marque_id') required final int marqueId,
+          @JsonKey(name: 'piece_id') final int? pieceId,
+          @JsonKey(name: 'article_id') final int? articleId,
           @JsonKey(name: 'type_engin_id') required final int typeEnginId,
-          @JsonKey(name: 'modele_piece') required final String modelePiece,
-          @JsonKey(name: 'numero_piece') required final String numeroPiece,
-          @JsonKey(name: 'annee_piece') required final String anneePiece,
           @JsonKey(name: 'prix_piece') required final int prixPiece,
           @JsonKey(name: 'garantie') required final int garantie,
           @JsonKey(name: 'autres') final String? autres,
           @JsonKey(name: 'image_piece') required final String imagePiece,
+          @JsonKey(name: 'statut') required final int statut,
           @JsonKey(name: 'created_at') required final DateTime createdAt,
           @JsonKey(name: 'updated_at') required final DateTime updatedAt,
-          @JsonKey(name: 'piece') required final Piece piece,
-          @JsonKey(name: 'marque') required final Make marque,
+          @JsonKey(name: 'piece') final Piece? piece,
+          @JsonKey(name: 'article') final Article? article,
           @JsonKey(name: 'type_engin') required final EnginType typeEngin}) =
       _$DetailPieceImpl;
 
@@ -543,22 +506,13 @@ abstract class _DetailPiece implements DetailPiece {
   int get partenaireId;
   @override
   @JsonKey(name: 'piece_id')
-  int get pieceId;
+  int? get pieceId;
   @override
-  @JsonKey(name: 'marque_id')
-  int get marqueId;
+  @JsonKey(name: 'article_id')
+  int? get articleId;
   @override
   @JsonKey(name: 'type_engin_id')
   int get typeEnginId;
-  @override
-  @JsonKey(name: 'modele_piece')
-  String get modelePiece;
-  @override
-  @JsonKey(name: 'numero_piece')
-  String get numeroPiece;
-  @override
-  @JsonKey(name: 'annee_piece')
-  String get anneePiece;
   @override
   @JsonKey(name: 'prix_piece')
   int get prixPiece;
@@ -572,6 +526,9 @@ abstract class _DetailPiece implements DetailPiece {
   @JsonKey(name: 'image_piece')
   String get imagePiece;
   @override
+  @JsonKey(name: 'statut')
+  int get statut;
+  @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt;
   @override
@@ -579,10 +536,10 @@ abstract class _DetailPiece implements DetailPiece {
   DateTime get updatedAt;
   @override
   @JsonKey(name: 'piece')
-  Piece get piece;
+  Piece? get piece;
   @override
-  @JsonKey(name: 'marque')
-  Make get marque;
+  @JsonKey(name: 'article')
+  Article? get article;
   @override
   @JsonKey(name: 'type_engin')
   EnginType get typeEngin;

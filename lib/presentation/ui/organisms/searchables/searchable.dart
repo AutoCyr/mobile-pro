@@ -16,7 +16,9 @@ class CustomSearchable extends StatefulWidget {
   final TextEditingController controller;
   final List<Selectable> list;
   final String typeSelection;
-  CustomSearchable({super.key, required this.controller, required this.list, required this.typeSelection});
+  final bool multiple;
+  final Function onSave;
+  CustomSearchable({super.key, required this.controller, required this.list, required this.typeSelection, required this.multiple, required this.onSave});
 
   @override
   State<CustomSearchable> createState() => _CustomSearchableState();
@@ -25,7 +27,39 @@ class CustomSearchable extends StatefulWidget {
 class _CustomSearchableState extends State<CustomSearchable> {
 
   late List<Selectable> localList = [];
+  List<Selectable>? selectedList = [];
   Selectable? localSelectedObject;
+
+  loadList() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    setState(() {
+      switch(widget.typeSelection) {
+        case "country":
+          localList = widget.list.where((element) => element.name.toLowerCase() != "togo").toList();
+          break;
+        case "bike":
+          localList = widget.list;
+          if(widget.multiple) {
+            List<BikeMake> selected = [];
+            for(var element in common.selectedBikeMakes) {
+              selected.add(element);
+            }
+            selectedList = selected;
+          }
+          break;
+        case "car":
+          localList = widget.list;
+          if(widget.multiple) {
+            List<CarMake> selected = [];
+            for(var element in common.selectedCarMakes) {
+              selected.add(element);
+            }
+            selectedList = selected;
+          }
+          break;
+      }
+    });
+  }
 
   void filterList(String searchQuery) {
     List<Selectable> filtered = [];
@@ -42,7 +76,7 @@ class _CustomSearchableState extends State<CustomSearchable> {
   @override
   void initState() {
     super.initState();
-    localList = widget.list;
+    loadList();
   }
 
   @override
@@ -80,23 +114,36 @@ class _CustomSearchableState extends State<CustomSearchable> {
             },
             icon: Icon(Icons.clear, color: GlobalThemeData.lightColorScheme.errorContainer,),
           ).animate().fadeIn(),
-          if(localSelectedObject != null)
+          if(localSelectedObject != null || selectedList != null)
             Consumer<CommonNotifier>(
               builder: (context, common, child) {
                 return IconButton(
-                  onPressed: () {
-                    widget.controller.text = localSelectedObject!.name;
+                  onPressed: () async {
+                    if(widget.multiple) {
+                      widget.controller.text = "${selectedList!.length} ${selectedList!.length > 1 ? "marques sélectionnées" : "marque sélectionnée"}";
+                    } else {
+                      widget.controller.text = localSelectedObject!.name;
+                    }
                     switch(widget.typeSelection) {
                       case "country":
                         common.setCountry(localSelectedObject! as Country);
                         break;
                       case "bike":
-                        common.setBikeMake(localSelectedObject! as BikeMake);
+                        List<BikeMake> selected = [];
+                        for(var element in selectedList!) {
+                          selected.add(element as BikeMake);
+                        }
+                        common.setSelectedBikeMakes(selected);
                         break;
                       case "car":
-                        common.setCarMake(localSelectedObject! as CarMake);
+                        List<CarMake> selected = [];
+                        for(var element in selectedList!) {
+                          selected.add(element as CarMake);
+                        }
+                        common.setSelectedCarMakes(selected);
                         break;
                     }
+                    await widget.onSave();
                     Navigator.pop(context);
                   },
                   icon: Icon(Icons.check, color: GlobalThemeData.lightColorScheme.primary,),
@@ -128,7 +175,15 @@ class _CustomSearchableState extends State<CustomSearchable> {
             splashColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
             onTap: () {
               setState(() {
-                localSelectedObject = element == localSelectedObject ? null : element;
+                if(widget.multiple) {
+                  if(selectedList!.contains(element)) {
+                    selectedList!.remove(element);
+                  } else {
+                    selectedList!.add(element);
+                  }
+                } else {
+                  localSelectedObject = element == localSelectedObject ? null : element;
+                }
               });
             },
             child: Container(
@@ -136,13 +191,13 @@ class _CustomSearchableState extends State<CustomSearchable> {
               height: 50,
               width: size.width,
               decoration: BoxDecoration(
-                color: localSelectedObject == element ? GlobalThemeData.lightColorScheme.primary : Colors.transparent,
+                color: localSelectedObject == element || selectedList!.contains(element) ? GlobalThemeData.lightColorScheme.primary : Colors.transparent,
               ),
               child: Row(
                 children: [
                   Label14(
                     text: element.name,
-                    color: localSelectedObject == element ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.primary,
+                    color: localSelectedObject == element || selectedList!.contains(element) ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.primary,
                     weight: FontWeight.w400,
                     maxLines: 1
                   ),

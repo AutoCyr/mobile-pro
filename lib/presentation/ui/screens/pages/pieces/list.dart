@@ -36,10 +36,25 @@ class _PieceListScreenState extends State<PieceListScreen> {
   late List<DetailPiece> pieces = [];
   late List<DetailPiece> localPieces = [];
 
+  List<Map<String, dynamic>> options = [
+    {
+      "label": "À partir des pièces pré-enregistrées",
+      "image": "assets/pngs/system.webp",
+      "widget": const PieceAddScreen(),
+      "recommended": true
+    },
+    {
+      "label": "Pièce personnalisée",
+      "image": "assets/pngs/custom.webp",
+      "widget": const PieceAddScreen(),
+      "recommended": false
+    },
+  ];
+
   void filterList(String searchQuery) {
     List<DetailPiece> filtered = [];
     for (var value in pieces) {
-      if (value.piece.nomPiece.toLowerCase().contains(searchQuery.toLowerCase())) {
+      if (value.piece!.nomPiece.toLowerCase().contains(searchQuery.toLowerCase()) || value.article!.name.toLowerCase().contains(searchQuery.toLowerCase())) {
         filtered.add(value);
       }
     }
@@ -169,9 +184,9 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(detail.piece.statut == 1 ? Icons.highlight_off : Icons.done_all_sharp, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 20),
+                            Icon(detail.statut == 1 ? Icons.highlight_off : Icons.done_all_sharp, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 20),
                             const Gap(20),
-                            Label12(text: detail.piece.statut == 1 ? "Désactiver" : "Activer", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
+                            Label12(text: detail.statut == 1 ? "Désactiver" : "Activer", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
                           ],
                         ),
                         Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 15),
@@ -183,6 +198,104 @@ class _PieceListScreenState extends State<PieceListScreen> {
             ),
           );
         }
+    );
+  }
+
+  void addOptions({
+    required BuildContext context,
+  }){
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.zero)
+      ),
+      context: context,
+      builder: (BuildContext context){
+        Size size = MediaQuery.of(context).size;
+        return Container(
+          width: size.width,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Label14(
+                      text: "Nouvelle pièce",
+                      color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                      weight: FontWeight.bold,
+                      maxLines: 1
+                  ).animate().fadeIn(),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.close, color: GlobalThemeData.lightColorScheme.secondaryContainer,),
+                  ).animate().fadeIn(),
+                ],
+              ),
+              const Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ...options.map((e) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => e["widget"]));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        width: size.width * 0.42,
+                        height: size.height * 0.35,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: GlobalThemeData.lightColorScheme.outline.withOpacity(0.5), width: 1),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                if(e["recommended"])
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      color: GlobalThemeData.lightColorScheme.primaryContainer,
+                                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                                    ),
+                                    child: Center(
+                                      child: Label10(
+                                        text: "Recommandé",
+                                        color: GlobalThemeData.lightColorScheme.onPrimaryContainer,
+                                        weight: FontWeight.w700,
+                                        maxLines: 2,
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  const SizedBox()
+                              ],
+                            ),
+                            Image.asset(
+                              e["image"],
+                              width: size.width * 0.3,
+                              height: size.width * 0.3,
+                              fit: BoxFit.cover,
+                            ),
+                            Label10(text: e["label"], color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.normal, maxLines: 2).animate().fadeIn(),
+                          ],
+                        ),
+                      ),
+                    );
+                  })
+                ],
+              )
+            ],
+          ),
+        );
+      }
     );
   }
 
@@ -205,28 +318,28 @@ class _PieceListScreenState extends State<PieceListScreen> {
           Label14(text: "Mes pièces", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
             :
           SizedBox(
-          height: 45,
-          child: TextFormField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.1),
+            height: 45,
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.1),
 
-              hintText: "Rechercher",
-              border: InputBorder.none,
-              hintStyle: const TextStyle(
+                hintText: "Rechercher",
+                border: InputBorder.none,
+                hintStyle: const TextStyle(
+                    fontSize: 13
+                ),
+              ),
+              style: const TextStyle(
                   fontSize: 13
               ),
+              autofocus: true,
+              onChanged: (value){
+                filterList(value);
+              },
             ),
-            style: const TextStyle(
-                fontSize: 13
-            ),
-            autofocus: true,
-            onChanged: (value){
-              filterList(value);
-            },
-          ),
-        ).animate().fadeIn(),
+          ).animate().fadeIn(),
         actions: [
           IconButton(
             onPressed: () {
@@ -238,7 +351,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
             icon: search ? const Icon(Icons.clear) : const Icon(Icons.search_rounded),
           ).animate().fadeIn(),
           IconButton(
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PieceAddScreen())),
+            onPressed: () => addOptions(context: context),
             icon: const Icon(Icons.add),
           ).animate().fadeIn(),
         ]
@@ -333,22 +446,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                                         maxLines: 1
                                     ).animate().fadeIn(),
                                   ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                  width: size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                      color: GlobalThemeData.lightColorScheme.secondaryContainer.withOpacity(0.7)
-                                  ),
-                                  child: Center(
-                                    child: Label10(
-                                        text: piece.marque.name.toUpperCase(),
-                                        color: GlobalThemeData.lightColorScheme.onPrimary,
-                                        weight: FontWeight.bold,
-                                        maxLines: 1
-                                    ).animate().fadeIn(),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
                             /*Column(
@@ -377,7 +475,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                         SizedBox(
                           width: size.width * 0.55,
                           child: Label14(
-                              text: piece.piece.nomPiece,
+                              text: piece.piece != null ? piece.piece!.nomPiece : piece.article!.name,
                               color: GlobalThemeData.lightColorScheme.primaryContainer,
                               weight: FontWeight.bold,
                               maxLines: 2

@@ -3,6 +3,7 @@ import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/object_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
@@ -11,6 +12,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -29,6 +31,9 @@ class _PieceConfigScreenState extends State<PieceConfigScreen> {
   List<int> autos = [];
   List<int> moteurs = [];
   List<Map<String, dynamic>> categories = [];
+  List<int> marques = [];
+
+  final TextEditingController marquesController = TextEditingController();
 
   retrieveCommons() async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
@@ -45,6 +50,21 @@ class _PieceConfigScreenState extends State<PieceConfigScreen> {
     }
   }
 
+  fillMakes() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    setState(() {
+      if(widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues") {
+        if(common.selectedBikeMakes.isNotEmpty) {
+          marques = common.selectedBikeMakes.map((e) => e.id).toList();
+        }
+      } else {
+        if(common.selectedCarMakes.isNotEmpty) {
+          marques = common.selectedCarMakes.map((e) => e.id).toList();
+        }
+      }
+    });
+  }
+
   _save() async {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
     final auth = Provider.of<AuthNotifier>(context, listen: false);
@@ -54,7 +74,8 @@ class _PieceConfigScreenState extends State<PieceConfigScreen> {
       "detail_piece_id" : widget.detail.detailPieceId,
       "autos" : autos,
       "categories" : categories,
-      "moteurs" : moteurs
+      "moteurs" : moteurs,
+      "marques": marques
     };
     await partner.addDisponibilities(body: body, context: context);
   }
@@ -63,6 +84,7 @@ class _PieceConfigScreenState extends State<PieceConfigScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      marquesController.text = "Pas de marque définie";
       retrieveCommons();
     });
   }
@@ -98,16 +120,55 @@ class _PieceConfigScreenState extends State<PieceConfigScreen> {
                   children: [
                     Label12(text: "Récapitulatif de la pièce :", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(10),
-                    Label10(text: widget.detail.piece.nomPiece, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.piece != null ? widget.detail.piece!.nomPiece : widget.detail.article!.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(5),
-                    Label10(text: widget.detail.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
-                    const Gap(5),
-                    Label10(text: "${widget.detail.modelePiece} ${widget.detail.numeroPiece} ${widget.detail.anneePiece}", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.typeEngin.libelle, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                   ],
                 ),
               ).animate().fadeIn(),
               const Gap(20),
               Label17(text: "Choisir les disponibilités", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              const Gap(20),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                    color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7),
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                ),
+                child: Label12(text: "Marques", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              ),
+              const Gap(10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.info, color: Colors.green.shade700, size: 20),
+                  const Gap(10),
+                  SizedBox(
+                    width: size.width * 0.8,
+                    child: Label10(text: "Cette pièce est automatiquement disponible pour toutes les marques correspondant au type d'engin choisi. \nVeuillez choisir des marques si vous souhaitez quand même spécifier sa compatibilité.", color: Colors.green.shade700, weight: FontWeight.normal, maxLines: 15).animate().fadeIn(),
+                  ),
+                ],
+              ).animate().fadeIn(),
+              const Gap(10),
+              ObjectSelectableField(
+                  controller: marquesController,
+                  keyboardType: TextInputType.none,
+                  label: "Choisir des marques",
+                  fontSize: 12,
+                  icon: Icons.loyalty_outlined,
+                  context: context,
+                  onSelected: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return CustomSearchable(
+                        controller: marquesController,
+                        list: widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues" ? common.bikeMakes : common.carMakes,
+                        typeSelection: widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues" ? "bike" : "car",
+                        multiple: true,
+                        onSave: () => fillMakes(),
+                      );
+                    }));
+                  }
+              ).animate().fadeIn(),
               const Gap(20),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
