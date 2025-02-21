@@ -2,6 +2,7 @@ import 'package:autocyr_pro/domain/models/abstractables/selectable.dart';
 import 'package:autocyr_pro/domain/models/commons/bike_make.dart';
 import 'package:autocyr_pro/domain/models/commons/car_make.dart';
 import 'package:autocyr_pro/domain/models/commons/country.dart';
+import 'package:autocyr_pro/domain/models/core/article.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
@@ -36,6 +37,9 @@ class _CustomSearchableState extends State<CustomSearchable> {
       switch(widget.typeSelection) {
         case "country":
           localList = widget.list.where((element) => element.name.toLowerCase() != "togo").toList();
+          break;
+        case "article":
+          localList = widget.list;
           break;
         case "bike":
           localList = widget.list;
@@ -127,6 +131,9 @@ class _CustomSearchableState extends State<CustomSearchable> {
                     switch(widget.typeSelection) {
                       case "country":
                         common.setCountry(localSelectedObject! as Country);
+                        break;
+                      case "article":
+                        common.setArticle(localSelectedObject! as Article);
                         break;
                       case "bike":
                         List<BikeMake> selected = [];

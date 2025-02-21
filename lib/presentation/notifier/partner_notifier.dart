@@ -10,7 +10,7 @@ import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
-import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/config.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/config.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/subscription.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';

@@ -13,10 +13,11 @@ import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/state.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
-import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/add.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/add_article.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/add_piece.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/detail.dart';
-import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/edit.dart';
-import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/edit_config.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/edit.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/edit_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -40,7 +41,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
     {
       "label": "À partir des pièces pré-enregistrées",
       "image": "assets/pngs/system.webp",
-      "widget": const PieceAddScreen(),
+      "widget": const ArticleAddScreen(),
       "recommended": true
     },
     {

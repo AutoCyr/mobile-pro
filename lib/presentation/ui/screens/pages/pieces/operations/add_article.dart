@@ -19,21 +19,21 @@ import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/ui.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
-import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/config.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class PieceAddScreen extends StatefulWidget {
-  const PieceAddScreen({super.key});
+class ArticleAddScreen extends StatefulWidget {
+  const ArticleAddScreen({super.key});
 
   @override
-  State<PieceAddScreen> createState() => _PieceAddScreenState();
+  State<ArticleAddScreen> createState() => _ArticleAddScreenState();
 }
 
-class _PieceAddScreenState extends State<PieceAddScreen> {
+class _ArticleAddScreenState extends State<ArticleAddScreen> {
 
   late int step = 1;
   late bool _isGarantie = false;
@@ -43,7 +43,7 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
   late XFile? _image;
   final ImagePicker _picker = ImagePicker();
 
-  final TextEditingController _nomPieceController = TextEditingController();
+  final TextEditingController _articleController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _prixController = TextEditingController();
   final TextEditingController _autreController = TextEditingController();
@@ -63,10 +63,10 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
     if(media == null) {
       Snacks.failureBar("Veuillez sélectionner une image pour votre pièce", context);
     } else {
-      if(UiTools().checkFields([_nomPieceController, _typeController, _prixController])) {
+      if(UiTools().checkFields([_articleController, _typeController, _prixController])) {
         Map<String, String> body = {
           "partenaire_id" : auth.getPartenaire.partenaireId.toString(),
-          "nom_piece" : _nomPieceController.text,
+          "article_id" : common.article!.id.toString(),
           "type_engin_id" : typeKey,
           "prix_piece" : _prixController.text,
           "garantie" : _isGarantie ? "1" : "0",
@@ -91,6 +91,9 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
       }
       if(common.enginTypes.isEmpty) {
         await common.retrieveEnginTypes(context: context);
+      }
+      if(common.articles.isEmpty) {
+        await common.retrieveArticles(context: context);
       }
     }
   }
@@ -207,13 +210,40 @@ class _PieceAddScreenState extends State<PieceAddScreen> {
                             )
                         ).animate().fadeIn(),
                       const Gap(10),
-                      CustomField(
-                        controller: _nomPieceController,
-                        keyboardType: TextInputType.text,
-                        label: "Nom de la pièce",
-                        fontSize: 12,
-                        icon: Icons.text_fields_outlined,
-                      ).animate().fadeIn(),
+                      common.filling ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Label10(text: "Chargement des pièces...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                            const Gap(10),
+                            ProgressButton(
+                                widthSize: size.width * 0.9,
+                                context: context,
+                                bgColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                shimmerColor: GlobalThemeData.lightColorScheme.primary
+                            )
+                          ]
+                        ).animate().fadeIn()
+                          :
+                        ObjectSelectableField(
+                          controller: _articleController,
+                          keyboardType: TextInputType.none,
+                          label: "Pièce",
+                          fontSize: 12,
+                          icon: Icons.settings_outlined,
+                          context: context,
+                          onSelected: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return CustomSearchable(
+                                controller: _articleController,
+                                list: common.articles,
+                                typeSelection: "article",
+                                multiple: false,
+                                onSave: () {}
+                              );
+                            }));
+                          }
+                        ).animate().fadeIn(),
                       const Gap(10),
                       common.filling ?
                         Column(

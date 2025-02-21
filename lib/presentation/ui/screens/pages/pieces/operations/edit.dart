@@ -4,6 +4,7 @@ import 'package:autocyr_pro/data/network/urls.dart';
 import 'package:autocyr_pro/domain/models/commons/bike_make.dart';
 import 'package:autocyr_pro/domain/models/commons/car_make.dart';
 import 'package:autocyr_pro/domain/models/commons/engin_type.dart';
+import 'package:autocyr_pro/domain/models/core/article.dart';
 import 'package:autocyr_pro/domain/models/pieces/detail_piece.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
@@ -70,6 +71,9 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
       if(common.enginTypes.isEmpty) {
         await common.retrieveEnginTypes(context: context);
       }
+      if(common.articles.isEmpty) {
+        await common.retrieveArticles(context: context);
+      }
     }
   }
 
@@ -94,13 +98,12 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
     final common = Provider.of<CommonNotifier>(context, listen: false);
 
-    if(UiTools().checkFields([_nomPieceController, _typeController, _prixController])) {
+    if(UiTools().checkFields([_typeController, _prixController])) {
       Map<String, String> body = {
         "partenaire_id" : auth.getPartenaire.partenaireId.toString(),
         "key_piece": widget.detail.article != null ? "article" : "piece",
-        "nom_piece" : _nomPieceController.text,
+        if(widget.detail.piece != null) "nom_piece" : _nomPieceController.text,
         "type_engin_id" : typeKey,
-        "marque_id" : _typeController.text.toLowerCase() != "quatre roues" ? common.bikeMake!.id.toString() : common.carMake!.id.toString(),
         "prix_piece" : _prixController.text,
         "garantie" : _isGarantie ? "1" : "0",
         "autres" : _autreController.text,
@@ -270,16 +273,27 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                               )
                           ).animate().fadeIn(),
                         const Gap(20),
-                        CustomField(
-                          controller: _nomPieceController,
-                          keyboardType: TextInputType.text,
-                          label: "Nom de la pièce",
-                          fontSize: 12,
-                          icon: Icons.text_fields_outlined,
-                        ).animate().fadeIn(),
+                        if(widget.detail.piece != null)
+                          CustomField(
+                            controller: _nomPieceController,
+                            keyboardType: TextInputType.text,
+                            label: "Nom de la pièce",
+                            fontSize: 12,
+                            icon: Icons.text_fields_outlined,
+                          ).animate().fadeIn()
+                        else
+                          ObjectSelectableField(
+                              controller: _articleController,
+                              keyboardType: TextInputType.none,
+                              label: "Pièce",
+                              fontSize: 12,
+                              icon: Icons.settings_outlined,
+                              context: context,
+                              onSelected: () {}
+                          ).animate().fadeIn(),
                         const Gap(10),
                         common.filling ?
-                        Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Label10(text: "Chargement des types d'engin...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
@@ -291,9 +305,9 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                                   shimmerColor: GlobalThemeData.lightColorScheme.primary
                               )
                             ]
-                        ).animate().fadeIn()
+                          ).animate().fadeIn()
                             :
-                        CustomSelectableField(
+                          CustomSelectableField(
                             controller: _typeController,
                             key: typeKey,
                             keyboardType: TextInputType.none,
@@ -309,7 +323,7 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                                 typeKey = value.id.toString();
                               });
                             }
-                        ).animate().fadeIn(),
+                          ).animate().fadeIn(),
                         const Gap(10),
                         CustomField(
                           controller: _prixController,
@@ -343,28 +357,28 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                         ).animate().fadeIn(),
                         const Gap(20),
                         partner.loading ?
-                        ProgressButton(
+                          ProgressButton(
                             widthSize: size.width * 0.9,
                             context: context,
                             bgColor: GlobalThemeData.lightColorScheme.onPrimary,
                             shimmerColor: GlobalThemeData.lightColorScheme.primary
-                        ).animate().fadeIn()
+                          ).animate().fadeIn()
                             :
-                        SizedBox(
-                          width: size.width,
-                          child: CustomButton(
-                              text: "Modifier",
-                              size: size,
-                              globalWidth: size.width * 0.9,
-                              widthSize: size.width * 0.87,
-                              backSize: size.width * 0.87,
-                              context: context,
-                              function: () => _update(),
-                              textColor: GlobalThemeData.lightColorScheme.primary,
-                              buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                              backColor: GlobalThemeData.lightColorScheme.primary
-                          ).animate().fadeIn(),
-                        ),
+                          SizedBox(
+                            width: size.width,
+                            child: CustomButton(
+                                text: "Modifier",
+                                size: size,
+                                globalWidth: size.width * 0.9,
+                                widthSize: size.width * 0.87,
+                                backSize: size.width * 0.87,
+                                context: context,
+                                function: () => _update(),
+                                textColor: GlobalThemeData.lightColorScheme.primary,
+                                buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                backColor: GlobalThemeData.lightColorScheme.primary
+                            ).animate().fadeIn(),
+                          ),
                       ]
                   ),
                 ),

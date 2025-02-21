@@ -1,14 +1,18 @@
+import 'package:autocyr_pro/domain/models/commons/bike_make.dart';
+import 'package:autocyr_pro/domain/models/commons/car_make.dart';
 import 'package:autocyr_pro/domain/models/pieces/piece_info.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/object_selectable_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -29,6 +33,8 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
   List<Map<String, dynamic>> categories = [];
   List<int> marques = [];
 
+  final TextEditingController marquesController = TextEditingController();
+
   retrieveCommons() async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
     if(!common.filling) {
@@ -47,7 +53,48 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
       if(common.bikeMakes.isEmpty) {
         await common.retrieveBikeMakes(context: context);
       }
+      if(common.articles.isEmpty) {
+        await common.retrieveArticles(context: context);
+      }
     }
+  }
+
+  fillMakes() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    setState(() {
+      if(widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues") {
+        if(common.selectedBikeMakes.isNotEmpty) {
+          marques = common.selectedBikeMakes.map((e) => e.id).toList();
+        } else {
+          marques = [];
+        }
+      } else {
+        if(common.selectedCarMakes.isNotEmpty) {
+          marques = common.selectedCarMakes.map((e) => e.id).toList();
+        } else {
+          marques = [];
+        }
+      }
+    });
+  }
+
+  loadMakes() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    setState(() {
+      if(widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues") {
+        if(marques.isNotEmpty) {
+          Set<int> marqueSets = Set.from(marques);
+          List<BikeMake> bikes = common.bikeMakes.where((element) => marqueSets.contains(element.id)).toList();
+          common.setSelectedBikeMakes(bikes);
+        }
+      } else {
+        if(marques.isNotEmpty) {
+          Set<int> marqueSets = Set.from(marques);
+          List<CarMake> cars = common.carMakes.where((element) => marqueSets.contains(element.id)).toList();
+          common.setSelectedCarMakes(cars);
+        }
+      }
+    });
   }
 
   _loadExistingDisponibilities() async {
@@ -73,6 +120,12 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
           categories.add(map);
         }
       }
+      if(existing.marques != null) {
+        for(var marque in existing.marques!) {
+          marques.add(marque.marqueId);
+        }
+        marquesController.text = marques.isEmpty ? "Pas de marque définie" : "${marques.length} ${marques.length > 1 ? "marques sélectionnées" : "marque sélectionnée"}";
+      }
     });
   }
 
@@ -85,7 +138,8 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
       "detail_piece_id" : widget.detail.detailPieceId,
       "autos" : autos,
       "categories" : categories,
-      "moteurs" : moteurs
+      "moteurs" : moteurs,
+      "marques": marques
     };
     await partner.updateDisponibilities(body: body, context: context);
   }
@@ -93,9 +147,10 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      retrieveCommons();
-      _loadExistingDisponibilities();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await retrieveCommons();
+      await _loadExistingDisponibilities();
+      loadMakes();
     });
   }
 
@@ -129,16 +184,71 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                   children: [
                     Label12(text: "Récapitulatif de la pièce :", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(10),
-                    Label10(text: widget.detail.piece.nomPiece, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.piece != null ? widget.detail.piece!.nomPiece : widget.detail.article!.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(5),
-                    Label10(text: widget.detail.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
-                    const Gap(5),
-                    Label10(text: "${widget.detail.modelePiece} ${widget.detail.numeroPiece} ${widget.detail.anneePiece}", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.typeEngin.libelle, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                   ],
                 ),
               ).animate().fadeIn(),
               const Gap(20),
               Label17(text: "Mettre à jour les disponibilités", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              const Gap(20),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                    color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7),
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                ),
+                child: Label12(text: "Marques", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              ),
+              const Gap(10),
+              if(partner.piece!.marques!.isNotEmpty && partner.piece!.marques != null)
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    ...partner.piece!.marques!.map((e) => Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: GlobalThemeData.lightColorScheme.inversePrimary,
+                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                      ),
+                      child: Label10(text: e.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    )),
+                  ],
+                )
+              else
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.info, color: Colors.green.shade700, size: 20),
+                    const Gap(10),
+                    SizedBox(
+                      width: size.width * 0.8,
+                      child: Label10(text: "Cette pièce est automatiquement disponible pour toutes les marques correspondant au type d'engin choisi. \nVeuillez choisir des marques si vous souhaitez quand même spécifier sa compatibilité.", color: Colors.green.shade700, weight: FontWeight.normal, maxLines: 15).animate().fadeIn(),
+                    ),
+                  ],
+                ).animate().fadeIn(),
+              const Gap(20),
+                ObjectSelectableField(
+                  controller: marquesController,
+                  keyboardType: TextInputType.none,
+                  label: "Choisir des marques",
+                  fontSize: 12,
+                  icon: Icons.loyalty_outlined,
+                  context: context,
+                  onSelected: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return CustomSearchable(
+                        controller: marquesController,
+                        list: widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues" ? common.bikeMakes : common.carMakes,
+                        typeSelection: widget.detail.typeEngin.libelle.toLowerCase() != "quatre roues" ? "bike" : "car",
+                        multiple: true,
+                        onSave: () => fillMakes(),
+                      );
+                    }));
+                  }
+                ).animate().fadeIn(),
               const Gap(20),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -355,21 +465,21 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                   shimmerColor: GlobalThemeData.lightColorScheme.primary
                 ).animate().fadeIn()
                   :
-              SizedBox(
-                width: size.width,
-                child: CustomButton(
-                    text: "Mettre à jour",
-                    size: size,
-                    globalWidth: size.width * 0.9,
-                    widthSize: size.width * 0.87,
-                    backSize: size.width * 0.87,
-                    context: context,
-                    function: () => _update(),
-                    textColor: GlobalThemeData.lightColorScheme.primary,
-                    buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                    backColor: GlobalThemeData.lightColorScheme.primary
-                ).animate().fadeIn(),
-              ),
+                SizedBox(
+                  width: size.width,
+                  child: CustomButton(
+                      text: "Mettre à jour",
+                      size: size,
+                      globalWidth: size.width * 0.9,
+                      widthSize: size.width * 0.87,
+                      backSize: size.width * 0.87,
+                      context: context,
+                      function: () => _update(),
+                      textColor: GlobalThemeData.lightColorScheme.primary,
+                      buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                      backColor: GlobalThemeData.lightColorScheme.primary
+                  ).animate().fadeIn(),
+                ),
             ],
           );
         }

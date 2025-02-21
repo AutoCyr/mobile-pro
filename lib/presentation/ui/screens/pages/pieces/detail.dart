@@ -105,11 +105,11 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           width: size.width * 0.6,
                           decoration: BoxDecoration(
-                            color: partner.piece!.piece.statut == 1 ? Colors.green : GlobalThemeData.lightColorScheme.errorContainer,
+                            color: partner.piece!.statut == 1 ? Colors.green : GlobalThemeData.lightColorScheme.errorContainer,
                           ),
                           child: Center(
                             child: Label12(
-                                text: partner.piece!.piece.statut == 1 ? "Actif" : "Inactif",
+                                text: partner.piece!.statut == 1 ? "Actif" : "Inactif",
                                 color:GlobalThemeData.lightColorScheme.onPrimary,
                                 weight: FontWeight.bold,
                                 maxLines: 1
@@ -121,7 +121,7 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                   ).animate().fadeIn(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -138,30 +138,12 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                           ).animate().fadeIn(),
                         ),
                       ),
-                      const Gap(10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                        width: size.width * 0.3,
-                        decoration: BoxDecoration(
-                            color: GlobalThemeData.lightColorScheme.secondaryContainer
-                        ),
-                        child: Center(
-                          child: Label12(
-                              text: partner.piece!.marque.name.toUpperCase(),
-                              color: GlobalThemeData.lightColorScheme.onPrimary,
-                              weight: FontWeight.bold,
-                              maxLines: 1
-                          ).animate().fadeIn(),
-                        ),
-                      ),
                     ],
                   )
                 ],
               ),
               const Gap(20),
               Label17(text: "Informations sur la pièce", color: GlobalThemeData.lightColorScheme.onSurface, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
-              const Gap(10),
-              Label13(text: "${partner.piece!.modelePiece} ${partner.piece!.numeroPiece} ${partner.piece!.anneePiece}", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(10),
               Label13(text: "Prix - ${partner.piece!.prixPiece} FCFA", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(10),
@@ -174,6 +156,40 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                   children: [
                     const Gap(20),
                     Label17(text: "Disponibilités de la pièce", color: GlobalThemeData.lightColorScheme.onSurface, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Gap(10),
+                        Container(
+                          width: size.width,
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                              color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7),
+                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                          ),
+                          child: Label12(text: "Marques compatibles", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                        ),
+                        const Gap(10),
+                        if(partner.piece!.marques!.isNotEmpty && partner.piece!.marques != null)
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: [
+                              ...partner.piece!.marques!.map((e) => Container(
+                                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                decoration: BoxDecoration(
+                                    color: GlobalThemeData.lightColorScheme.inversePrimary,
+                                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                                ),
+                                child: Label10(text: e.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                              )),
+                            ],
+                          )
+                        else
+                          Label12(text: "Disponible pour toutes les marques correspondant au type d'engin choisi", color: Colors.green.shade700, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                        const Gap(10),
+                      ],
+                    ),
                     if(partner.piece!.autos!.isNotEmpty)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
