@@ -125,7 +125,7 @@ class PartnerDataSourceImpl implements PartnerDataSource {
   }
 
   @override
-  Future getPieces(String id) async {
+  Future getPieces(Map<String, dynamic> params) async {
     String token = await Preferences().getString("token");
     Map<String, String> headers = {
       'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ class PartnerDataSourceImpl implements PartnerDataSource {
     };
 
     try {
-      final response = await _apiClient.get(path: "partner/get-pieces/$id", headers: headers);
+      final response = await _apiClient.getWithParams(path: "partner/get-pieces", params: params, headers: headers);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);

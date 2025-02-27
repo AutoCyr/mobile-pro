@@ -29,6 +29,7 @@ class PartnerNotifier extends ChangeNotifier {
   bool _update = false;
   String _errorCommandes = "";
   String _error = "";
+  Meta? _pieceMeta;
   Meta? _commandeMeta;
   Subscription? _subscription;
   PieceInfo? _piece;
@@ -42,6 +43,7 @@ class PartnerNotifier extends ChangeNotifier {
   bool get update => _update;
   String get errorCommandes => _errorCommandes;
   String get error => _error;
+  Meta get pieceMeta => _pieceMeta!;
   Meta get commandeMeta => _commandeMeta!;
   Subscription? get subscription => _subscription;
   PieceInfo? get piece => _piece;
@@ -76,6 +78,11 @@ class PartnerNotifier extends ChangeNotifier {
 
   setError(String value) {
     _error = value;
+    notifyListeners();
+  }
+
+  setPieceMeta(Meta value) {
+    _pieceMeta = value;
     notifyListeners();
   }
 
@@ -390,37 +397,43 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  getPieces({required String id, required BuildContext context}) async {
-    setMainLoading(true);
+  getPieces({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
+    more ? setFilling(true) : setLoading(true);
+    setError("");
     try {
-      var data = await partnerUseCase.getPieces(id);
+      var data = await partnerUseCase.getPieces(params);
 
       if(data['error'] == false) {
         Success success = Success.fromJson(data);
 
-        List<DetailPiece> pieces = [];
-        for(var piece in success.data) {
-          DetailPiece detailPiece = DetailPiece.fromJson(piece);
-          pieces.add(detailPiece);
+        // fetch pagination datas
+        Meta meta = Meta.fromJson(success.data['meta']);
+        if(meta.currentPage >= meta.lastPage){
+          more ? setFilling(false) : setLoading(false);
         }
-        setPieces(pieces);
+
+        // add & complete datas
+        List<DetailPiece> localPieces = more ? List.from(pieces) : [];
+        for(var piece in success.data['data']){
+          localPieces.add(DetailPiece.fromJson(piece));
+        }
+        setPieces(localPieces);
+        setPieceMeta(meta);
 
         Map<DetailPiece, bool> actionPieces = { for(var piece in pieces) piece : false };
         setActionPieces(actionPieces);
 
-        setMainLoading(false);
+        more ? setFilling(false) : setLoading(false);
       }else{
         Failure failure = Failure.fromJson(data);
 
-        setMainLoading(false);
-        if(context.mounted) {
-          Snacks.failureBar(failure.message, context);
-        }
+        more ? setFilling(false) : setLoading(false);
+        setError(failure.message);
       }
     } catch (e) {
       print(e);
-      setMainLoading(false);
-      Snacks.failureBar("Une erreur est survenue", context);
+      more ? setFilling(false) : setLoading(false);
+      setError("Une erreur est survenue");
     }
   }
 
@@ -479,7 +492,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  Future retrieveCommandes({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
+  retrieveCommandes({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
     more ? setFilling(true) : setLoading(true);
     setErrorCommandes("");
 

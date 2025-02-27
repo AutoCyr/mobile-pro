@@ -32,8 +32,8 @@ class PartnerRepositoryImpl extends PartnerRepository {
   }
 
   @override
-  Future getPieces(String id) async {
-    return await _partnerDataSourceImpl.getPieces(id);
+  Future getPieces(Map<String, dynamic> params) async {
+    return await _partnerDataSourceImpl.getPieces(params);
   }
 
   @override

@@ -31,6 +31,16 @@ class HomeDashScreen extends StatefulWidget {
 
 class _HomeDashScreenState extends State<HomeDashScreen> {
 
+  int view = 0;
+
+  Map<String, dynamic> getParams(int view) {
+    Map<String, dynamic> params = {
+      "page": view,
+      "limit": 50
+    };
+    return params;
+  }
+
   List<Map> options = [
     {
       "label": "Pièces",
@@ -62,11 +72,12 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     await auth.updateFCM(context: context);
   }
 
-  loadDatas() async {
-    final auth = Provider.of<AuthNotifier>(context, listen: false);
+  loadDatas(int view, bool more) async {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
+
+    Map<String, dynamic> params = getParams(view);
     if(partner.pieces.isEmpty) {
-      await partner.getPieces(id: auth.getUser.id.toString(), context: context);
+      await partner.getPieces(context: context, params: params, more: more);
     }
   }
 
@@ -75,7 +86,8 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       updateFCM();
-      loadDatas();
+      view++;
+      loadDatas(view, false);
     });
   }
 
@@ -200,7 +212,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                 LargeOverview(
                   context: context,
                   label: "Total pièces enregistrées",
-                  value: partner.mainLoading && partner.pieces.isEmpty ? "..." : partner.pieces.length.toString(),
+                  value: partner.loading && partner.pieces.isEmpty ? "..." : partner.pieces.length.toString(),
                   icon: Icons.settings_rounded,
                   size: size,
                   child: const PieceListScreen()

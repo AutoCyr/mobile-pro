@@ -15,7 +15,7 @@ abstract class PartnerDataSource {
 
   Future updateDisponibilities(Map<String, dynamic> body);
 
-  Future getPieces(String id);
+  Future getPieces(Map<String, dynamic> params);
 
   Future getPiece(String id);
 

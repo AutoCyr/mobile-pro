@@ -38,8 +38,8 @@ class PartnerUseCase {
     return await _partnerRepositoryImpl.checkSubscription(id);
   }
 
-  Future getPieces(String id) async {
-    return await _partnerRepositoryImpl.getPieces(id);
+  Future getPieces(Map<String, dynamic> params) async {
+    return await _partnerRepositoryImpl.getPieces(params);
   }
 
   Future getPiece(String id) async {
