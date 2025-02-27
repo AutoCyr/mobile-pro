@@ -61,4 +61,9 @@ class PartnerRepositoryImpl extends PartnerRepository {
     return await _partnerDataSourceImpl.changePieceStatus(id);
   }
 
+  @override
+  Future getCommandes(Map<String, dynamic> params) async {
+    return await _partnerDataSourceImpl.getCommandes(params);
+  }
+
 }

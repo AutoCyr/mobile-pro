@@ -20,4 +20,6 @@ abstract class PartnerRepository {
   Future getPiece(String id);
 
   Future updateAdresses(Map<String, dynamic> body);
+
+  Future getCommandes(Map<String, dynamic> params);
 }

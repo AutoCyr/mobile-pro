@@ -44,6 +44,9 @@ dependencies:
   lottie: ^2.3.0
   shimmer: ^3.0.0
   image_picker: ^1.1.2
+  refresh_loadmore: ^2.0.7
+  url_launcher: ^6.2.4
+  icons_plus: ^5.0.0
   #Datas & States management
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0

@@ -5,6 +5,16 @@ import 'package:http/http.dart' as http;
 
 class ApiClient {
 
+  Future getWithParams({
+    required String path,
+    required Map<String, dynamic> params,
+    Map<String, String>? headers,
+  }) async {
+    String url = Urls().constructUrl(Urls.baseUrl, path, params);
+    Uri uri = Uri.parse(url);
+    return await http.get(uri, headers: headers);
+  }
+
   Future<http.Response> get({
     required String path,
     Map<String, String>? headers,

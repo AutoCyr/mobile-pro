@@ -1,9 +1,11 @@
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/domain/models/core/subscription.dart';
+import 'package:autocyr_pro/domain/models/features/commande.dart';
 import 'package:autocyr_pro/domain/models/pieces/detail_piece.dart';
 import 'package:autocyr_pro/domain/models/pieces/piece.dart';
 import 'package:autocyr_pro/domain/models/pieces/piece_info.dart';
 import 'package:autocyr_pro/domain/models/response/failure.dart';
+import 'package:autocyr_pro/domain/models/response/meta.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
 import 'package:autocyr_pro/domain/usecases/partner_usecase.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
@@ -23,18 +25,28 @@ class PartnerNotifier extends ChangeNotifier {
 
   bool _mainLoading = false;
   bool _loading = false;
+  bool _filling = false;
   bool _update = false;
+  String _errorCommandes = "";
+  String _error = "";
+  Meta? _commandeMeta;
   Subscription? _subscription;
   PieceInfo? _piece;
   List<DetailPiece> _pieces = [];
+  List<Commande> _commandes = [];
   Map<DetailPiece, bool> _actionPieces = {};
 
   bool get mainLoading => _mainLoading;
   bool get loading => _loading;
+  bool get filling => _filling;
   bool get update => _update;
+  String get errorCommandes => _errorCommandes;
+  String get error => _error;
+  Meta get commandeMeta => _commandeMeta!;
   Subscription? get subscription => _subscription;
   PieceInfo? get piece => _piece;
   List<DetailPiece> get pieces => _pieces;
+  List<Commande> get commandes => _commandes;
   Map<DetailPiece, bool> get actionPieces => _actionPieces;
 
   setMainLoading(bool value) {
@@ -47,8 +59,28 @@ class PartnerNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  setFilling(bool value) {
+    _filling = value;
+    notifyListeners();
+  }
+
   setUpdate(bool value) {
     _update = value;
+    notifyListeners();
+  }
+
+  setErrorCommandes(String value) {
+    _errorCommandes = value;
+    notifyListeners();
+  }
+
+  setError(String value) {
+    _error = value;
+    notifyListeners();
+  }
+
+  setCommandeMeta(Meta value) {
+    _commandeMeta = value;
     notifyListeners();
   }
 
@@ -64,6 +96,11 @@ class PartnerNotifier extends ChangeNotifier {
 
   setPieces(List<DetailPiece> value) {
     _pieces = value;
+    notifyListeners();
+  }
+
+  setCommandes(List<Commande> value) {
+    _commandes = value;
     notifyListeners();
   }
 
@@ -439,6 +476,44 @@ class PartnerNotifier extends ChangeNotifier {
       print(e);
       setLoading(false);
       Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  Future retrieveCommandes({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
+    more ? setFilling(true) : setLoading(true);
+    setErrorCommandes("");
+
+    try {
+      var data = await partnerUseCase.getCommandes(params);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        // fetch pagination datas
+        Meta meta = Meta.fromJson(success.data['meta']);
+        if(meta.currentPage >= meta.lastPage){
+          more ? setFilling(false) : setLoading(false);
+        }
+
+        // add & complete datas
+        List<Commande> localCommandes = more ? List.from(commandes) : [];
+        for(var commande in success.data['data']){
+          localCommandes.add(Commande.fromJson(commande));
+        }
+
+        setCommandes(localCommandes);
+        setCommandeMeta(meta);
+        more ? setFilling(false) : setLoading(false);
+      } else {
+        Failure failure = Failure.fromJson(data);
+
+        more ? setFilling(false) : setLoading(false);
+        setErrorCommandes(failure.message);
+      }
+    } catch (e) {
+      print(e);
+      more ? setFilling(false) : setLoading(false);
+      setErrorCommandes("Une erreur serveur est survenue");
     }
   }
 

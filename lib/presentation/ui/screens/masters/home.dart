@@ -14,6 +14,7 @@ import 'package:autocyr_pro/presentation/ui/organisms/overviews/large_overview.d
 import 'package:autocyr_pro/presentation/ui/organisms/overviews/small_overview.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/addresses/list.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/commandes/commandes.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     {
       "label": "Commandes",
       "iconData": Icons.shopping_cart_checkout_rounded,
-      "widget": null
+      "widget": const CommandeListScreen()
     },
     {
       "label": "Demandes",

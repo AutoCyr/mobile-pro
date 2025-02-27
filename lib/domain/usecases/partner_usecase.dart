@@ -50,4 +50,8 @@ class PartnerUseCase {
     return await _partnerRepositoryImpl.updateAdresses(body);
   }
 
+  Future getCommandes(Map<String, dynamic> params) async {
+    return await _partnerRepositoryImpl.getCommandes(params);
+  }
+
 }
