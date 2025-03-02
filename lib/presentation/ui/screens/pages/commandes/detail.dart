@@ -130,7 +130,7 @@ class _CommandeDetailScreenState extends State<CommandeDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                      onPressed: () => Redirections().launchCall(context: context, number: detail!.partenaire.telephonePartenaire),
+                      onPressed: () => Redirections().launchCall(context: context, number: detail!.client.telephone1),
                       style: ButtonStyle(
                         shape: WidgetStateProperty.all(
                             RoundedRectangleBorder(
@@ -155,19 +155,6 @@ class _CommandeDetailScreenState extends State<CommandeDetailScreen> {
                       ),
                       icon: Icon(Bootstrap.whatsapp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
                   ),*/
-                  IconButton(
-                      onPressed: () => Redirections().launchMail(context: context, email: detail!.partenaire.emailPartenaire),
-                      style: ButtonStyle(
-                        shape: WidgetStateProperty.all(
-                            RoundedRectangleBorder(
-                                side: BorderSide(color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1)),
-                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
-                            )
-                        ),
-                        backgroundColor: WidgetStateProperty.all(GlobalThemeData.lightColorScheme.onPrimary),
-                      ),
-                      icon: Icon(Icons.alternate_email_sharp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
-                  ),
                 ],
               )
             ],
