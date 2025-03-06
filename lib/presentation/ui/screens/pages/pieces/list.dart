@@ -13,6 +13,7 @@ import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/state.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/loaders/loader.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/add_article.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/operations/add_piece.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/detail.dart';
@@ -66,7 +67,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
   void filterList(String searchQuery) {
     List<DetailPiece> filtered = [];
     for (var value in pieces) {
-      if (value.piece!.nomPiece.toLowerCase().contains(searchQuery.toLowerCase()) || value.article!.name.toLowerCase().contains(searchQuery.toLowerCase())) {
+      if(value.piece != null ? value.piece!.nomPiece.toLowerCase().contains(searchQuery.toLowerCase()) : value.article!.name.toLowerCase().contains(searchQuery.toLowerCase())) {
         filtered.add(value);
       }
     }
@@ -373,33 +374,16 @@ class _PieceListScreenState extends State<PieceListScreen> {
       body: Consumer2<AuthNotifier, PartnerNotifier>(
         builder: (context, auth, partner, child) {
 
-          if(partner.loading) {
-            return SizedBox(
-              width: size.width,
-              height: size.height - kToolbarHeight,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ProgressButton(
-                        widthSize: size.width * 0.9,
-                        context: context,
-                        bgColor: GlobalThemeData.lightColorScheme.onPrimary,
-                        shimmerColor: GlobalThemeData.lightColorScheme.primary
-                    ),
-                    const Gap(20),
-                    Label10(text: "Chargement des pièces...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1),
-                  ]
-              ).animate().fadeIn(),
-            );
+          if(partner.mainLoading) {
+            return Loader(context: context, size: size, message: "Chargement des pièces...").animate().fadeIn();
           }
 
-          if(partner.error.isNotEmpty && !partner.loading) {
-            return StateScreen(icon: Icons.not_interested_sharp, message: partner.error, isError: true, function: () => retrievePieces(view, false));
+          if(partner.error.isNotEmpty && !partner.mainLoading) {
+            return StateScreen(icon: Icons.running_with_errors_sharp, message: partner.error, isError: true, function: () => retrievePieces(view, false));
           }
 
-          if(partner.error.isEmpty && localPieces.isEmpty && !partner.loading) {
-            return const StateScreen(icon: Icons.settings_outlined, message: "Aucune pièce trouvée.", isError: false,);
+          if(partner.error.isEmpty && localPieces.isEmpty && !partner.mainLoading) {
+            return const StateScreen(icon: Icons.inbox_sharp, message: "Aucune pièce trouvée.", isError: false,);
           }
 
           return RefreshLoadmore(
@@ -543,122 +527,6 @@ class _PieceListScreenState extends State<PieceListScreen> {
                   itemCount: localPieces.length
               )
           );
-
-          /*return ListView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: localPieces.length,
-            itemBuilder: (context, index) {
-              var piece = localPieces[index];
-
-              return Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: GlobalThemeData.lightColorScheme.onPrimary,
-                  border: Border.all(
-                      color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.5),
-                      width: 1
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      height: size.height * 0.15,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: GlobalThemeData.lightColorScheme.primaryContainer,
-                              width: 1
-                          ),
-                          image: DecorationImage(
-                              onError: (Object e, StackTrace? stackTrace) => Image.asset(
-                                "assets/images/back-2.webp",
-                                fit: BoxFit.cover,
-                              ),
-                              image: NetworkImage(
-                                Urls.imageUrl+piece.imagePiece,
-                              ),
-                              fit: BoxFit.cover
-                          )
-                      ),
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                  width: size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                      color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7)
-                                  ),
-                                  child: Center(
-                                    child: Label10(
-                                        text: piece.typeEngin.libelle,
-                                        color: GlobalThemeData.lightColorScheme.onPrimary,
-                                        weight: FontWeight.bold,
-                                        maxLines: 1
-                                    ).animate().fadeIn(),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ]
-                      ),
-                    ),
-                    const Gap(10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: size.width * 0.55,
-                          child: Label14(
-                              text: piece.piece != null ? piece.piece!.nomPiece : piece.article!.name,
-                              color: GlobalThemeData.lightColorScheme.primaryContainer,
-                              weight: FontWeight.bold,
-                              maxLines: 2
-                          ).animate().fadeIn(),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CustomIconButton(
-                                icon: Icons.more_horiz_outlined,
-                                size: size,
-                                context: context,
-                                function: () {
-                                  showMenuOptions(context: context, detail: piece);
-                                },
-                                iconColor: GlobalThemeData.lightColorScheme.primary,
-                                buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                                backColor: GlobalThemeData.lightColorScheme.primary
-                            ).animate().fadeIn(),
-                            CustomIconButton(
-                                icon: Icons.arrow_forward_ios_rounded,
-                                size: size,
-                                context: context,
-                                function: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPieceScreen(detail: piece)));
-                                },
-                                iconColor: GlobalThemeData.lightColorScheme.primary,
-                                buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                                backColor: GlobalThemeData.lightColorScheme.primary
-                            ).animate().fadeIn(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ).animate().fadeIn();
-            },
-          );*/
         }
       )
     );

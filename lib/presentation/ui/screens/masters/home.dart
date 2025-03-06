@@ -220,7 +220,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                   LargeOverview(
                     context: context,
                     label: "Total pièces enregistrées",
-                    value: partner.loading && partner.pieces.isEmpty ? "..." : partner.pieces.length.toString(),
+                    value: partner.mainLoading && partner.pieces.isEmpty ? "..." : partner.pieces.length.toString(),
                     icon: Icons.settings_rounded,
                     size: size,
                     child: const PieceListScreen()

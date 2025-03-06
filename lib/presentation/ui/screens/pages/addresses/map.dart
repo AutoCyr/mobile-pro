@@ -9,6 +9,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/loaders/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -103,24 +104,7 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
               List<Address> addresses = auth.partenaire?.adressesPartenaire ?? [];
 
               if(map.loading){
-                return SizedBox(
-                  width: size.width,
-                  height: size.height - kToolbarHeight,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ProgressButton(
-                          widthSize: size.width * 0.9,
-                          context: context,
-                          bgColor: GlobalThemeData.lightColorScheme.onPrimary,
-                          shimmerColor: GlobalThemeData.lightColorScheme.primary
-                        ),
-                        const Gap(20),
-                        Label10(text: "Chargement de la carte...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1),
-                      ]
-                  ).animate().fadeIn(),
-                );
+                return Loader(context: context, size: size, message: "Chargement de la carte...").animate().fadeIn();
               }
 
               return Stack(

@@ -21,6 +21,7 @@ import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/ui.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -54,6 +55,13 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
 
   Future getImageFromGallery() async {
     _image = await _picker.pickImage(source: ImageSource.gallery, maxHeight: 1080, maxWidth: 1080);
+    setState(() {
+      media = File(_image!.path);
+    });
+  }
+
+  Future getImageFromCamera() async {
+    _image = await _picker.pickImage(source: ImageSource.camera, maxHeight: 1080, maxWidth: 1080);
     setState(() {
       media = File(_image!.path);
     });
@@ -163,6 +171,7 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                                 height: size.width * 0.3,
                                 decoration: BoxDecoration(
                                   color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
+                                  border: Border.all(color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1), width: 1),
                                   borderRadius: BorderRadius.circular(5),
                                   image: DecorationImage(
                                     onError: (Object e, StackTrace? stackTrace) => Image.asset(
@@ -185,18 +194,29 @@ class _PieceEditScreenState extends State<PieceEditScreen> {
                                   children: [
                                     Label12(text: "Changer l'image", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                                     const Gap(10),
-                                    CustomButton(
-                                        text: "Choisir",
-                                        size: size,
-                                        globalWidth: size.width * 0.57,
-                                        widthSize: size.width * 0.54,
-                                        backSize: size.width * 0.54,
-                                        context: context,
-                                        function: () => getImageFromGallery(),
-                                        textColor: GlobalThemeData.lightColorScheme.primary,
-                                        buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                                        backColor: GlobalThemeData.lightColorScheme.primary
-                                    ).animate().fadeIn(),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        CustomIconButton(
+                                            icon: Icons.photo_library_outlined,
+                                            size: size,
+                                            context: context,
+                                            function: () => getImageFromGallery(),
+                                            iconColor: GlobalThemeData.lightColorScheme.primary,
+                                            buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                            backColor: GlobalThemeData.lightColorScheme.primary
+                                        ).animate().fadeIn(),
+                                        CustomIconButton(
+                                            icon: Icons.photo_camera_outlined,
+                                            size: size,
+                                            context: context,
+                                            function: () => getImageFromCamera(),
+                                            iconColor: GlobalThemeData.lightColorScheme.primary,
+                                            buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                            backColor: GlobalThemeData.lightColorScheme.primary
+                                        ).animate().fadeIn(),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               )

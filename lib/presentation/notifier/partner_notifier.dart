@@ -398,7 +398,7 @@ class PartnerNotifier extends ChangeNotifier {
   }
 
   getPieces({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
-    more ? setFilling(true) : setLoading(true);
+    more ? setLoading(true) : setMainLoading(true);
     setError("");
     try {
       var data = await partnerUseCase.getPieces(params);
@@ -409,7 +409,7 @@ class PartnerNotifier extends ChangeNotifier {
         // fetch pagination datas
         Meta meta = Meta.fromJson(success.data['meta']);
         if(meta.currentPage >= meta.lastPage){
-          more ? setFilling(false) : setLoading(false);
+          more ? setLoading(false) : setMainLoading(false);
         }
 
         // add & complete datas
@@ -423,16 +423,16 @@ class PartnerNotifier extends ChangeNotifier {
         Map<DetailPiece, bool> actionPieces = { for(var piece in pieces) piece : false };
         setActionPieces(actionPieces);
 
-        more ? setFilling(false) : setLoading(false);
+        more ? setLoading(false) : setMainLoading(false);
       }else{
         Failure failure = Failure.fromJson(data);
 
-        more ? setFilling(false) : setLoading(false);
+        more ? setLoading(false) : setMainLoading(false);
         setError(failure.message);
       }
     } catch (e) {
       print(e);
-      more ? setFilling(false) : setLoading(false);
+      more ? setLoading(false) : setMainLoading(false);
       setError("Une erreur est survenue");
     }
   }

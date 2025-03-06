@@ -55,6 +55,13 @@ class _ArticleAddScreenState extends State<ArticleAddScreen> {
     });
   }
 
+  Future getImageFromCamera() async {
+    _image = await _picker.pickImage(source: ImageSource.camera, maxHeight: 1080, maxWidth: 1080);
+    setState(() {
+      media = File(_image!.path);
+    });
+  }
+
   _save(BuildContext context) async {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
     final auth = Provider.of<AuthNotifier>(context, listen: false);
@@ -129,13 +136,61 @@ class _ArticleAddScreenState extends State<ArticleAddScreen> {
                           onTap: () => getImageFromGallery(),
                           child: Container(
                             width: size.width,
-                            height: size.width * 0.3,
+                            height: size.width * 0.45,
                             decoration: BoxDecoration(
                                 color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(5)
                             ),
-                            child: Center(
-                              child: Label12(text: "Sélectionner une image", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                            child: IntrinsicHeight(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => getImageFromGallery(),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                      width: size.width * 0.4,
+                                      height: size.height * 0.3,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Image.asset(
+                                            "assets/pngs/picture.webp",
+                                            width: size.width * 0.25,
+                                            height: size.width * 0.25,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Label10(text: "Sélectionner une image", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  VerticalDivider(
+                                    color: GlobalThemeData.lightColorScheme.secondary.withOpacity(0.1),
+                                    thickness: 1,
+                                  ).animate().fadeIn(),
+                                  GestureDetector(
+                                    onTap: () => getImageFromCamera(),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                                      width: size.width * 0.4,
+                                      height: size.height * 0.3,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Image.asset(
+                                            "assets/pngs/camera.webp",
+                                            width: size.width * 0.25,
+                                            height: size.width * 0.25,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Label10(text: "Prendre une photo", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ).animate().fadeIn(),
                         )

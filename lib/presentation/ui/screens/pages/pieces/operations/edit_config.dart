@@ -10,6 +10,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/loaders/loading.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/searchables/searchable.dart';
@@ -192,6 +193,8 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
               ).animate().fadeIn(),
               const Gap(20),
               Label17(text: "Mettre à jour les disponibilités", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              const Gap(10),
+              Label12(text: "Les catégories avec le signe ⁕ sont obligatoires et doivent avoir au moins un élément", color: GlobalThemeData.lightColorScheme.errorContainer, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(20),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -256,7 +259,13 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                     color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7),
                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
                 ),
-                child: Label12(text: "Types de véhicules", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Label12(text: "Types de véhicules", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                    Label12(text: "⁕", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                  ],
+                ),
               ),
               const Gap(10),
               common.filling ?
@@ -265,7 +274,7 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                   children: [
                     Label10(text: "Chargement des types de véhicules...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(10),
-                    ProgressButton(
+                    Loading(
                         widthSize: size.width * 0.9,
                         context: context,
                         bgColor: GlobalThemeData.lightColorScheme.onPrimary,
@@ -312,7 +321,13 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                     color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7),
                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
                 ),
-                child: Label12(text: "Types de moteur", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Label12(text: "Types de moteur", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                    Label12(text: "⁕", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                  ],
+                ),
               ),
               const Gap(10),
               common.filling ?
@@ -321,7 +336,7 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                   children: [
                     Label10(text: "Chargement des types de moteur...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(10),
-                    ProgressButton(
+                    Loading(
                         widthSize: size.width * 0.9,
                         context: context,
                         bgColor: GlobalThemeData.lightColorScheme.onPrimary,
@@ -368,7 +383,13 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                     color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.7),
                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
                 ),
-                child: Label12(text: "Catégories d'engin", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Label12(text: "Catégories d'engin", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                    Label12(text: "⁕", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+                  ],
+                ),
               ),
               const Gap(10),
               common.filling ?
@@ -377,7 +398,7 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                   children: [
                     Label10(text: "Chargement des catégories d'engin...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(10),
-                    ProgressButton(
+                    Loading(
                         widthSize: size.width * 0.9,
                         context: context,
                         bgColor: GlobalThemeData.lightColorScheme.onPrimary,

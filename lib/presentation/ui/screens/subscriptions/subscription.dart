@@ -11,6 +11,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/loaders/loader.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -63,27 +64,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
       body: Consumer3<AuthNotifier, CommonNotifier, PartnerNotifier>(
         builder: (context, auth, common, partner, child) {
           if(common.filling) {
-            return SizedBox(
-              width: size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ProgressButton(
-                      widthSize: size.width * 0.9,
-                      context: context,
-                      bgColor: GlobalThemeData.lightColorScheme.onPrimary,
-                      shimmerColor: GlobalThemeData.lightColorScheme.primary
-                  ).animate().fadeIn(),
-                  const Gap(20),
-                  Label12(
-                      text: "Récupération des plans...",
-                      color: Colors.black,
-                      weight: FontWeight.bold,
-                      maxLines: 2
-                  ).animate().fadeIn()
-                ],
-              ),
-            );
+            return Loader(context: context, size: size, message: "Récupération des plans...").animate().fadeIn();
           }
 
           if(common.plans.isEmpty) {
