@@ -1,6 +1,7 @@
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/domain/models/core/subscription.dart';
 import 'package:autocyr_pro/domain/models/features/commande.dart';
+import 'package:autocyr_pro/domain/models/features/intervention.dart';
 import 'package:autocyr_pro/domain/models/pieces/detail_piece.dart';
 import 'package:autocyr_pro/domain/models/pieces/piece.dart';
 import 'package:autocyr_pro/domain/models/pieces/piece_info.dart';
@@ -27,28 +28,42 @@ class PartnerNotifier extends ChangeNotifier {
   bool _loading = false;
   bool _filling = false;
   bool _update = false;
+
   String _errorCommandes = "";
+  String _errorRequests = "";
   String _error = "";
+
   Meta? _pieceMeta;
   Meta? _commandeMeta;
+  Meta? _requestMeta;
   Subscription? _subscription;
   PieceInfo? _piece;
+
   List<DetailPiece> _pieces = [];
   List<Commande> _commandes = [];
+  List<Intervention> _requests = [];
+
   Map<DetailPiece, bool> _actionPieces = {};
 
   bool get mainLoading => _mainLoading;
   bool get loading => _loading;
   bool get filling => _filling;
   bool get update => _update;
+
   String get errorCommandes => _errorCommandes;
+  String get errorRequests => _errorRequests;
   String get error => _error;
+
   Meta get pieceMeta => _pieceMeta!;
   Meta get commandeMeta => _commandeMeta!;
+  Meta get requestMeta => _requestMeta!;
   Subscription? get subscription => _subscription;
   PieceInfo? get piece => _piece;
+
   List<DetailPiece> get pieces => _pieces;
   List<Commande> get commandes => _commandes;
+  List<Intervention> get requests => _requests;
+
   Map<DetailPiece, bool> get actionPieces => _actionPieces;
 
   setMainLoading(bool value) {
@@ -76,6 +91,11 @@ class PartnerNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  setErrorRequests(String value) {
+    _errorRequests = value;
+    notifyListeners();
+  }
+
   setError(String value) {
     _error = value;
     notifyListeners();
@@ -88,6 +108,11 @@ class PartnerNotifier extends ChangeNotifier {
 
   setCommandeMeta(Meta value) {
     _commandeMeta = value;
+    notifyListeners();
+  }
+
+  setRequestMeta(Meta value) {
+    _requestMeta = value;
     notifyListeners();
   }
 
@@ -111,6 +136,11 @@ class PartnerNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  setRequests(List<Intervention> value) {
+    _requests = value;
+    notifyListeners();
+  }
+
   setActionPieces(Map<DetailPiece, bool> value) {
     _actionPieces = value;
     notifyListeners();
@@ -125,7 +155,7 @@ class PartnerNotifier extends ChangeNotifier {
     return _actionPieces[piece] ?? false;
   }
 
-  checkSubscription({required String id, required List<Plan> plans, required BuildContext context}) async {
+  Future checkSubscription({required String id, required List<Plan> plans, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.checkSubscription(id);
@@ -181,7 +211,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  addSubscription({required Map<String, dynamic> body, required Plan plan, required BuildContext context}) async {
+  Future addSubscription({required Map<String, dynamic> body, required Plan plan, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.addSubscription(body);
@@ -213,7 +243,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  addFreeSubscription({required Map<String, dynamic> body, required Plan plan, required BuildContext context}) async {
+  Future addFreeSubscription({required Map<String, dynamic> body, required Plan plan, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.addFreeSubscription(body);
@@ -245,7 +275,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  addPiece({required Map<String, String> body, required String filepath, required String name, required BuildContext context}) async {
+  Future addPiece({required Map<String, String> body, required String filepath, required String name, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.addPiece(body, filepath, name);
@@ -276,7 +306,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  updatePiece({required Map<String, String> body, required String id, required String filepath, required String name, required Future function, required BuildContext context}) async {
+  Future updatePiece({required Map<String, String> body, required String id, required String filepath, required String name, required Future function, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.updatePiece(body, id, filepath, name);
@@ -313,7 +343,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  changePieceStatus({required DetailPiece piece, required Future function, required BuildContext context}) async {
+  Future changePieceStatus({required DetailPiece piece, required Future function, required BuildContext context}) async {
     setUpdate(true);
     try {
       var data = await partnerUseCase.changePieceStatus(piece.detailPieceId.toString());
@@ -341,7 +371,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  addDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
+  Future addDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.addDisponibilities(body);
@@ -369,7 +399,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  updateDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
+  Future updateDisponibilities({required Map<String, dynamic> body, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.updateDisponibilities(body);
@@ -397,7 +427,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  getPieces({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
+  Future getPieces({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
     more ? setLoading(true) : setMainLoading(true);
     setError("");
     try {
@@ -437,7 +467,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  getPiece({required String id, required BuildContext context}) async {
+  Future getPiece({required String id, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.getPiece(id);
@@ -463,7 +493,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  updateAddresses({required Map<String, dynamic> body, required AuthNotifier auth, required BuildContext context}) async {
+  Future updateAddresses({required Map<String, dynamic> body, required AuthNotifier auth, required BuildContext context}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.updateAdresses(body);
@@ -492,7 +522,7 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  retrieveCommandes({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
+  Future retrieveCommandes({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
     more ? setFilling(true) : setLoading(true);
     setErrorCommandes("");
 
@@ -527,6 +557,44 @@ class PartnerNotifier extends ChangeNotifier {
       print(e);
       more ? setFilling(false) : setLoading(false);
       setErrorCommandes("Une erreur serveur est survenue");
+    }
+  }
+
+  Future retrieveRequests({required BuildContext context, required Map<String, dynamic> params, required bool more}) async {
+    more ? setFilling(true) : setLoading(true);
+    setErrorRequests("");
+
+    try {
+      var data = await partnerUseCase.getRequests(params);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        // fetch pagination datas
+        Meta meta = Meta.fromJson(success.data['meta']);
+        if(meta.currentPage >= meta.lastPage){
+          more ? setFilling(false) : setLoading(false);
+        }
+
+        // add & complete datas
+        List<Intervention> localRequests = more ? List.from(requests) : [];
+        for(var demande in success.data['data']){
+          localRequests.add(Intervention.fromJson(demande));
+        }
+
+        setRequests(localRequests);
+        setRequestMeta(meta);
+        more ? setFilling(false) : setLoading(false);
+      } else {
+        Failure failure = Failure.fromJson(data);
+
+        more ? setFilling(false) : setLoading(false);
+        setErrorRequests(failure.message);
+      }
+    } catch (e) {
+      print(e);
+      more ? setFilling(false) : setLoading(false);
+      setErrorRequests("Une erreur serveur est survenue");
     }
   }
 

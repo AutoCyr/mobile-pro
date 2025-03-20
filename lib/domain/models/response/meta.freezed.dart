@@ -37,12 +37,8 @@ mixin _$Meta {
   @JsonKey(name: 'previous_page_url')
   String? get previousPageUrl => throw _privateConstructorUsedError;
 
-  /// Serializes this Meta to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MetaCopyWith<Meta> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -72,8 +68,6 @@ class _$MetaCopyWithImpl<$Res, $Val extends Meta>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -148,8 +142,6 @@ class __$$MetaImplCopyWithImpl<$Res>
   __$$MetaImplCopyWithImpl(_$MetaImpl _value, $Res Function(_$MetaImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -266,14 +258,12 @@ class _$MetaImpl implements _Meta {
                 other.previousPageUrl == previousPageUrl));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, total, perPage, currentPage,
       lastPage, firstPageUrl, lastPageUrl, nextPageUrl, previousPageUrl);
 
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
@@ -325,11 +315,8 @@ abstract class _Meta implements Meta {
   @override
   @JsonKey(name: 'previous_page_url')
   String? get previousPageUrl;
-
-  /// Create a copy of Meta
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

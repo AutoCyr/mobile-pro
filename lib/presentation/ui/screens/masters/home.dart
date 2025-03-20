@@ -1,3 +1,4 @@
+import 'package:autocyr_pro/data/helpers/data_loaders.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
@@ -16,6 +17,7 @@ import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/addresses/list.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/commandes/commandes.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/list.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/requests/requests.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +58,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     {
       "label": "Demandes",
       "iconData": Icons.content_paste_go_rounded,
-      "widget": null
+      "widget": const RequestListScreen()
     }
   ];
 
@@ -77,12 +79,16 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
 
     Map<String, dynamic> params = getParams(view);
-    if(partner.pieces.isEmpty) {
-      await partner.getPieces(context: context, params: params, more: more);
-    }
-    if(partner.commandes.isEmpty) {
-      await partner.retrieveCommandes(context: context, params: params, more: more);
-    }
+
+    // Liste des futures à exécuter en parallèle
+    List<Future<void>> futures = [];
+
+    futures.add(DataLoaders().loadDataFor(context: context, condition: partner.pieces.isEmpty, params: params, retrieveFunction: partner.getPieces, more: more));
+    futures.add(DataLoaders().loadDataFor(context: context, condition: partner.commandes.isEmpty, params: params, retrieveFunction: partner.retrieveCommandes, more: more));
+    futures.add(DataLoaders().loadDataFor(context: context, condition: partner.requests.isEmpty, params: params, retrieveFunction: partner.retrieveRequests, more: more));
+
+    // Exécution en parallèle
+    await Future.wait(futures);
   }
 
   @override
@@ -251,9 +257,10 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                   LargeOverview(
                     context: context,
                     label: "Total interventions",
-                    value: "15",
+                    value: partner.loading && partner.requests.isEmpty ? "..." : partner.requests.length.toString(),
                     icon: Icons.scuba_diving_rounded,
-                    size: size
+                    size: size,
+                    child: const RequestListScreen()
                   ).animate().fadeIn(),
                   const Gap(5),
                   LargeOverview(

@@ -37,12 +37,8 @@ mixin _$Client {
   @JsonKey(name: 'pays')
   Country? get pays => throw _privateConstructorUsedError;
 
-  /// Serializes this Client to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Client
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ClientCopyWith<Client> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -74,8 +70,6 @@ class _$ClientCopyWithImpl<$Res, $Val extends Client>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Client
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -124,8 +118,6 @@ class _$ClientCopyWithImpl<$Res, $Val extends Client>
     ) as $Val);
   }
 
-  /// Create a copy of Client
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CountryCopyWith<$Res>? get pays {
@@ -168,8 +160,6 @@ class __$$ClientImplCopyWithImpl<$Res>
       _$ClientImpl _value, $Res Function(_$ClientImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Client
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -294,7 +284,7 @@ class _$ClientImpl implements _Client {
             (identical(other.pays, pays) || other.pays == pays));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -307,9 +297,7 @@ class _$ClientImpl implements _Client {
       const DeepCollectionEquality().hash(_adressesClient),
       pays);
 
-  /// Create a copy of Client
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ClientImplCopyWith<_$ClientImpl> get copyWith =>
@@ -360,11 +348,8 @@ abstract class _Client implements Client {
   @override
   @JsonKey(name: 'pays')
   Country? get pays;
-
-  /// Create a copy of Client
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ClientImplCopyWith<_$ClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

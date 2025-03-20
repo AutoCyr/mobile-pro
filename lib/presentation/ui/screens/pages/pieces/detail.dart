@@ -9,6 +9,7 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/state.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/loaders/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -49,24 +50,7 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
       body: Consumer<PartnerNotifier>(
         builder: (context, partner, child) {
           if(partner.loading) {
-            return SizedBox(
-              width: size.width,
-              height: size.height - kToolbarHeight,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ProgressButton(
-                        widthSize: size.width * 0.9,
-                        context: context,
-                        bgColor: GlobalThemeData.lightColorScheme.onPrimary,
-                        shimmerColor: GlobalThemeData.lightColorScheme.primary
-                    ),
-                    const Gap(20),
-                    Label10(text: "Chargement des informations de la pièce...", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 2),
-                  ]
-              ).animate().fadeIn(),
-            );
+            return Loader(context: context, size: size, message: "Chargement des informations de la pièce...").animate().fadeIn();
           }
 
           if(partner.piece == null && !partner.loading) {

@@ -41,12 +41,8 @@ mixin _$Commande {
   @JsonKey(name: 'piece_detail')
   DetailPiece get pieceDetail => throw _privateConstructorUsedError;
 
-  /// Serializes this Commande to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CommandeCopyWith<Commande> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -83,8 +79,6 @@ class _$CommandeCopyWithImpl<$Res, $Val extends Commande>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -143,8 +137,6 @@ class _$CommandeCopyWithImpl<$Res, $Val extends Commande>
     ) as $Val);
   }
 
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PartenaireCopyWith<$Res> get partenaire {
@@ -153,8 +145,6 @@ class _$CommandeCopyWithImpl<$Res, $Val extends Commande>
     });
   }
 
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ClientCopyWith<$Res> get client {
@@ -163,8 +153,6 @@ class _$CommandeCopyWithImpl<$Res, $Val extends Commande>
     });
   }
 
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DetailPieceCopyWith<$Res> get pieceDetail {
@@ -210,8 +198,6 @@ class __$$CommandeImplCopyWithImpl<$Res>
       _$CommandeImpl _value, $Res Function(_$CommandeImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -351,7 +337,7 @@ class _$CommandeImpl implements _Commande {
                 other.pieceDetail == pieceDetail));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -366,9 +352,7 @@ class _$CommandeImpl implements _Commande {
       client,
       pieceDetail);
 
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CommandeImplCopyWith<_$CommandeImpl> get copyWith =>
@@ -429,11 +413,8 @@ abstract class _Commande implements Commande {
   @override
   @JsonKey(name: 'piece_detail')
   DetailPiece get pieceDetail;
-
-  /// Create a copy of Commande
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CommandeImplCopyWith<_$CommandeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

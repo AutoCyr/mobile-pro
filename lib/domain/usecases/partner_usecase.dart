@@ -54,4 +54,8 @@ class PartnerUseCase {
     return await _partnerRepositoryImpl.getCommandes(params);
   }
 
+  Future getRequests(Map<String, dynamic> params) async {
+    return await _partnerRepositoryImpl.getRequests(params);
+  }
+
 }
