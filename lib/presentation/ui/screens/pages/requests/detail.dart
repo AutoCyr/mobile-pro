@@ -1,4 +1,5 @@
 import 'package:autocyr_pro/data/helpers/redirections.dart';
+import 'package:autocyr_pro/data/network/urls.dart';
 import 'package:autocyr_pro/domain/models/features/demande.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
@@ -8,6 +9,7 @@ import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 
 class RequestDetailScreen extends StatefulWidget {
@@ -40,6 +42,30 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         children: [
+          if(detail!.imagePiece != null)
+            Column(
+              children: [
+                Container(
+                    width: size.width,
+                    height: size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                        border: Border.all(color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1), width: 1),
+                        image: DecorationImage(
+                            onError: (Object e, StackTrace? stackTrace) => Image.asset(
+                              "assets/images/back-2.webp",
+                              fit: BoxFit.cover,
+                            ),
+                            image: NetworkImage(
+                              Urls.imageUrl+detail!.imagePiece!,
+                            ),
+                            fit: BoxFit.cover
+                        )
+                    )
+                ).animate().fadeIn(),
+                const Gap(10),
+              ],
+            ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             width: size.width,
@@ -136,7 +162,20 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
                                     backgroundColor: WidgetStateProperty.all(GlobalThemeData.lightColorScheme.onPrimary),
                                   ),
                                   icon: Icon(Icons.settings_phone_sharp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
-                              )
+                              ),
+                              IconButton(
+                                  onPressed: () => Redirections().shareWhatsapp(context: context, reference: detail!.reference, client: detail!.client, type: "demande"),
+                                  style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            side: BorderSide(color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1)),
+                                            borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                                        )
+                                    ),
+                                    backgroundColor: WidgetStateProperty.all(GlobalThemeData.lightColorScheme.onTertiary),
+                                  ),
+                                  icon: Icon(Bootstrap.whatsapp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
+                              ),
                             ],
                           )
                         ],

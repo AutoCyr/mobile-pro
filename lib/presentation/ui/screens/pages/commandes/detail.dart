@@ -142,6 +142,19 @@ class _CommandeDetailScreenState extends State<CommandeDetailScreen> {
                       ),
                       icon: Icon(Icons.settings_phone_sharp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
                   ),
+                  IconButton(
+                      onPressed: () => Redirections().shareWhatsapp(context: context, reference: detail!.pieceDetail.piece != null ? detail!.pieceDetail.piece!.nomPiece : detail!.pieceDetail.article!.name, client: detail!.client, type: "commande"),
+                      style: ButtonStyle(
+                        shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                                side: BorderSide(color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1)),
+                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
+                            )
+                        ),
+                        backgroundColor: WidgetStateProperty.all(GlobalThemeData.lightColorScheme.onTertiary),
+                      ),
+                      icon: Icon(Bootstrap.whatsapp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
+                  ),
                 ],
               )
             ],

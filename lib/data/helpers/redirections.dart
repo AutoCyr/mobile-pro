@@ -48,9 +48,9 @@ class Redirections {
     }
   }
 
-  shareWhatsapp({required BuildContext context, required DetailPiece piece, required Client client}) async {
+  shareWhatsapp({required BuildContext context, required String reference, required Client client, required String type}) async {
     var message = "Bonjour ${client.pseudoClient}. \n\n"
-        "Nous vous contactons depuis AUTOCYR par rapport à la pièce ${piece.piece != null ? piece.piece!.nomPiece : piece.article!.name}...";
+        "Nous vous contactons depuis AUTOCYR par rapport à la ${type != "commande" ? "pièce" : "demande"} $reference...";
 
     var AndroidUrl = "whatsapp://send?phone=${client.telephone1}&text=$message";
     var iOSUrl ="https://wa.me/${client.telephone1}?text=$message";
