@@ -36,7 +36,7 @@ class _CommandeDetailScreenState extends State<CommandeDetailScreen> {
       appBar: AppBar(
           iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
           backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
-          title: Label14(text: "Détail de la commande", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+          title: Label14(text: "Détail de la commande", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),

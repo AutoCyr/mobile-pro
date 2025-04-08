@@ -72,7 +72,7 @@ class _RequestListScreenState extends State<RequestListScreen> {
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
         title: _search == false ?
-          Label14(text: "Liste des demandes", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+          Label14(text: "Liste des demandes", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
             :
           SizedBox(
               height: 45,
@@ -99,7 +99,7 @@ class _RequestListScreenState extends State<RequestListScreen> {
                 ),
                 autofocus: true,
                 onChanged: (value) => filterList(value),
-                cursorColor: GlobalThemeData.lightColorScheme.primaryContainer,
+                cursorColor: GlobalThemeData.lightColorScheme.primary,
               ),
           ).animate().fadeIn(),
         actions: [

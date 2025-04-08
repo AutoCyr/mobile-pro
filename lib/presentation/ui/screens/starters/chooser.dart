@@ -80,17 +80,18 @@ class _ChooserScreenState extends State<ChooserScreen> {
                                 Image.asset(
                                   "assets/logos/auto.png",
                                   width: 75,
-                                ).animate().tint(color: GlobalThemeData.lightColorScheme.onPrimary).fadeIn(),
-                                Label30(
-                                    text: "Autocyr Pro".toUpperCase(),
-                                    color: GlobalThemeData.lightColorScheme.onPrimary,
+                                ).animate().fadeIn(),
+                                const Gap(10),
+                                Label20(
+                                    text: "Autocyr Partenaire".toUpperCase(),
+                                    color: GlobalThemeData.lightColorScheme.primary,
                                     weight: FontWeight.bold,
                                     maxLines: 1
                                 ).animate().fadeIn(),
                                 const Gap(15),
                                 Label12(
                                     text: "Gagnez en visibilité et augmentez vos ventes de pièces détachées pour les acheteurs particuliers et mécaniciens",
-                                    color: GlobalThemeData.lightColorScheme.onPrimary,
+                                    color: GlobalThemeData.lightColorScheme.secondary,
                                     weight: FontWeight.normal,
                                     maxLines: 4
                                 ).animate().fadeIn(),

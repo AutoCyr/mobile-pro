@@ -120,7 +120,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                   children: [
                     Label14(
                         text: "Actions",
-                        color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                        color: GlobalThemeData.lightColorScheme.onSecondaryFixed,
                         weight: FontWeight.bold,
                         maxLines: 1
                     ).animate().fadeIn(),
@@ -128,7 +128,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.close, color: GlobalThemeData.lightColorScheme.secondaryContainer,),
+                      icon: Icon(Icons.close, color: GlobalThemeData.lightColorScheme.onSecondaryFixed,),
                     ).animate().fadeIn(),
                   ],
                 ),
@@ -147,12 +147,12 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.edit_note_outlined, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 20),
+                            Icon(Icons.edit_note_outlined, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, size: 20),
                             const Gap(20),
                             Label12(text: "Modifier la pièce", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
                           ],
                         ),
-                        Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 15),
+                        Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, size: 15),
                       ],
                     ),
                   ),
@@ -173,12 +173,12 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.settings_outlined, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 20),
+                            Icon(Icons.settings_outlined, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, size: 20),
                             const Gap(20),
                             Label12(text: "Modifier les configurations", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
                           ],
                         ),
-                        Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 15),
+                        Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, size: 15),
                       ],
                     ),
                   ),
@@ -198,12 +198,12 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(detail.statut == 1 ? Icons.highlight_off : Icons.done_all_sharp, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 20),
+                            Icon(detail.statut == 1 ? Icons.highlight_off : Icons.done_all_sharp, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, size: 20),
                             const Gap(20),
                             Label12(text: detail.statut == 1 ? "Désactiver" : "Activer", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
                           ],
                         ),
-                        Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.secondaryContainer, size: 15),
+                        Icon(Icons.arrow_forward_ios_rounded, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, size: 15),
                       ],
                     ),
                   ),
@@ -237,7 +237,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                 children: [
                   Label14(
                       text: "Nouvelle pièce",
-                      color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                      color: GlobalThemeData.lightColorScheme.onSecondaryFixed,
                       weight: FontWeight.bold,
                       maxLines: 1
                   ).animate().fadeIn(),
@@ -245,7 +245,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.close, color: GlobalThemeData.lightColorScheme.secondaryContainer,),
+                    icon: Icon(Icons.close, color: GlobalThemeData.lightColorScheme.onSecondaryFixed,),
                   ).animate().fadeIn(),
                 ],
               ),
@@ -276,13 +276,13 @@ class _PieceListScreenState extends State<PieceListScreen> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                     decoration: BoxDecoration(
-                                      color: GlobalThemeData.lightColorScheme.primaryContainer,
+                                      color: GlobalThemeData.lightColorScheme.primary,
                                       borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                                     ),
                                     child: Center(
                                       child: Label10(
                                         text: "Recommandé",
-                                        color: GlobalThemeData.lightColorScheme.onPrimaryContainer,
+                                        color: GlobalThemeData.lightColorScheme.onPrimary,
                                         weight: FontWeight.w700,
                                         maxLines: 2,
                                       ),
@@ -330,7 +330,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
         title: search == false ?
-          Label14(text: "Mes pièces", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+          Label14(text: "Mes pièces", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
             :
           SizedBox(
             height: 45,
@@ -338,7 +338,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.1),
+                fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
 
                 hintText: "Rechercher",
                 border: InputBorder.none,
@@ -425,7 +425,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                       decoration: BoxDecoration(
                         color: GlobalThemeData.lightColorScheme.onPrimary,
                         border: Border.all(
-                            color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.5),
+                            color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.5),
                             width: 1
                         ),
                       ),
@@ -437,7 +437,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                             height: size.height * 0.15,
                             decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: GlobalThemeData.lightColorScheme.primaryContainer,
+                                    color: GlobalThemeData.lightColorScheme.primary,
                                     width: 1
                                 ),
                                 image: DecorationImage(
@@ -486,7 +486,7 @@ class _PieceListScreenState extends State<PieceListScreen> {
                                 width: size.width * 0.55,
                                 child: Label14(
                                     text: piece.piece != null ? piece.piece!.nomPiece : piece.article!.name,
-                                    color: GlobalThemeData.lightColorScheme.primaryContainer,
+                                    color: GlobalThemeData.lightColorScheme.primary,
                                     weight: FontWeight.bold,
                                     maxLines: 2
                                 ).animate().fadeIn(),

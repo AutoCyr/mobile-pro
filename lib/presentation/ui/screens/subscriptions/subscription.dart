@@ -29,6 +29,7 @@ class SubscriptionChoiceScreen extends StatefulWidget {
 class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
 
   Plan? _selectedPlan;
+  List<Plan> plans = [];
 
   _save(BuildContext context) async {
     final partner = Provider.of<PartnerNotifier>(context, listen: false);
@@ -46,7 +47,13 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
 
   _retrievePlans(BuildContext context) async {
     final common = Provider.of<CommonNotifier>(context, listen: false);
-    widget.isFree ? await common.retrieveFreePlans(context: context) : await common.retrievePlans(context: context);
+    if(widget.isFree) {
+      await common.retrieveFreePlans(context: context);
+      plans = common.plans.where((element) => element.montant == 0 || (element.isPromo == 1 && element.montantPromotion == 0)).toList();
+    } else {
+      await common.retrievePlans(context: context);
+      plans = common.plans.where((element) => element.montant > 0 && element.isPromo == 0).toList();
+    }
   }
 
   @override
@@ -80,7 +87,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                 ).animate().fadeIn(),
                 Label30(
                     text: auth.getPartenaire.raisonSociale,
-                    color: GlobalThemeData.lightColorScheme.primaryContainer,
+                    color: GlobalThemeData.lightColorScheme.primary,
                     weight: FontWeight.bold,
                     maxLines: 2
                 ).animate().fadeIn(),
@@ -121,7 +128,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
               ).animate().fadeIn(),
               Label30(
                   text: auth.getPartenaire.raisonSociale,
-                  color: GlobalThemeData.lightColorScheme.primaryContainer,
+                  color: GlobalThemeData.lightColorScheme.primary,
                   weight: FontWeight.bold,
                   maxLines: 2
               ).animate().fadeIn(),
@@ -140,7 +147,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                   maxLines: 2
               ).animate().fadeIn(),
               const Gap(15),
-              ...common.plans.map((e) => InkWell(
+              ...plans.map((e) => InkWell(
                 onTap: () {
                   setState(() {
                     _selectedPlan = e;
@@ -151,9 +158,9 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   width: size.width,
                   decoration: BoxDecoration(
-                    color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.primaryContainer : GlobalThemeData.lightColorScheme.onPrimary,
+                    color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.primary : GlobalThemeData.lightColorScheme.onPrimary,
                     border: Border.all(
-                        color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary.withOpacity(0.2) : GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.2),
+                        color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary.withOpacity(0.2) : GlobalThemeData.lightColorScheme.primary.withOpacity(0.2),
                         width: 1
                     ),
                   ),
@@ -170,7 +177,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                           children: [
                             Label13(
                                 text: e.libelle,
-                                color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.primaryContainer,
+                                color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.primary,
                                 weight: FontWeight.normal,
                                 maxLines: 1
                             ),
@@ -180,7 +187,7 @@ class _SubscriptionChoiceScreenState extends State<SubscriptionChoiceScreen> {
                                   const Gap(5),
                                   Label20(
                                       text: "${e.montant} FCFA",
-                                      color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.secondaryContainer,
+                                      color: _selectedPlan == e ? GlobalThemeData.lightColorScheme.onPrimary : GlobalThemeData.lightColorScheme.secondary,
                                       weight: FontWeight.bold,
                                       maxLines: 1
                                   ),

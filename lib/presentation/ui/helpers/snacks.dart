@@ -21,13 +21,13 @@ class Snacks {
 
   static void failureBar(String msg, BuildContext context) {
     var bar = SnackBar(
-      backgroundColor: GlobalThemeData.lightColorScheme.errorContainer,
+      backgroundColor: GlobalThemeData.lightColorScheme.error,
       content: Text(
         msg,
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
-          color: GlobalThemeData.lightColorScheme.onErrorContainer,
+          color: GlobalThemeData.lightColorScheme.onError,
           fontFamily: "Lufga",
         )
       ),

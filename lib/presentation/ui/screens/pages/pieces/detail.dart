@@ -45,7 +45,7 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
-        title: Label14(text: "Détail de la pièce", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+        title: Label14(text: "Détail de la pièce", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
       ),
       body: Consumer<PartnerNotifier>(
         builder: (context, partner, child) {
@@ -69,7 +69,7 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                     height: size.width * 0.6,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                      border: Border.all(color: GlobalThemeData.lightColorScheme.primaryContainer, width: 1),
+                      border: Border.all(color: GlobalThemeData.lightColorScheme.primary, width: 1),
                       image: DecorationImage(
                         onError: (Object e, StackTrace? stackTrace) => Image.asset(
                           "assets/images/back-2.webp",
@@ -89,7 +89,7 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           width: size.width * 0.6,
                           decoration: BoxDecoration(
-                            color: partner.piece!.statut == 1 ? Colors.green : GlobalThemeData.lightColorScheme.errorContainer,
+                            color: partner.piece!.statut == 1 ? Colors.green : GlobalThemeData.lightColorScheme.error,
                           ),
                           child: Center(
                             child: Label12(
@@ -129,11 +129,11 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
               const Gap(20),
               Label17(text: "Informations sur la pièce", color: GlobalThemeData.lightColorScheme.onSurface, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(10),
-              Label13(text: "Prix - ${partner.piece!.prixPiece} FCFA", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              Label13(text: "Prix - ${partner.piece!.prixPiece} FCFA", color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(10),
-              Label13(text: partner.piece!.garantie == 1 ? "Pièce garantie" : "Pièce non garantie", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.normal, maxLines: 2).animate().fadeIn(),
+              Label13(text: partner.piece!.garantie == 1 ? "Pièce garantie" : "Pièce non garantie", color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.normal, maxLines: 2).animate().fadeIn(),
               const Gap(10),
-              Label13(text: partner.piece!.autres ?? "Pas d'autres informations disponible", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.normal, maxLines: 20).animate().fadeIn(),
+              Label13(text: partner.piece!.autres ?? "Pas d'autres informations disponible", color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.normal, maxLines: 20).animate().fadeIn(),
               if(partner.piece!.autos!.isNotEmpty || partner.piece!.moteurs!.isNotEmpty || partner.piece!.categories!.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,10 +162,10 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                               ...partner.piece!.marques!.map((e) => Container(
                                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                 decoration: BoxDecoration(
-                                    color: GlobalThemeData.lightColorScheme.inversePrimary,
+                                    color: GlobalThemeData.lightColorScheme.surfaceContainerHighest,
                                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
                                 ),
-                                child: Label10(text: e.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                child: Label10(text: e.marque.name, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                               )),
                             ],
                           )
@@ -193,9 +193,9 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               children: [
-                                Icon(Icons.info_outline, size: 20, color: GlobalThemeData.lightColorScheme.outline,).animate().fadeIn(),
+                                Icon(Icons.info_outline, size: 20, color: GlobalThemeData.lightColorScheme.onSecondaryFixed,).animate().fadeIn(),
                                 const Gap(10),
-                                Label12(text: e.typeAuto.libelle, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                Label12(text: e.typeAuto.libelle, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                               ],
                             ).animate().fadeIn(),
                           )).toList(),
@@ -220,9 +220,9 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               children: [
-                                Icon(Icons.info_outline, size: 20, color: GlobalThemeData.lightColorScheme.outline,).animate().fadeIn(),
+                                Icon(Icons.info_outline, size: 20, color: GlobalThemeData.lightColorScheme.onSecondaryFixed,).animate().fadeIn(),
                                 const Gap(10),
-                                Label12(text: e.typeMoteur.libelle, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                Label12(text: e.typeMoteur.libelle, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                               ],
                             ).animate().fadeIn(),
                           )).toList(),
@@ -247,18 +247,18 @@ class _DetailPieceScreenState extends State<DetailPieceScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               children: [
-                                Icon(Icons.info_outline, size: 20, color: GlobalThemeData.lightColorScheme.outline,).animate().fadeIn(),
+                                Icon(Icons.info_outline, size: 20, color: GlobalThemeData.lightColorScheme.onSecondaryFixed,).animate().fadeIn(),
                                 const Gap(10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Label12(text: e.categorieEngin.libelle, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                                    Label12(text: e.categorieEngin.libelle, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                                     if(e.hybride == 1)
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const Gap(5),
-                                          Label10(text: "Hybride", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
+                                          Label10(text: "Hybride", color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.normal, maxLines: 1).animate().fadeIn(),
                                         ],
                                       ),
                                   ],

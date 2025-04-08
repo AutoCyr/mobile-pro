@@ -128,7 +128,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                           splashColor: Colors.transparent,
                           child: Icon(
                             Icons.menu_rounded,
-                            color: GlobalThemeData.lightColorScheme.primaryContainer,
+                            color: GlobalThemeData.lightColorScheme.primary,
                           ),
                         ),
                         Image.asset(
@@ -141,7 +141,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                   const Gap(30),
                   Label20(
                       text: "Tableau de bord",
-                      color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                      color: GlobalThemeData.lightColorScheme.secondary,
                       weight: FontWeight.bold,
                       maxLines: 1
                   ).animate().fadeIn(),
@@ -157,67 +157,58 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                     children: [
                       Container(
                         width: size.width,
-                        height: 150,
+                        height: 175,
                         decoration: BoxDecoration(
-                            color: GlobalThemeData.lightColorScheme.surfaceTint.withOpacity(0.7),
+                          image: DecorationImage(
+                              image: const AssetImage("assets/images/banner.webp"),
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
+                          ),
                             border: Border.all(
                               color: GlobalThemeData.lightColorScheme.surfaceTint,
                             )
                         ),
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              right: -120,
-                              top: -40,
-                              child: Image.asset(
-                                "assets/pngs/map.png",
-                                width: size.width * 0.8,
-                                height: size.width * 0.8,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: size.width * 0.7,
+                                child: Label13(
+                                    text: "Ajoutez les adresses de vos boutiques",
+                                    color: GlobalThemeData.lightColorScheme.onSecondary,
+                                    weight: FontWeight.bold,
+                                    maxLines: 2
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              const Gap(10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    width: size.width * 0.7,
-                                    child: Label13(
-                                        text: "Faites connaitre la position de vos boutiques",
-                                        color: GlobalThemeData.lightColorScheme.onErrorContainer,
-                                        weight: FontWeight.bold,
-                                        maxLines: 2
+                                    width: size.width * 0.6,
+                                    child: Label12(
+                                        text: "Augmentez votre visibilité en permettant aux clients de facilement vous retrouver pour booster votre chiffre d'affaire.",
+                                        color: GlobalThemeData.lightColorScheme.onSecondary,
+                                        weight: FontWeight.normal,
+                                        maxLines: 3
                                     ),
                                   ),
-                                  const Gap(10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SizedBox(
-                                        width: size.width * 0.6,
-                                        child: Label12(
-                                            text: "Augmentez votre visibilité en permettant aux clients de facilement vous retrouver pour booster votre chiffre d'affaire.",
-                                            color: GlobalThemeData.lightColorScheme.onErrorContainer,
-                                            weight: FontWeight.normal,
-                                            maxLines: 3
-                                        ),
-                                      ),
-                                      CustomIconButton(
-                                          icon: Icons.arrow_forward_ios_rounded,
-                                          size: size,
-                                          context: context,
-                                          function: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddressListScreen())),
-                                          iconColor: GlobalThemeData.lightColorScheme.primary,
-                                          buttonColor: GlobalThemeData.lightColorScheme.onPrimary,
-                                          backColor: GlobalThemeData.lightColorScheme.primary
-                                      ),
-                                    ],
+                                  CustomIconButton(
+                                      icon: Icons.arrow_forward_ios_rounded,
+                                      size: size,
+                                      context: context,
+                                      function: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddressListScreen())),
+                                      iconColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                      buttonColor: GlobalThemeData.lightColorScheme.primary,
+                                      backColor: GlobalThemeData.lightColorScheme.onPrimary
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ).animate().fadeIn(),
                       const Gap(20),
@@ -227,7 +218,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                     context: context,
                     label: "Total pièces enregistrées",
                     value: partner.mainLoading && partner.pieces.isEmpty ? "..." : partner.pieces.length.toString(),
-                    icon: Icons.settings_rounded,
+                    icon: "assets/pngs/asset_1.png",
                     size: size,
                     child: const PieceListScreen()
                   ).animate().fadeIn(),
@@ -239,7 +230,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                         context: context,
                         label: "Total commandes motos",
                         value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.where((element) => element.pieceDetail.typeEngin.libelle.toLowerCase() != "quatre roues").length.toString(),
-                        icon: Icons.motorcycle_rounded,
+                        icon: "assets/pngs/asset_2.png",
                         size: size,
                         child: const CommandeListScreen()
                       ).animate().fadeIn(),
@@ -247,7 +238,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                         context: context,
                         label: "Total commandes auto",
                         value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.where((element) => element.pieceDetail.typeEngin.libelle.toLowerCase() == "quatre roues").length.toString(),
-                        icon: Icons.car_crash_rounded,
+                        icon: "assets/pngs/asset_3.png",
                         size: size,
                         child: const CommandeListScreen()
                       ).animate().fadeIn()
@@ -258,7 +249,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                     context: context,
                     label: "Total interventions",
                     value: partner.loading && partner.requests.isEmpty ? "..." : partner.requests.length.toString(),
-                    icon: Icons.scuba_diving_rounded,
+                    icon: "assets/pngs/asset_4.png",
                     size: size,
                     child: const RequestListScreen()
                   ).animate().fadeIn(),
@@ -267,7 +258,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                     context: context,
                     label: "Total contacts établis",
                     value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.length.toString(),
-                    icon: Icons.webhook_rounded,
+                    icon: "assets/pngs/asset_5.png",
                     size: size
                   ).animate().fadeIn(),
                 ],

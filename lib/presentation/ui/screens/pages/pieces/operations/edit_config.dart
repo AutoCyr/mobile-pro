@@ -162,7 +162,7 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
-        title: Label14(text: "Configuration de la pièce", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+        title: Label14(text: "Configuration de la pièce", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
       ),
       body: Consumer2<CommonNotifier, PartnerNotifier>(
         builder: (context, common, partner, child) {
@@ -173,10 +173,10 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                 width: size.width,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 decoration: BoxDecoration(
-                    color: GlobalThemeData.lightColorScheme.inversePrimary,
+                    color: GlobalThemeData.lightColorScheme.surfaceContainerHighest,
                     borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
                     border: Border.all(
-                        color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.5),
+                        color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.5),
                         width: 1
                     )
                 ),
@@ -185,16 +185,16 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                   children: [
                     Label12(text: "Récapitulatif de la pièce :", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(10),
-                    Label10(text: widget.detail.piece != null ? widget.detail.piece!.nomPiece : widget.detail.article!.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.piece != null ? widget.detail.piece!.nomPiece : widget.detail.article!.name, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     const Gap(5),
-                    Label10(text: widget.detail.typeEngin.libelle, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                    Label10(text: widget.detail.typeEngin.libelle, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                   ],
                 ),
               ).animate().fadeIn(),
               const Gap(20),
-              Label17(text: "Mettre à jour les disponibilités", color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              Label17(text: "Mettre à jour les disponibilités", color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(10),
-              Label12(text: "Les catégories avec le signe ⁕ sont obligatoires et doivent avoir au moins un élément", color: GlobalThemeData.lightColorScheme.errorContainer, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
+              Label12(text: "Les catégories avec le signe ⁕ sont obligatoires et doivent avoir au moins un élément", color: GlobalThemeData.lightColorScheme.error, weight: FontWeight.bold, maxLines: 2).animate().fadeIn(),
               const Gap(20),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -213,10 +213,10 @@ class _ConfigEditScreenState extends State<ConfigEditScreen> {
                     ...partner.piece!.marques!.map((e) => Container(
                       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       decoration: BoxDecoration(
-                          color: GlobalThemeData.lightColorScheme.inversePrimary,
+                          color: GlobalThemeData.lightColorScheme.surfaceContainerHighest,
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5))
                       ),
-                      child: Label10(text: e.marque.name, color: GlobalThemeData.lightColorScheme.outline, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                      child: Label10(text: e.marque.name, color: GlobalThemeData.lightColorScheme.onSecondaryFixed, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                     )),
                   ],
                 )

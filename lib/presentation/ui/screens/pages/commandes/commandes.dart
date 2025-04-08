@@ -73,7 +73,7 @@ class _CommandeListScreenState extends State<CommandeListScreen> {
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
         title: _search == false ?
-          Label14(text: "Mes commandes", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+          Label14(text: "Mes commandes", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
             :
           SizedBox(
               height: 45,
@@ -100,7 +100,7 @@ class _CommandeListScreenState extends State<CommandeListScreen> {
                 ),
                 autofocus: true,
                 onChanged: (value) => filterList(value),
-                cursorColor: GlobalThemeData.lightColorScheme.primaryContainer,
+                cursorColor: GlobalThemeData.lightColorScheme.primary,
               ),
           ).animate().fadeIn(),
         actions: [

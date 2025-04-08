@@ -13,6 +13,7 @@ Widget DescriptionField({
     keyboardType: keyboardType,
     maxLines: 7,
     decoration: InputDecoration(
+      focusColor: GlobalThemeData.lightColorScheme.primary,
       filled: true,
       fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
       labelText: label,

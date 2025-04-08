@@ -35,7 +35,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       appBar: AppBar(
           iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
           backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
-          title: Label14(text: "Détail de la demande", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+          title: Label14(text: "Détail de la demande", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -44,16 +44,16 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             width: size.width,
             decoration: BoxDecoration(
-              color: GlobalThemeData.lightColorScheme.primaryContainer,
+              color: GlobalThemeData.lightColorScheme.primary,
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
               border: Border.all(color: GlobalThemeData.lightColorScheme.primary, width: 1),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Label17(text: "Demande #${detail!.reference}", color: GlobalThemeData.lightColorScheme.onPrimaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                Label17(text: "Demande #${detail!.reference}", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                 const Gap(10),
-                Label13(text: "Effectuée le ${DateFormat.yMMMMEEEEd("fr").format(detail!.dateDemande)} à ${DateFormat.Hm("fr").format(detail!.dateDemande)}", color: GlobalThemeData.lightColorScheme.onPrimaryContainer, weight: FontWeight.normal, maxLines: 2).animate().fadeIn(),
+                Label13(text: "Effectuée le ${DateFormat.yMMMMEEEEd("fr").format(detail!.dateDemande)} à ${DateFormat.Hm("fr").format(detail!.dateDemande)}", color: GlobalThemeData.lightColorScheme.onPrimary, weight: FontWeight.normal, maxLines: 2).animate().fadeIn(),
               ],
             ),
           ),

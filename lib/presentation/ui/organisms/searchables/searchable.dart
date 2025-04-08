@@ -96,7 +96,7 @@ class _CustomSearchableState extends State<CustomSearchable> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.1),
+                fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
                 hintText: "Rechercher",
                 border: InputBorder.none,
                 hintStyle: const TextStyle(
@@ -116,7 +116,7 @@ class _CustomSearchableState extends State<CustomSearchable> {
               widget.controller.text = "";
               Navigator.pop(context);
             },
-            icon: Icon(Icons.clear, color: GlobalThemeData.lightColorScheme.errorContainer,),
+            icon: Icon(Icons.clear, color: GlobalThemeData.lightColorScheme.error,),
           ).animate().fadeIn(),
           if(localSelectedObject != null || selectedList != null)
             Consumer<CommonNotifier>(

@@ -87,7 +87,7 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
     return Scaffold(
       appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: GlobalThemeData.lightColorScheme.primaryContainer,
+          backgroundColor: GlobalThemeData.lightColorScheme.primary,
           actions: [
             IconButton(
               onPressed: () => retrieveUserPosition(),
@@ -142,7 +142,7 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.7),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: GlobalThemeData.lightColorScheme.primaryContainer),
+                        border: Border.all(color: GlobalThemeData.lightColorScheme.primary),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -191,7 +191,7 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.9),
                             borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: GlobalThemeData.lightColorScheme.primaryContainer),
+                            border: Border.all(color: GlobalThemeData.lightColorScheme.primary),
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,

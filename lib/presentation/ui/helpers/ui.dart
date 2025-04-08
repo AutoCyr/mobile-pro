@@ -56,7 +56,7 @@ class UiTools {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: Label14(text: "Confirmer l'opération", color: GlobalThemeData.lightColorScheme.errorContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+                  child: Label14(text: "Confirmer l'opération", color: GlobalThemeData.lightColorScheme.error, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -70,15 +70,15 @@ class UiTools {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     InkWell(
-                      splashColor: GlobalThemeData.lightColorScheme.secondaryContainer.withOpacity(0.1),
+                      splashColor: GlobalThemeData.lightColorScheme.secondary.withOpacity(0.1),
                       onTap: () => Navigator.pop(context),
-                      child: Label12(text: "Annuler", color: GlobalThemeData.lightColorScheme.secondaryContainer, weight: FontWeight.bold, maxLines: 1)
+                      child: Label12(text: "Annuler", color: GlobalThemeData.lightColorScheme.secondary, weight: FontWeight.bold, maxLines: 1)
                     ).animate().fadeIn(),
                     const Gap(20),
                     InkWell(
-                      splashColor: GlobalThemeData.lightColorScheme.errorContainer.withOpacity(0.1),
+                      splashColor: GlobalThemeData.lightColorScheme.error.withOpacity(0.1),
                       onTap: () => function(),
-                      child: Label12(text: "Confirmer", color: GlobalThemeData.lightColorScheme.errorContainer, weight: FontWeight.bold, maxLines: 1)
+                      child: Label12(text: "Confirmer", color: GlobalThemeData.lightColorScheme.error, weight: FontWeight.bold, maxLines: 1)
                     ).animate().fadeIn(),
                   ],
                 )

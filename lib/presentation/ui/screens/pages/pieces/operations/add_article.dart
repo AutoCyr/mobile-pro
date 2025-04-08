@@ -120,7 +120,7 @@ class _ArticleAddScreenState extends State<ArticleAddScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
-        title: Label14(text: "Nouvelle pièce", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+        title: Label14(text: "Nouvelle pièce", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
       ),
       body: Consumer2<CommonNotifier, PartnerNotifier>(
         builder: (context, common, partner, child) {

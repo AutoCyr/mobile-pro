@@ -59,11 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Image.asset(
                     "assets/logos/auto.png",
-                    width: 100,
-                    height: 100,
+                    width: 75,
+                    height: 75,
                   ).animate().fadeIn(),
                 ],
               ),
+              const Gap(10),
               Label30(text: "Connexion", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
               const Gap(40),
               CustomField(

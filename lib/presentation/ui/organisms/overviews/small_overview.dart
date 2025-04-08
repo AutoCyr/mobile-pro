@@ -7,7 +7,7 @@ Widget SmallOverview({
   required BuildContext context,
   required String label,
   required String value,
-  required IconData icon,
+  required String icon,
   required Size size,
   Widget? child,
 }) {
@@ -24,7 +24,7 @@ Widget SmallOverview({
       decoration: BoxDecoration(
         color: GlobalThemeData.lightColorScheme.onPrimary,
         border: Border.all(
-            color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.5),
+            color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.5),
             width: 1
         ),
       ),
@@ -38,13 +38,13 @@ Widget SmallOverview({
                 children: [
                   Label12(
                       text: label,
-                      color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                      color: GlobalThemeData.lightColorScheme.onSecondaryFixed,
                       weight: FontWeight.bold,
                       maxLines: 1
                   ),
                   Label30(
                       text: value,
-                      color: GlobalThemeData.lightColorScheme.primaryContainer,
+                      color: GlobalThemeData.lightColorScheme.primary,
                       weight: FontWeight.bold,
                       maxLines: 1
                   ),
@@ -52,9 +52,9 @@ Widget SmallOverview({
             ),
           ),
           Positioned(
-            bottom: -25,
-            right: -20,
-            child: Icon(icon, color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.5), size: size.width * 0.2,),
+            bottom: 10,
+            right: 10,
+            child: Image.asset(icon, width: 50, fit: BoxFit.fill,),
           ),
         ],
       ),

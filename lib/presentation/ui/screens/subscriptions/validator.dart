@@ -58,7 +58,7 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: GlobalThemeData.lightColorScheme.primary),
         backgroundColor: GlobalThemeData.lightColorScheme.onPrimary,
-        title: Label14(text: "Validation de la souscription", color: GlobalThemeData.lightColorScheme.primaryContainer, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+        title: Label14(text: "Validation de la souscription", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
       ),
       body: Consumer3<AuthNotifier, CommonNotifier, PartnerNotifier>(
         builder: (context, auth, common, partner, child) {
@@ -83,7 +83,7 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
                 children: [
                   Label30(
                       text: auth.getPartenaire.raisonSociale,
-                      color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                      color: GlobalThemeData.lightColorScheme.secondary,
                       weight: FontWeight.bold,
                       maxLines: 2
                   ).animate().fadeIn(),
@@ -104,7 +104,7 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
                         decoration: BoxDecoration(
                           color: GlobalThemeData.lightColorScheme.onPrimary,
                           border: Border.all(
-                              color: GlobalThemeData.lightColorScheme.primaryContainer.withOpacity(0.2),
+                              color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.2),
                               width: 1
                           ),
                         ),
@@ -114,14 +114,14 @@ class _ValidatorScreenState extends State<ValidatorScreen> {
                             children: [
                               Label20(
                                   text: common.getPlan!.libelle,
-                                  color: GlobalThemeData.lightColorScheme.primaryContainer,
+                                  color: GlobalThemeData.lightColorScheme.primary,
                                   weight: FontWeight.normal,
                                   maxLines: 1
                               ),
                               const Gap(10),
                               Label30(
                                   text: "${common.getPlan!.montant} FCFA",
-                                  color: GlobalThemeData.lightColorScheme.secondaryContainer,
+                                  color: GlobalThemeData.lightColorScheme.secondary,
                                   weight: FontWeight.bold,
                                   maxLines: 1
                               ),

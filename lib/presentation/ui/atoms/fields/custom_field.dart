@@ -12,6 +12,7 @@ Widget CustomField({
     controller: controller,
     keyboardType: keyboardType,
     decoration: InputDecoration(
+      focusColor: GlobalThemeData.lightColorScheme.primary,
       filled: true,
       fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
       labelText: label,
