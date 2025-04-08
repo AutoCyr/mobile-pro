@@ -261,6 +261,40 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                     icon: "assets/pngs/asset_5.png",
                     size: size
                   ).animate().fadeIn(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: "© Autocyr 2024. ",
+                            children: [
+                              const TextSpan(
+                                  text: "Développé par ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  )
+                              ),
+                              TextSpan(
+                                  text: "Gine inc.",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: GlobalThemeData.lightColorScheme.onSecondaryFixed
+                                  )
+                              ),
+                            ],
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: "Lufga",
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ).animate().fadeIn(),
                 ],
               ),
             );
