@@ -207,12 +207,20 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                       const Gap(20),
                     ],
                   ),
-                  Label17(
-                      text: "Tableau de bord",
-                      color: GlobalThemeData.lightColorScheme.secondary,
-                      weight: FontWeight.bold,
-                      maxLines: 2
-                  ).animate().fadeIn(),
+                  Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              GlobalThemeData.lightColorScheme.primary.withOpacity(0.2),
+                              Colors.transparent
+                            ]
+                        ),
+                      ),
+                      child: Label17(text: "Tableau de bord", color: GlobalThemeData.lightColorScheme.primary, weight: FontWeight.bold, maxLines: 1).animate().fadeIn()
+                  ),
                   const Gap(20),
                   LargeOverview(
                     context: context,
