@@ -140,30 +140,23 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                   ).animate().fadeIn(),
                   const Gap(30),
                   Label20(
-                      text: "Tableau de bord",
+                      text: auth.getPartenaire.raisonSociale,
                       color: GlobalThemeData.lightColorScheme.secondary,
                       weight: FontWeight.bold,
                       maxLines: 1
                   ).animate().fadeIn(),
                   const Gap(10),
-                  Label14(
-                      text: auth.getPartenaire.raisonSociale,
-                      color: GlobalThemeData.lightColorScheme.secondary,
-                      weight: FontWeight.normal,
-                      maxLines: 2
-                  ).animate().fadeIn(),
-                  const Gap(20),
                   Column(
                     children: [
                       Container(
                         width: size.width,
                         height: 175,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: const AssetImage("assets/images/banner.webp"),
-                              fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
-                          ),
+                            image: DecorationImage(
+                                image: const AssetImage("assets/images/banner.webp"),
+                                fit: BoxFit.cover,
+                                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
+                            ),
                             border: Border.all(
                               color: GlobalThemeData.lightColorScheme.surfaceTint,
                             )
@@ -214,6 +207,13 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                       const Gap(20),
                     ],
                   ),
+                  Label17(
+                      text: "Tableau de bord",
+                      color: GlobalThemeData.lightColorScheme.secondary,
+                      weight: FontWeight.bold,
+                      maxLines: 2
+                  ).animate().fadeIn(),
+                  const Gap(20),
                   LargeOverview(
                     context: context,
                     label: "Total pièces enregistrées",
@@ -223,27 +223,14 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                     child: const PieceListScreen()
                   ).animate().fadeIn(),
                   const Gap(5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SmallOverview(
-                        context: context,
-                        label: "Total commandes motos",
-                        value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.where((element) => element.pieceDetail.typeEngin.libelle.toLowerCase() != "quatre roues").length.toString(),
-                        icon: "assets/pngs/asset_2.png",
-                        size: size,
-                        child: const CommandeListScreen()
-                      ).animate().fadeIn(),
-                      SmallOverview(
-                        context: context,
-                        label: "Total commandes auto",
-                        value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.where((element) => element.pieceDetail.typeEngin.libelle.toLowerCase() == "quatre roues").length.toString(),
-                        icon: "assets/pngs/asset_3.png",
-                        size: size,
-                        child: const CommandeListScreen()
-                      ).animate().fadeIn()
-                    ],
-                  ),
+                  LargeOverview(
+                      context: context,
+                      label: "Total commandes",
+                      value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.length.toString(),
+                      icon: "assets/pngs/asset_3.png",
+                      size: size,
+                      child: const CommandeListScreen()
+                  ).animate().fadeIn(),
                   const Gap(5),
                   LargeOverview(
                     context: context,
@@ -278,6 +265,19 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                               ),
                               TextSpan(
                                   text: "Gine inc.",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: GlobalThemeData.lightColorScheme.onSecondaryFixed
+                                  )
+                              ),
+                              const TextSpan(
+                                  text: " et ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  )
+                              ),
+                              TextSpan(
+                                  text: "Iservice",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: GlobalThemeData.lightColorScheme.onSecondaryFixed
