@@ -262,37 +262,9 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         RichText(
-                          text: TextSpan(
-                            text: "© Autocyr 2024. ",
-                            children: [
-                              const TextSpan(
-                                  text: "Développé par ",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                  )
-                              ),
-                              TextSpan(
-                                  text: "Gine inc.",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: GlobalThemeData.lightColorScheme.onSecondaryFixed
-                                  )
-                              ),
-                              const TextSpan(
-                                  text: " et ",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                  )
-                              ),
-                              TextSpan(
-                                  text: "Iservice",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: GlobalThemeData.lightColorScheme.onSecondaryFixed
-                                  )
-                              ),
-                            ],
-                            style: const TextStyle(
+                          text: const TextSpan(
+                            text: "© Autocyr 2025",
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
