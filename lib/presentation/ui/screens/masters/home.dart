@@ -1,5 +1,6 @@
 import 'package:autocyr_pro/data/helpers/data_loaders.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
+import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label10.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
@@ -8,20 +9,24 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label17.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label20.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label30.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/loaders/loading_ads.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
+import 'package:autocyr_pro/presentation/ui/organisms/banners/blurred_banner.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/overviews/large_overview.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/overviews/small_overview.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/selectors/selector.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/addresses/list.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/commandes/commandes.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/pieces/list.dart';
+import 'package:autocyr_pro/presentation/ui/screens/pages/publicites/detail.dart';
 import 'package:autocyr_pro/presentation/ui/screens/pages/requests/requests.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
@@ -91,6 +96,15 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
     await Future.wait(futures);
   }
 
+  retrieveCommons() async {
+    final common = Provider.of<CommonNotifier>(context, listen: false);
+    if(!common.filling) {
+      if(common.publicites.isEmpty) {
+        await common.retrievePublicites(context: context);
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -98,6 +112,7 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
       updateFCM();
       view++;
       loadDatas(view, false);
+      retrieveCommons();
     });
   }
 
@@ -109,8 +124,8 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
         snackBar: SnackBar(
           content: Label12(text: "Appuyez encore pour fermer l'application", color: Colors.white, weight: FontWeight.bold, maxLines: 2),
         ),
-        child: Consumer2<AuthNotifier, PartnerNotifier>(
-          builder: (context, auth, partner, child) {
+        child: Consumer3<AuthNotifier, PartnerNotifier, CommonNotifier>(
+          builder: (context, auth, partner, common, child) {
 
             return SafeArea(
               child: ListView(
@@ -139,6 +154,56 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                       ]
                   ).animate().fadeIn(),
                   const Gap(30),
+                  Column(
+                    children: [
+                      if(common.filling && common.publicites.isEmpty)
+                        LoadingAds(
+                            widthSize: size.width,
+                            heightSize: size.height * 0.25,
+                            context: context,
+                            bgColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
+                            shimmerColor: GlobalThemeData.lightColorScheme.primary
+                        ).animate().fadeIn(),
+
+                      if(!common.filling && common.publicites.isEmpty)
+                        Label14(text: "Aucune annonce trouvée", color: Colors.black, weight: FontWeight.bold, maxLines: 1).animate().fadeIn(),
+
+                      if(common.publicites.isNotEmpty)
+                        FlutterCarousel(
+                          options: FlutterCarouselOptions(
+                              autoPlay: true,
+                              autoPlayInterval: const Duration(seconds: 10),
+                              disableCenter: true,
+                              viewportFraction: 1,
+                              height: size.height * 0.25,
+                              indicatorMargin: 10,
+                              enableInfiniteScroll: true,
+                              autoPlayAnimationDuration: const Duration(milliseconds: 1000),
+                              autoPlayCurve: Curves.slowMiddle,
+                              slideIndicator: CircularSlideIndicator(
+                                slideIndicatorOptions: const SlideIndicatorOptions(
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    itemSpacing: 10,
+                                    indicatorRadius: 4,
+                                    alignment: Alignment.topRight
+                                ),
+                              ),
+                              onPageChanged: (index, r) {
+                                setState(() {
+                                });
+                              }
+                          ),
+                          items: common.publicites.map((e) {
+                            return InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PubliciteDetailScreen(publicite: e))),
+                                child: BlurredBanner(imageUrl: e.banner)
+                            );
+                          }).toList(),
+                        ).animate().fadeIn(),
+                    ],
+                  ),
+                  const Gap(20),
                   Label20(
                       text: auth.getPartenaire.raisonSociale,
                       color: GlobalThemeData.lightColorScheme.secondary,

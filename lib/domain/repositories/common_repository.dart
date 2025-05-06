@@ -24,4 +24,6 @@ abstract class CommonRepository {
   Future getSubCategories();
 
   Future getArticles();
+
+  Future getPublicites();
 }

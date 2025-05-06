@@ -10,6 +10,7 @@ import 'package:autocyr_pro/domain/models/core/article.dart';
 import 'package:autocyr_pro/domain/models/core/category.dart';
 import 'package:autocyr_pro/domain/models/core/plan.dart';
 import 'package:autocyr_pro/domain/models/core/subcategory.dart';
+import 'package:autocyr_pro/domain/models/features/publicite.dart';
 import 'package:autocyr_pro/domain/models/response/failure.dart';
 import 'package:autocyr_pro/domain/models/response/success.dart';
 import 'package:autocyr_pro/domain/usecases/common_usecase.dart';
@@ -49,6 +50,7 @@ class CommonNotifier extends ChangeNotifier {
   List<Subcategory> _subcategories = [];
   Article? article;
   List<Article> _articles = [];
+  List<Publicite> _publicites = [];
 
   bool get filling => _filling;
   bool get loading => _loading;
@@ -78,6 +80,7 @@ class CommonNotifier extends ChangeNotifier {
   List<Subcategory> get subcategories => _subcategories;
   Article? get getArticle => article;
   List<Article> get articles => _articles;
+  List<Publicite> get publicites => _publicites;
 
   setFilling(bool value) {
     _filling = value;
@@ -216,6 +219,11 @@ class CommonNotifier extends ChangeNotifier {
 
   setArticles(List<Article> value) {
     _articles = value;
+    notifyListeners();
+  }
+
+  setPublicites(List<Publicite> value) {
+    _publicites = value;
     notifyListeners();
   }
 
@@ -578,6 +586,33 @@ class CommonNotifier extends ChangeNotifier {
     } catch (e) {
       setFilling(false);
       Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  Future retrievePublicites({required BuildContext context}) async {
+    setFilling(true);
+    try {
+      var data = await commonUseCase.getPublicites();
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        List<Publicite> publicites = [];
+        for(var publicite in success.data) {
+          publicites.add(Publicite.fromJson(publicite));
+        }
+        setPublicites(publicites);
+        setFilling(false);
+      }else{
+        Failure failure = Failure.fromJson(data);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+        setFilling(false);
+      }
+    } catch (e) {
+      setFilling(false);
+      debugPrint(e.toString());
     }
   }
 

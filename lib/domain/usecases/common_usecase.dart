@@ -57,4 +57,8 @@ class CommonUseCase {
   Future getSubCategories() async {
     return await _commonRepositoryImpl.getSubCategories();
   }
+
+  Future getPublicites() async {
+    return await _commonRepositoryImpl.getPublicites();
+  }
 }
