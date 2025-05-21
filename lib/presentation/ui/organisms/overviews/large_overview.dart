@@ -9,6 +9,7 @@ Widget LargeOverview({
   required String value,
   required String icon,
   required Size size,
+  required Color bgColor,
   Widget? child,
 }) {
   return InkWell(
@@ -22,7 +23,7 @@ Widget LargeOverview({
       width: size.width,
       height: 100,
       decoration: BoxDecoration(
-        color: GlobalThemeData.lightColorScheme.onPrimary,
+        color: bgColor,
         border: Border.all(
             color: GlobalThemeData.lightColorScheme.primary.withOpacity(0.5),
             width: 1

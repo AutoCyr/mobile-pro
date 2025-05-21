@@ -153,7 +153,7 @@ class _CommandeDetailScreenState extends State<CommandeDetailScreen> {
                         ),
                         backgroundColor: WidgetStateProperty.all(GlobalThemeData.lightColorScheme.onTertiary),
                       ),
-                      icon: Icon(Bootstrap.whatsapp, color: GlobalThemeData.lightColorScheme.primary, size: 20,)
+                      icon: Icon(Bootstrap.whatsapp, color: Color(0xff1b8755), size: 20,)
                   ),
                 ],
               )

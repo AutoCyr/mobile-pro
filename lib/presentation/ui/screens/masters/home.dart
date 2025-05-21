@@ -289,37 +289,41 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                   const Gap(20),
                   LargeOverview(
                     context: context,
-                    label: "Total pièces enregistrées",
+                    label: "Pièces enregistrées",
                     value: partner.mainLoading && partner.pieces.isEmpty ? "..." : partner.pieces.length.toString(),
                     icon: "assets/pngs/asset_1.png",
                     size: size,
-                    child: const PieceListScreen()
+                    child: const PieceListScreen(),
+                    bgColor: GlobalThemeData.lightColorScheme.onPrimary
                   ).animate().fadeIn(),
                   const Gap(5),
                   LargeOverview(
                       context: context,
-                      label: "Total commandes",
+                      label: "Commandes",
                       value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.length.toString(),
                       icon: "assets/pngs/asset_3.png",
                       size: size,
-                      child: const CommandeListScreen()
+                      child: const CommandeListScreen(),
+                      bgColor: GlobalThemeData.lightColorScheme.onPrimary
                   ).animate().fadeIn(),
                   const Gap(5),
                   LargeOverview(
                     context: context,
-                    label: "Total interventions",
+                    label: "Interventions",
                     value: partner.loading && partner.requests.isEmpty ? "..." : partner.requests.length.toString(),
                     icon: "assets/pngs/asset_4.png",
                     size: size,
-                    child: const RequestListScreen()
+                    child: const RequestListScreen(),
+                    bgColor: GlobalThemeData.lightColorScheme.onPrimary
                   ).animate().fadeIn(),
                   const Gap(5),
                   LargeOverview(
                     context: context,
-                    label: "Total contacts établis",
+                    label: "Contacts établis",
                     value: partner.loading && partner.commandes.isEmpty ? "..." : partner.commandes.length.toString(),
                     icon: "assets/pngs/asset_5.png",
-                    size: size
+                    size: size,
+                    bgColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1)
                   ).animate().fadeIn(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
