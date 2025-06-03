@@ -49,6 +49,7 @@ dependencies:
   icons_plus: ^5.0.0
   double_back_to_close_app: ^2.1.0
   flutter_carousel_widget: ^3.0.1
+  flutter_otp_text_field: ^1.5.1+1
   #Datas & States management
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0

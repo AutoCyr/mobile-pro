@@ -2,6 +2,7 @@ import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/progress_button.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_field.dart';
+import 'package:autocyr_pro/presentation/ui/atoms/fields/custom_otp_field.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label12.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label13.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';

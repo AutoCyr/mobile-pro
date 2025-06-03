@@ -10,6 +10,8 @@ import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/partner_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
+import 'package:autocyr_pro/presentation/ui/screens/auths/send_code.dart';
+import 'package:autocyr_pro/presentation/ui/screens/auths/verify_code.dart';
 import 'package:autocyr_pro/presentation/ui/screens/masters/home.dart';
 import 'package:autocyr_pro/presentation/ui/screens/starters/chooser.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
@@ -80,14 +82,20 @@ class AuthNotifier extends ChangeNotifier {
             saveToPreferences("partenaire", success.data["partenaire"])
           ]);
           await Preferences().saveString("token", success.data['token']);
+          await Preferences().saveBool("isVerified", success.data['is_verified']);
 
           await setUser(User.fromJson(success.data["user"]));
           await setPartenaire(Partenaire.fromJson(success.data["partenaire"]));
 
           setLoading(false);
           if(context.mounted) {
-            Snacks.successBar("Connexion réussie", context);
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ValidatorScreen()), (route) => false);
+            if(success.data['is_verified']) {
+              Snacks.successBar("Connexion réussie", context);
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ValidatorScreen()), (route) => false);
+            } else {
+              Snacks.failureBar("Votre compte n'est pas vérifié.", context);
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SendCodeScreen(userId: partenaire!.userId, phone: partenaire!.telephonePartenaire)));
+            }
           }
         } else {
           if(context.mounted) {
@@ -117,10 +125,11 @@ class AuthNotifier extends ChangeNotifier {
       if(data['error'] == false) {
         Success success = Success.fromJson(data);
 
+        Partenaire partenaire = Partenaire.fromJson(success.data);
         setLoading(false);
         if (context.mounted) {
           Snacks.successBar(success.message, context);
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SendCodeScreen(userId: partenaire.userId, phone: partenaire.telephonePartenaire)));
         }
       }else{
         Failure failure = Failure.fromJson(data);
@@ -141,6 +150,65 @@ class AuthNotifier extends ChangeNotifier {
     if(context.mounted){
       Snacks.successBar("Déconnexion effectuée. Bonne journée.", context);
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ChooserScreen()), (route) => false);
+    }
+  }
+
+  Future sendVerificationCode({required BuildContext context, required Map<String, dynamic> body}) async {
+    setLoading(true);
+
+    try {
+      var data = await authUseCase.sendVerificationCode(body);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        setLoading(false);
+        if (context.mounted) {
+          Snacks.successBar(success.message, context);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VerifyCodeScreen(userId: int.parse(body["user_id"]), phone: body["phone"])));
+        }
+      } else {
+        Failure failure = Failure.fromJson(data);
+
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+        setLoading(false);
+      }
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  Future verifyCode({required BuildContext context, required Map<String, dynamic> body}) async {
+    setLoading(true);
+
+    try {
+      var data = await authUseCase.verifyCode(body);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+        await Preferences().clear();
+
+        setLoading(false);
+        if (context.mounted) {
+          Snacks.successBar(success.message, context);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        }
+      } else {
+        Failure failure = Failure.fromJson(data);
+
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+        setLoading(false);
+      }
+    } catch (e) {
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
     }
   }
 

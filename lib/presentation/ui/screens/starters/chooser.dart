@@ -1,3 +1,4 @@
+import 'package:autocyr_pro/data/helpers/preferences.dart';
 import 'package:autocyr_pro/presentation/notifier/auth_notifier.dart';
 import 'package:autocyr_pro/presentation/notifier/common_notifier.dart';
 import 'package:autocyr_pro/presentation/ui/atoms/buttons/small_button.dart';
@@ -12,6 +13,7 @@ import 'package:autocyr_pro/presentation/ui/organisms/starters/back.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/starters/overlay.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/login.dart';
 import 'package:autocyr_pro/presentation/ui/screens/auths/register.dart';
+import 'package:autocyr_pro/presentation/ui/screens/auths/send_code.dart';
 import 'package:autocyr_pro/presentation/ui/screens/subscriptions/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -27,16 +29,20 @@ class ChooserScreen extends StatefulWidget {
 
 class _ChooserScreenState extends State<ChooserScreen> {
 
-  bool? _isLoggedIn;
-
   _verifyConnection(BuildContext context) async {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
-    await auth.verifyConnection().then((value) async {
-      setState(() {
-        _isLoggedIn = value;
-      });
-      await _redirect(_isLoggedIn!);
-    });
+    bool connection = await auth.verifyConnection();
+
+    if(connection) {
+      if(mounted) {
+        final isVerified = await Preferences().getBool("isVerified") ?? false;
+        if(!isVerified) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SendCodeScreen(userId: auth.partenaire!.userId, phone: auth.partenaire!.telephonePartenaire)));
+        } else {
+          await _redirect(isVerified);
+        }
+      }
+    }
   }
 
   _redirect(bool isLoggedIn) async {
