@@ -89,7 +89,7 @@ class _ChooserScreenState extends State<ChooserScreen> {
                                 ).animate().fadeIn(),
                                 const Gap(10),
                                 Label20(
-                                    text: "Autocyr Partenaire".toUpperCase(),
+                                    text: "Autocyr Partner".toUpperCase(),
                                     color: GlobalThemeData.lightColorScheme.primary,
                                     weight: FontWeight.bold,
                                     maxLines: 1
