@@ -9,7 +9,9 @@ import 'package:autocyr_pro/presentation/ui/atoms/labels/label14.dart';
 import 'package:autocyr_pro/presentation/ui/core/theme.dart';
 import 'package:autocyr_pro/presentation/ui/helpers/snacks.dart';
 import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_button.dart';
+import 'package:autocyr_pro/presentation/ui/molecules/custom_buttons/custom_icon_button.dart';
 import 'package:autocyr_pro/presentation/ui/organisms/loaders/loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -28,7 +30,9 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
 
   List<Address> adresses = [];
   late TextEditingController addressController = TextEditingController();
+  late TextEditingController searchController = TextEditingController();
   late GoogleMapController mapController;
+  bool showSearchResults = false;
 
   retrieveAdresses() async {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
@@ -96,6 +100,33 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
     }
   }
 
+  _searchLocation() async {
+    final map = Provider.of<MapNotifier>(context, listen: false);
+    
+    if (searchController.text.isNotEmpty) {
+      bool success = await map.searchLocation(searchController.text);
+      
+      if (success && mapController != null) {
+        mapController.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: map.center!,
+              zoom: 17,
+            )
+          )
+        );
+        setState(() {
+          showSearchResults = false;
+        });
+        searchController.clear();
+      } else {
+        if (mounted) {
+          Snacks.failureBar("Lieu non trouvé. Veuillez vérifier votre recherche.", context);
+        }
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -156,7 +187,55 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
                     onTap: (LatLng latLng) => retrieveSelectedPosition(latLng),
                   ).animate().fadeIn(),
                   Positioned(
-                    top: 0,
+                    top: 10,
+                    left: 10,
+                    right: 10,
+                    child: Container(
+                      width: size.width,
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: searchController,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: GlobalThemeData.lightColorScheme.primary.withOpacity(0.1),
+
+                                hintText: "Rechercher un lieu",
+                                border: InputBorder.none,
+                                hintStyle: const TextStyle(
+                                    fontSize: 13
+                                ),
+                              ),
+                              style: const TextStyle(
+                                  fontSize: 13
+                              ),
+                              onFieldSubmitted: (value){
+                                _searchLocation();
+                              },
+                            ).animate().fadeIn(),
+                          ),
+                          const Gap(10),
+                          CustomIconButton(
+                            icon: CupertinoIcons.search,
+                            size: size,
+                            context: context,
+                            function: () => _searchLocation(),
+                            iconColor: GlobalThemeData.lightColorScheme.onPrimary,
+                            buttonColor: GlobalThemeData.lightColorScheme.primary,
+                            backColor: GlobalThemeData.lightColorScheme.onPrimary
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 70,
                     right: 0,
                     child: Container(
                       margin: const EdgeInsets.only(top: 10, left: 10, right: 10),

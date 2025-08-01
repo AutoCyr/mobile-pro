@@ -12,6 +12,7 @@ class MapNotifier extends ChangeNotifier {
 
   bool _loading = false;
   bool _current = false;
+  bool _searching = false;
   Position? _position;
   LatLng? _center;
   BitmapDescriptor? customIcon;
@@ -19,6 +20,7 @@ class MapNotifier extends ChangeNotifier {
 
   bool get loading => _loading;
   bool get current => _current;
+  bool get searching => _searching;
   Position? get position => _position;
   LatLng? get center => _center;
   BitmapDescriptor? get getCustomIcon => customIcon;
@@ -31,6 +33,11 @@ class MapNotifier extends ChangeNotifier {
 
   setCurrent(bool value) {
     _current = value;
+    notifyListeners();
+  }
+
+  setSearching(bool value) {
+    _searching = value;
     notifyListeners();
   }
 
@@ -98,6 +105,47 @@ class MapNotifier extends ChangeNotifier {
     setCenter(center);
     setCustomIcons();
     setStoreIcons();
+  }
+
+  Future<bool> searchLocation(String query) async {
+    if (query.isEmpty) return false;
+    
+    setSearching(true);
+    try {
+      List<Location> locations = await locationFromAddress(query);
+      
+      if (locations.isNotEmpty) {
+        final location = locations.first;
+        final LatLng newCenter = LatLng(location.latitude, location.longitude);
+        
+        setCenter(newCenter);
+        setCurrent(false);
+        setSearching(false);
+        return true;
+      }
+    } catch (e) {
+      print('Erreur lors de la recherche: $e');
+    }
+    
+    setSearching(false);
+    return false;
+  }
+
+  Future<String?> getAddressFromCoordinates(LatLng coordinates) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        coordinates.latitude, 
+        coordinates.longitude
+      );
+      
+      if (placemarks.isNotEmpty) {
+        final placemark = placemarks.first;
+        return '${placemark.street}, ${placemark.locality}, ${placemark.country}';
+      }
+    } catch (e) {
+      print('Erreur lors de la récupération de l\'adresse: $e');
+    }
+    return null;
   }
 
 }
