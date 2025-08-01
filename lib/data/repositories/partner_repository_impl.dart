@@ -47,6 +47,11 @@ class PartnerRepositoryImpl extends PartnerRepository {
   }
 
   @override
+  Future disableAdress(Map<String, dynamic> body) async {
+    return await _partnerDataSourceImpl.disableAdress(body);
+  }
+
+  @override
   Future updateDisponibilities(Map<String, dynamic> body) async {
     return await _partnerDataSourceImpl.updateDisponibilities(body);
   }

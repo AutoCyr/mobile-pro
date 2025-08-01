@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final auth = Provider.of<AuthNotifier>(context, listen: false);
     final common = Provider.of<CommonNotifier>(context, listen: false);
 
-    if(UiTools().checkFields([_countryController, _raisonController, _phoneController, _emailController, _townController, _districtController])) {
+    if(UiTools().checkFields([_countryController, _raisonController, _phoneController, _townController, _districtController])) {
       Map<String, dynamic> body = {
         "pays_id": common.country!.id,
         "type_id": common.partnerType!.id,

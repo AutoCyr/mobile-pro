@@ -21,6 +21,8 @@ abstract class PartnerRepository {
 
   Future updateAdresses(Map<String, dynamic> body);
 
+  Future disableAdress(Map<String, dynamic> body);
+
   Future getCommandes(Map<String, dynamic> params);
 
   Future getRequests(Map<String, dynamic> params);

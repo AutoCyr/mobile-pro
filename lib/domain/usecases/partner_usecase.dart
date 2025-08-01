@@ -50,6 +50,10 @@ class PartnerUseCase {
     return await _partnerRepositoryImpl.updateAdresses(body);
   }
 
+  Future disableAdress(Map<String, dynamic> body) async {
+    return await _partnerRepositoryImpl.disableAdress(body);
+  }
+
   Future getCommandes(Map<String, dynamic> params) async {
     return await _partnerRepositoryImpl.getCommandes(params);
   }

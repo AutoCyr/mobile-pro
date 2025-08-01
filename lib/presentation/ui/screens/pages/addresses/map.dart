@@ -17,7 +17,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AddressMapScreen extends StatefulWidget {
-  const AddressMapScreen({super.key});
+  final Function function;
+  const AddressMapScreen({super.key, required this.function});
 
   @override
   State<AddressMapScreen> createState() => _AddressMapScreenState();
@@ -25,8 +26,22 @@ class AddressMapScreen extends StatefulWidget {
 
 class _AddressMapScreenState extends State<AddressMapScreen> {
 
+  List<Address> adresses = [];
   late TextEditingController addressController = TextEditingController();
   late GoogleMapController mapController;
+
+  retrieveAdresses() async {
+    final auth = Provider.of<AuthNotifier>(context, listen: false);
+
+    List<Address> localAdresses = [];
+    if(auth.partenaire != null && auth.partenaire!.adressesPartenaire != null) {
+      localAdresses = auth.partenaire!.adressesPartenaire!;
+    }
+
+    setState(() {
+      adresses = localAdresses.where((element) => element.status == 1).toList();
+    });
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -75,10 +90,18 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
         "address": address,
       };
       addressController.clear();
-      await partner.updateAddresses(body: body, auth: auth, context: context);
+      await partner.updateAddresses(body: body, auth: auth, context: context, function: widget.function);
     }else{
       Snacks.failureBar("Veuillez renseigner un libellé pour l'adresse avant de continuer", context);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      retrieveAdresses();
+    });
   }
 
   @override
@@ -101,7 +124,6 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
         ),
       body: Consumer3<MapNotifier, AuthNotifier, PartnerNotifier>(
             builder: (context, map, auth, partner, child) {
-              List<Address> addresses = auth.partenaire?.adressesPartenaire ?? [];
 
               if(map.loading){
                 return Loader(context: context, size: size, message: "Chargement de la carte...").animate().fadeIn();
@@ -122,8 +144,8 @@ class _AddressMapScreenState extends State<AddressMapScreen> {
                         position: map.center!,
                         draggable: true,
                       ),
-                      if(addresses.isNotEmpty)
-                        ...addresses.map((address) => Marker(
+                      if(adresses.isNotEmpty)
+                        ...adresses.map((address) => Marker(
                           markerId: MarkerId("${address.longitude} ${address.latitude}"),
                           icon: map.storeIcon == null ? BitmapDescriptor.defaultMarker : map.storeIcon!,
                           position: LatLng(double.parse(address.latitude), double.parse(address.longitude)),

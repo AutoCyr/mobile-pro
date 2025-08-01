@@ -493,10 +493,40 @@ class PartnerNotifier extends ChangeNotifier {
     }
   }
 
-  Future updateAddresses({required Map<String, dynamic> body, required AuthNotifier auth, required BuildContext context}) async {
+  Future updateAddresses({required Map<String, dynamic> body, required AuthNotifier auth, required BuildContext context, required Function function}) async {
     setLoading(true);
     try {
       var data = await partnerUseCase.updateAdresses(body);
+
+      if(data['error'] == false) {
+        Success success = Success.fromJson(data);
+
+        if (context.mounted) {
+          await auth.getProfile(context: context);
+          await function();
+          Snacks.successBar(success.message, context);
+          setLoading(false);
+          Navigator.pop(context);
+        }
+      }else{
+        Failure failure = Failure.fromJson(data);
+
+        setLoading(false);
+        if(context.mounted) {
+          Snacks.failureBar(failure.message, context);
+        }
+      }
+    } catch (e) {
+      print(e);
+      setLoading(false);
+      Snacks.failureBar("Une erreur est survenue", context);
+    }
+  }
+
+  Future disableAdress({required Map<String, dynamic> body, required AuthNotifier auth, required BuildContext context}) async {
+    setLoading(true);
+    try {
+      var data = await partnerUseCase.disableAdress(body);
 
       if(data['error'] == false) {
         Success success = Success.fromJson(data);
