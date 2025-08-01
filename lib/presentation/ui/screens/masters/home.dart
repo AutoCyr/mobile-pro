@@ -217,56 +217,71 @@ class _HomeDashScreenState extends State<HomeDashScreen> {
                         width: size.width,
                         height: 175,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: const AssetImage("assets/images/banner.webp"),
-                                fit: BoxFit.cover,
-                                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken)
-                            ),
                             border: Border.all(
                               color: GlobalThemeData.lightColorScheme.surfaceTint,
                             )
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.7,
-                                child: Label13(
-                                    text: "Ajoutez les adresses de vos boutiques",
-                                    color: GlobalThemeData.lightColorScheme.onSecondary,
-                                    weight: FontWeight.bold,
-                                    maxLines: 2
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: Image.asset(
+                                "assets/images/banner.webp",
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                                // Ignorer les métadonnées d'orientation
+                                excludeFromSemantics: true,
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.3),
                                 ),
                               ),
-                              const Gap(10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
-                                    width: size.width * 0.6,
-                                    child: Label12(
-                                        text: "Augmentez votre visibilité en permettant aux clients de facilement vous retrouver pour booster votre chiffre d'affaire.",
+                                    width: size.width * 0.7,
+                                    child: Label13(
+                                        text: "Ajoutez les adresses de vos boutiques",
                                         color: GlobalThemeData.lightColorScheme.onSecondary,
-                                        weight: FontWeight.normal,
-                                        maxLines: 3
+                                        weight: FontWeight.bold,
+                                        maxLines: 2
                                     ),
                                   ),
-                                  CustomIconButton(
-                                      icon: Icons.arrow_forward_ios_rounded,
-                                      size: size,
-                                      context: context,
-                                      function: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddressListScreen())),
-                                      iconColor: GlobalThemeData.lightColorScheme.onPrimary,
-                                      buttonColor: GlobalThemeData.lightColorScheme.primary,
-                                      backColor: GlobalThemeData.lightColorScheme.onPrimary
+                                  const Gap(10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.6,
+                                        child: Label12(
+                                            text: "Augmentez votre visibilité en permettant aux clients de facilement vous retrouver pour booster votre chiffre d'affaire.",
+                                            color: GlobalThemeData.lightColorScheme.onSecondary,
+                                            weight: FontWeight.normal,
+                                            maxLines: 3
+                                        ),
+                                      ),
+                                      CustomIconButton(
+                                          icon: Icons.arrow_forward_ios_rounded,
+                                          size: size,
+                                          context: context,
+                                          function: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddressListScreen())),
+                                          iconColor: GlobalThemeData.lightColorScheme.onPrimary,
+                                          buttonColor: GlobalThemeData.lightColorScheme.primary,
+                                          backColor: GlobalThemeData.lightColorScheme.onPrimary
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ).animate().fadeIn(),
                       const Gap(20),
